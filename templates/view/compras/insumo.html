@@ -1,0 +1,338 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Insumos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Insumos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Insumos para los cerdos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de insumos</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de insumos</a>
+                            </li> 
+                        </ul>
+                        
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de insumos</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_insumo"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Código</th>
+                                              <th>Nombre</th>
+                                              <th>Tipo insumo</th> 
+                                              <th>Foto</th>
+                                              <th>Cantidad</th>
+                                              <th>Precio</th> 
+                                              <th>Detalle del insumo</th>
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+                      
+                                          <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Código</th>
+                                                <th>Nombre</th>
+                                                <th>Tipo insumo</th> 
+                                                <th>Foto</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio</th> 
+                                                <th>Detalle del insumo</th>
+                                                <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de insumos</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="codigo_alimento">Código del insumo</label>
+                                        <input type="text" maxlength="20" class="form-control" id="codigo_alimento"
+                                            value="{{codigo}}" placeholder="Ingrese codigo del alimento"
+                                            onkeypress="return soloNumeros(event)" />
+                                        <span style="color: red" id="codigo_oblig"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-7 col-6">
+                                        <label for="nombre">Nombre del insumo</label>
+                                        <input type="text" maxlength="70" class="form-control" id="nombre"
+                                            placeholder="Ingrese nombre" />
+                                        <span style="color: red" id="nombre_obligg"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-6 col-6">
+                                          <label for="tipo_id">Tipo de insumo</label>
+                                          <select class="form-control tipo_id" style="width: 100%" id="tipo_id">
+                                              <option value="0">--- Seleccione el tipo insumo ---</option>
+      
+                                              {% for datas in tipo %}
+                                              <option value="{{datas[0]}}">{{datas[1]}}</option>
+                                              {% endfor %}
+                                          </select>
+                                          <span style="color: red" id="tipo_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-2 col-6">
+                                          <label for="cantidad">Cantidad</label>
+                                          <input type="text" maxlength="5" class="form-control" value="1" id="cantidad" placeholder="Ingrese cantidad" onkeypress="return soloNumeros(event)" />
+                                          <span style="color: red" id="cantidad_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="precio_c">Precio compra</label>
+                                        <input type="number" class="form-control" id="precio_c" placeholder="Ingrese precio" />
+                                        <span style="color: red" id="precio_obligg"></span>
+                                    </div>
+                                            
+                                    <div class="form-group col-lg-12 col-6">
+                                        <label for="detalle_a">Detalle del insumo</label>
+                                        <textarea class="form-control" id="detalle_a" cols="10" rows="3"> </textarea>
+                                        <span style="color: red" id="detalle_obligg"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3 mx-auto text-center">
+                                          <label for="password_c">Foto del insumo</label>      
+                                          <img id="img_producto" height="197" width="200"
+                                              class="border rounded mx-auto d-block img-fluid" src="static/uploads/insumo/insumo.jpg" />
+                                          <input type="file" class="form-control" id="foto" onchange="mostrar_imagen(this)" />
+                                    </div>
+
+                                  </div> 
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_insumo();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/insumo');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+  
+<div class="modal fade" id="modal_editar_foto_insumo">
+    <div class="modal-dialog">
+        <div class="modal-content bg-warning">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar foto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+                <input type="text" id="id_cerdo_foto" hidden />
+                <input type="text" id="foto_actu_c" hidden />
+
+                <div class="row">
+                    <div class="col-md-12 mb-3 mx-auto text-center">
+                        <label>Foto del insumo</label>
+
+                        <img id="img_cerdo" height="200" width="300" class="border rounded mx-auto d-block img-fluid" />
+
+                        <input type="file" class="form-control" id="foto_new_c" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_foto_insumo();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal_editar_insumo">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title">Editar insumo</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="background: white; color: black">
+              <input type="text" id="id_insumo_edit" hidden />
+
+              <div class="row">
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="codigo_insumo_edit">Código del insumo</label>
+                    <input type="text" maxlength="20" class="form-control" id="codigo_insumo_edit"  placeholder="Ingrese codigo del insumo" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="codigo_oblig_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-7 col-6">
+                    <label for="nombre_edit">Nombre del insumo</label>
+                    <input type="text" maxlength="70" class="form-control" id="nombre_edit"
+                        placeholder="Ingrese nombre" />
+                    <span style="color: red" id="nombre_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                      <label for="tipo_id_edit">Tipo de insumo</label>
+                      <select class="form-control tipo_id_edit" style="width: 100%" id="tipo_id_edit">
+                          <option value="0">--- Seleccione el tipo insumo ---</option>
+
+                          {% for datas in tipo %}
+                          <option value="{{datas[0]}}">{{datas[1]}}</option>
+                          {% endfor %}
+                      </select>
+                      <span style="color: red" id="tipo_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-2 col-6">
+                      <label for="cantidad_edit">Cantidad</label>
+                      <input type="text" maxlength="5" class="form-control" value="1" id="cantidad_edit" placeholder="Ingrese cantidad" onkeypress="return soloNumeros(event)" />
+                      <span style="color: red" id="cantidad_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="precio_c_edit">Precio compra</label>
+                    <input type="number" class="form-control" id="precio_c_edit" placeholder="Ingrese precio" />
+                    <span style="color: red" id="precio_obligg_edi"></span>
+                </div> 
+
+                <div class="form-group col-lg-12 col-6">
+                    <label for="detalle_a_edit">Detalle del insumo</label>
+                    <textarea class="form-control" id="detalle_a_edit" cols="10" rows="3"> </textarea>
+                    <span style="color: red" id="detalle_obligg_edi"></span>
+                </div>
+
+              </div> 
+
+          </div>
+
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  Cerrar
+              </button>
+              <button onclick="editar_insumo();" class="btn btn-success">
+                  <i class="fa fa-edit"></i> Guardar
+              </button>
+          </div>
+
+      </div> 
+  </div> 
+</div>
+
+<script src="static/js/compras.js"></script>
+
+<script>  
+listar_insumos();
+
+$(".tipo_id").select2();
+$(".tipo_id_edit").select2();
+
+function mostrar_imagen(input) {
+    var filename = document.getElementById("foto").value;
+    var idxdot = filename.lastIndexOf(".") + 1;
+    var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+    if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {
+        if (input.files) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#img_producto")
+                    .attr("src", e.target.result)
+                    .width(200)
+                    .height(197);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    } else {
+        swal.fire(
+            "Mensaje de alerta",
+            "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." +
+            extfile,
+            "warning"
+        );
+        $("#img_producto")
+            .attr("src", "static/uploads/insumo/insumo.jpg")
+            .width(200)
+            .height(197);
+        return (document.getElementById("foto").value = "");
+    }
+}
+</script>
+  

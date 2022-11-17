@@ -1,0 +1,663 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-utensils"></i> Alimentación de cerdos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Alimentación de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Alimentación</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de alimentación</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de alimentación</a>
+                            </li> 
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile2-tab" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile2" aria-selected="false">Seguimiento de alimentación</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de alimentación</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-2 col-2">
+                                          <label for="fecha_i">Fecha inicio</label>
+                                          <input type="date" class="form-control" id="fecha_i" /> 
+                                      </div>
+      
+                                      <div class="form-group col-lg-2 col-2">
+                                          <label for="fecha_f">Fecha fin</label>
+                                          <input type="date" class="form-control" id="fecha_f" /> 
+                                      </div>
+      
+                                      <div class="form-group col-lg-1 col-1">
+                                          <label>Buscar</label>
+                                          <button onclick="cargar_fechas();" class="btn btn-info"> <i class="fa fa-search"></i> </button>
+                                      </div>
+      
+                                      <div class="form-group col-lg-1 col-1">
+                                          <label>Todo</label>
+                                          <button onclick="cargar_contenido('contenido_principal','/alimentacion_cerdos');" class="btn btn-success"> <i class="fa fa-eye"></i> </button>
+                                      </div>
+
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_alimentacion_cerdo"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Usuario</th>
+                                              <th>alimento</th>
+                                              <th>Cantidad sacos</th>
+                                              <th>Fecha</th>
+                                              <th>Observación</th>
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+                                            {% for c in data.alimentacion %}
+                  
+                                            <tr>
+                                              <td>
+                                                <td> 
+                                                  <a target="_blank" href="/reporte/reporte_alimentacion/{{c[0]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a>
+                                                </td>
+                                                <td> {{c[2]}} </td>
+                                                <td> {{c[1]}}  </td>
+                                                <td> {{c[4]}}  </td>
+                                                <td> {{c[3]}}  </td>  
+                                                <td> {{c[5]}}  </td>  
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">Alimentado</span> </td>
+                                            </tr>
+                                          
+                                            {% endfor %}
+                  
+                                          </tbody>
+                      
+                                          <tfoot>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Usuario</th>
+                                              <th>alimento</th>
+                                              <th>Cantidad sacos</th>
+                                              <th>Fecha</th>
+                                              <th>Observación</th>
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de alimentación</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+                                    <div class="form-group col-lg-12 col-6 text-center">
+                                       <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                        <div class="form-group col-lg-4 col-6 text-center">
+                                            <label for="tipo_alimento">Tipo de alimento:</label>
+                                            <select class="form-control tipo_alimento" style="width: 100%" id="tipo_alimento">
+                                                <option value="0">--- Seleccione tipo ---</option>    
+                                                {% for datas in data.tipo %}
+                                                <option value="{{datas[0]}}"> {{datas[1]}} </option>
+                                                {% endfor %}
+                                            </select>
+                                            <span style="color: red" id="tipo_limento_obligg"></span>
+                                        </div>
+
+                                        <div class="espiner_alimento form-group col-lg-6 col-6 text-center">
+                                            <label for="alimento">Alimento:</label>
+                                            <select class="form-control alimento" style="width: 100%" id="alimento">
+                                                <option value='0'>--- Seleccione tipo ---</option>
+                                            </select>
+                                            <span style="color: red" id="alimento_obligg"></span>
+                                        </div>
+
+                                        <div class="espiner_sacos form-group col-lg-2 col-6">
+                                            <label for="numero_sacos">N° sacos:</label>
+                                            <input readonly type="text" class="form-control" id="numero_sacos" />
+                                            <span style="color: red" id="numero_sacos_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-5 col-6 text-center">
+                                          <label for="tipo_alimentacion">Tipo de alimento:</label>
+                                          <select class="form-control tipo_alimentacion" style="width: 100%" id="tipo_alimentacion">
+                                              <option value="0">--- Seleccione tipo alimentación ---</option>    
+                                              {% for datas in data.tipo_a %}
+                                              <option value="{{datas[0]}}"> {{datas[1]}} </option>
+                                              {% endfor %}
+                                          </select>
+                                          <span style="color: red" id="tipo_alimentacion_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-3 col-6">
+                                            <label for="fecha_c">Fecha</label>
+                                            <input type="date" class="form-control" value="{{data.fecha}}" id="fecha_c" />
+                                            <span style="color: red" id="fecha_c_obligg"></span>
+                                        </div>
+                
+                                        <div class="form-group col-lg-4 col-6">
+                                            <label for="cantidad_sacos">Cantidad sacos:</label>
+                                            <input type="text" maxlength="15" class="form-control" id="cantidad_sacos" placeholder="Ingrese cantidad" onkeypress="return soloNumeros(event)" />
+                                            <span style="color: red" id="cantidad_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-12 col-6">
+                                            <label for="observacion">Observación:</label>
+                                            <input type="text" maxlength="150" class="form-control" id="observacion" placeholder="Ingrese observación" />
+                                            <span style="color: red" id="observacion_obligg"></span>
+                                        </div>
+
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-12 col-6 text-center  ">
+                                      <div class="row" style="border: solid 1px; border-radius: 10px;">
+       
+                                        <div class="form-group col-lg-4 col-6 text-center">
+                                          <label for="galpon_cerdo">Galpón:</label>
+                                          <select class="form-control galpon_cerdo" style="width: 100%" id="galpon_cerdo">
+                                              <option value="0">--- Seleccione galpón ---</option>    
+                                              {% for datas in data.galpon %}
+                                              <option value="{{datas[0]}}"> {{datas[1]}} - {{datas[3]}}</option>
+                                              {% endfor %}
+                                          </select>
+                                          <span style="color: red" id="galpon_cerdo_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-5 col-6 text-center">
+                                            <label for="cerdo">Cerdo:</label>
+                                            <select class="form-control cerdo" style="width: 100%" id="cerdo">
+                                                <option value='0'>--- Seleccione galpón ---</option>
+                                            </select>
+                                            <span style="color: red" id="cerdo_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-2 col-6">
+                                          <label for="peso_cerdo">Peso cerdo (Kg):</label>
+                                          <input type="text" readonly class="form-control" id="peso_cerdo" />
+                                          <span style="color: red" id="peso_cerdo_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-1 col-6">
+                                          <label>Enviar</label>
+                                          <button onclick="cargar_detalle_cerdo();" class="btn btn-info"><i class="fa fa-download"></i></button>
+                                        </div>
+
+                                     </div>
+                                   </div>
+
+                                    <div class="form-group col-lg-12 col-6 text-center">
+                                        <h3> <span class="badge badge-dark"><b>.:Detalle cerdo:.</b></span> </h3>                                
+                                        <h3 id="unir_no_c">  </h3> 
+                                        <table id="tabla_detalle_cerdos" class="table table-display table-hover responsive nowrap text-center">
+                                            <thead style="background: orange;">
+                                                <tr>                              
+                                                    <th hidden>Id</th>
+                                                    <th>#</th>
+                                                    <th>Cerdo</th> 
+                                                    <th>Peso actual (Kg)</th>  
+                                                    <th>Quitar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_tabla_detalle_cerdos">                  
+                    
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                  </div> 
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_alimentacion_cerdo_comer();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/alimentacion_cerdos');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+                              </div>
+                              
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-profile2" role="tabpanel" aria-labelledby="pills-profile2-tab">
+
+                              <div class="card card-warning">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Seguimiento de alimentación</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+                                    <div class="form-group col-lg-12 col-6 text-center">
+
+                                       <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                        <div class="form-group col-lg-12 col-6 text-center">
+                                            <label for="cerdo_aliemntacion">Seleccione un cerdo:</label>
+                                            <select class="form-control cerdo_aliemntacion" style="width: 100%" id="cerdo_aliemntacion">
+                                                <option value="0">--- Seleccione cerdo ---</option>    
+                                                {% for datas in data.cerdo %}
+                                                <option value="{{datas[0]}}">Codigo {{datas[1]}}  - Nombre {{datas[2]}} - Sexo {{datas[3]}} - Raza {{datas[4]}}</option>
+                                                {% endfor %}
+                                            </select> 
+                                        </div>                                                                
+
+                                      </div>
+                                    </div>
+
+                                    <div class="select_cerdo_alimento form-group col-lg-12 col-12 text-center">
+                  
+                                      <table id="tbala_seguimento_alimento" class="table table-bordered table-hover nowrap" style="width:100%">
+                                        <thead>
+                                          <tr> 
+                                            <th style="width: 1px;">#</th>  
+                                            <th>Fecha</th>
+                                            <th>Tipo alimentación</th>
+                                            <th>Alimento</th>
+                                            <th>Onservación</th> 
+                                          </tr>
+                                        </thead>
+  
+                                        <tbody id="tbody_detalle_seguimento_alimento">
+  
+                                        </tbody>
+                    
+                                        <tfoot>
+                                          <tr> 
+                                            <th style="width: 1px;">#</th>  
+                                            <th>Fecha</th>
+                                            <th>Tipo alimentación</th>
+                                            <th>Alimento</th>
+                                            <th>Onservación</th> 
+                                          </tr>
+                                        </tfoot>
+                                        
+                                      </table>
+  
+                                    </div>
+
+                                  </div> 
+ 
+                                </div> 
+  
+                              </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+</div>
+  
+<script src="static/js/alimento.js"></script> 
+
+<script> 
+    $(".cerdo_aliemntacion").select2();
+    $(".tipo_alimento").select2();
+    $(".alimento").select2();
+    $(".tipo_alimentacion").select2();
+    $(".galpon_cerdo").select2();
+    $(".cerdo").select2();
+
+    $("#tipo_alimento").on("change", function(){
+        var id = $(this).val();
+        listar_alimento(id)
+        $("#numero_sacos").val("");
+    });
+    
+    function listar_alimento(id) { 
+        if(id == 0){
+            return $("#alimento").html("<option value='0'>--- Seleccione tipo ---</option>");
+        }
+
+        $(".espiner_alimento").LoadingOverlay("show");
+
+        $.ajax({
+            url: "/alimento/select_alimento_cerdo",
+            type: "POST",
+            data: {
+                id: id
+            },
+        }).done(function(data) { 
+            $("#alimento").empty();
+            var cadena = "<option value='0'>--- Seleccione alimento ---</option>";
+            if (data.length > 0) {
+              $(".espiner_alimento").LoadingOverlay("hide");
+                //bucle para extraer los datos del rol
+                for (var i = 0; i < data.length; i++) {
+                    cadena += "<option value='" + data[i][0] + "'> " + data[i][1] + " - " + data[i][2] + " </option>";
+                }
+                //aqui concadenamos al id del select
+                $("#alimento").html(cadena);
+            } else {
+                $(".espiner_alimento").LoadingOverlay("hide");
+                cadena += "<option value='0'>No hay alimento</option>";
+                $("#alimento").html(cadena);
+            }
+        });
+    }
+
+    $("#alimento").on("change", function(){
+        var id = $(this).val();
+        traer_cantida_saco_alimento(id)
+    });
+
+    function traer_cantida_saco_alimento(id) { 
+
+        if(id == 0){
+            return  $("#numero_sacos").val("");;
+        }
+
+        $(".espiner_sacos").LoadingOverlay("show");
+
+        $.ajax({
+            url: "/alimento/traer_cantida_saco_alimento",
+            type: "POST",
+            data: {
+                id: id
+            },
+        }).done(function(data) { 
+            $("#numero_sacos").val(""); 
+            $(".espiner_sacos").LoadingOverlay("hide");
+            if (data.length > 0) { 
+                $("#numero_sacos").val(data[0]);
+            } else { 
+                $("#numero_sacos").val("");
+            }
+        });
+    }
+
+    $("#galpon_cerdo").on("change", function(){
+      var id = $(this).val();
+
+      $("#peso_cerdo").val(""); 
+      
+      if(id == 0){
+        return  $("#cerdo").html("<option value='0'>--- Seleccione galpón ---</option>");;
+      }
+
+      $.ajax({
+        url: "/alimento/select_cerdo_galpon",
+        type: "POST",
+        data: {
+            id: id
+        },
+      }).done(function(data) { 
+          $("#cerdo").empty();
+          var cadena = "<option value='0'>--- Seleccione galpón ---</option>";
+          if (data.length > 0) {
+              //bucle para extraer los datos del rol
+              for (var i = 0; i < data.length; i++) {
+                  cadena += "<option value='" + data[i][5] + "'>Código: " + data[i][0] + " - Sexo: " + data[i][1] + " - Raza: " + data[i][2] + " </option>";
+              }
+              //aqui concadenamos al id del select
+              $("#cerdo").html(cadena);
+          } else {
+              cadena += "<option value='0'>No hay cerdo</option>";
+              $("#cerdo").html(cadena);
+          }
+      });
+    })
+
+    $("#cerdo").on("change", function(){
+      var id = $(this).val();
+      traer_peso_cerdo_actual(id)
+    });
+
+    function traer_peso_cerdo_actual(id) { 
+
+        
+      $("#peso_cerdo").val(""); 
+        if(id == 0){
+            return  $("#numero_sacos").val("");;
+        }
+
+        $.ajax({
+            url: "/alimento/traer_peso_cerdo_actual",
+            type: "POST",
+            data: {
+                id: id
+            },
+        }).done(function(data) { 
+            $("#peso_cerdo").val(""); 
+            if (data.length > 0) { 
+                $("#peso_cerdo").val(data[0]);
+            } else { 
+                $("#peso_cerdo").val("");
+            }
+        });
+    }
+
+    function cargar_detalle_cerdo(){
+      var id = $("#cerdo").val();
+      var cerdo = $("#cerdo option:selected").text();
+      var peso_cerdo = $("#peso_cerdo").val();
+      var count = 1;
+
+      if(id == "0" || id == 0){
+        $("#cerdo_obligg").html("Seleccione un cerdo");
+        return swal.fire(
+          "No hay cerdos",
+          "Seleccione un cerdo para ingresar al detalle",
+          "warning");
+      }else{
+        $("#cerdo_obligg").html("");
+      }
+
+      if (validar_detalle_cerdo(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "El cerdo: '" +
+          cerdo +
+          "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      $("#tabla_detalle_cerdos tbody#tbody_tabla_detalle_cerdos tr").each(
+        function() { 
+            count++;
+        }
+      );
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + count + "</td>";
+        datos_agg += "<td>" + cerdo + "</td>"; 
+        datos_agg += "<td>" + peso_cerdo + "</td>";   
+                
+        datos_agg +=
+          "<td> <button class='remover btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+        //esto me ayuda a enviar los datos a la tabla
+        $("#tbody_tabla_detalle_cerdos").append(datos_agg);
+
+    }
+
+    function validar_detalle_cerdo(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_detalle_cerdos td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_detalle_cerdos").on("click", ".remover", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr); 
+    });
+
+    $(document).ready(function() {
+          var n = new Date();
+          var y = n.getFullYear();
+          var m = n.getMonth() + 1;
+          var d = n.getDate();
+          if (d < 10) {
+              d = '0' + d;
+          }
+          if (m < 10) {
+              m = '0' + m;
+          }
+          document.getElementById("fecha_i").value = y + "-" + m + "-" + d; 
+          document.getElementById("fecha_f").value = y + "-" + m + "-" + d; 
+    });
+
+    $("#tabla_alimentacion_cerdo").DataTable({
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+          },
+    });
+
+    function cargar_fechas(){
+      var f_i = document.getElementById("fecha_i").value;
+      var f_f = document.getElementById("fecha_f").value;
+
+      if (f_i > f_f) {
+          return Swal.fire(
+              "Mensaje de advertencia",
+              "La fecha inicio '" +
+              f_i +
+              "' es mayor a la fecha final '" +
+              f_f +
+              "'",
+              "warning"
+          );
+      }
+
+      cargar_contenido('contenido_principal','/alimentacion_cerdos_fecha/'+f_i+'/'+f_f+'');
+    }
+
+    function Crear_tabla_seguiminto_alimento(){
+      $("#tbala_seguimento_alimento").DataTable({
+        ordering: true,
+        paging: true,
+        aProcessing: true,
+        destroy: true,
+        async: false,
+        processing: true,
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+        },
+        responsive: "true", 
+      });
+    }
+
+</script>
+  

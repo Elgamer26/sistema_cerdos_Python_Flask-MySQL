@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="icon"
+      href="{{url_for('static', filename='Login/images/images.png')}}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='Login/fonts/icomoon/style.css')}}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='Login/css/owl.carousel.min.css')}}"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='Login/css/bootstrap.min.css')}}"
+    />
+
+    <!-- Style -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='Login/css/style.css')}}"
+    />
+
+    <title>Inicio de sesión</title>
+  </head>
+  <body style="background-image: url('static/Login/images/login2.jpg');  
+  background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-position: center center;
+   background-size: cover;">
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 order-md-2" >
+            <img
+              src="https://news.agrofystatic.com/pigphoto.png?d=620x375"
+              alt="Image"
+              class="img-fluid" style="border-radius: 30px;"
+            />
+          </div>
+          <div
+            class="col-md-6 contents"
+            style="background: rgb(243 233 214 / 63%); border: solid 1px; border-radius: 30px;"
+          >
+            <div class="row justify-content-center">
+              <div class="col-md-8">
+                <div class="mb-4">
+                  <h3 style="text-align: center">
+                    <strong>Iniciar sesión</strong>
+                    <h3 class="m-0"><a href="/" style="color: black;">Hacienda "Amada Angélica"</a></h3>
+                  </h3>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    background: #ff000094;
+                    padding: 10px;
+                    color: white;
+                    display: none;
+                  "
+                  id="none_usu"
+                >
+                  <span><b> Ingrese un usuario para continuar</b></span>
+                </div>
+
+                <div
+                  style="
+                    text-align: center;
+                    background: #ff000094;
+                    padding: 10px;
+                    color: white;
+                    display: none;
+                  "
+                  id="none_pass"
+                >
+                  <span><b> Ingrese un password para continuar</b></span>
+                </div>
+
+                <br />
+
+                <div class="form-group first">
+                  <label style="color: black;" for="username"><b>Usuario</b></label>
+                  <input type="text" class="form-control" id="username" />
+                </div>
+                <div class="form-group last mb-4">
+                  <label style="color: black;" for="password"><b>Password</b></label>
+                  <input type="password" class="form-control" id="password" />
+                </div>
+
+                <div class="alert alert-danger text-center" id="error_logeo" style="color: white; display:none; text-align: center; background: red; border-radius: 15px; padding: 10px;  text-align: center;">
+                  <span> Usuario o contraseña incorrectos</span>
+                </div>
+
+                <input
+                  id="btn_aceptar"
+                  type="submit"
+                  value="Ingresar"
+                  class="btn text-white btn-block btn-primary"
+                />
+
+                <input
+                id="btn_recuperar"
+                type="submit"
+                value="Recuperar password"
+                class="btn text-white btn-block btn-danger"
+                />
+               
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{{url_for('static', filename='Login/js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{url_for('static', filename='Login/js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename='Login/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='Login/js/main.js')}}"></script>
+    <script src="{{url_for('static', filename='js/usuario.js')}}"></script>
+
+    <!-- alertas -->
+    <script src="{{url_for('static', filename='plugins/js/sweetalert2/sweetalert2.all.min.js')}}"></script>
+  </body>
+</html>

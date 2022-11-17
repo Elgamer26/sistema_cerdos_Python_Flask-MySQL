@@ -1,0 +1,156 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0"><i class="fa fa-home"></i> Hacienda</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Hacienda</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Datos hacienda</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 mb-3 mx-auto text-center">
+                                    <label for="password_c">Foto de hacienda</label>
+
+                                    <img id="img_producto" height="200" width="200"
+                                        class="border rounded mx-auto d-block img-fluid"
+                                        src="static/uploads/empresa/{{ data[5] }}" />
+
+                                    <input type="file" class="form-control" id="foto" />
+                                    <input type="text" id="nombre_foto" hidden value="{{ data[5] }}">
+
+                                    <div class="col-md-2 mb-3 mx-auto text-center m-2">
+                                        <a onclick="editar_foto_emppresa();" class="btn btn-primary btn-block"><i class="fa fa-undo"></i> <b>Cambiar foto</b></a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="razon_scial">Nombre de hacienda</label>
+                                    <input type="text" maxlength="60" class="form-control" id="razon_scial"
+                                        placeholder="Ingrese nombre de hacienda" value="{{ data[1] }}" />
+                                    <span style="color: red" id="nombre_oblig"></span>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="ruc">ruc</label>
+                                    <input type="text" maxlength="13" class="form-control" id="ruc"
+                                        placeholder="Ingrese ruc" onkeypress="return soloNumeros(event)" value="{{ data[2] }}"/>
+                                    <span style="color: red" id="ruc_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="telefono">Telefono</label>
+                                    <input type="text" maxlength="11" class="form-control" id="telefono"
+                                        placeholder="Ingrese telefono" onkeypress="return soloNumeros(event)" value="{{ data[3] }}"/>
+                                    <span style="color: red" id="telefono_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" maxlength="10" class="form-control" id="direccion"
+                                        placeholder="Ingrese dirección" value="{{ data[8] }}"/>
+                                    <span style="color: red" id="direccion_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="correo">Correo</label>   <label id="email_correcto" style="color: red;"></label>
+                                    <input type="text" maxlength="60" class="form-control" id="correo"
+                                        placeholder="Ingrese correo" value="{{ data[4] }}" />
+                                    <span style="color: red" id="correo_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-6 col-6">
+                                    <label for="encargado">Encargado</label>
+                                    <input type="text" maxlength="60" class="form-control" id="encargado"
+                                        placeholder="Ingrese encargado" value="{{ data[6] }}"/>
+                                    <span style="color: red" id="encargado_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-12 col-6">
+                                    <label for="encargado">Descripción de hacienda</label>
+                                    <textarea class="form-control" id="descripcion" cols="15" rows="4">{{ data[7] }}</textarea>
+                                    <span style="color: red" id="descricions_obligg"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button onclick="editar_empresa();" class="btn btn-success">
+                                <i class="fa fa-save"></i> Guadar
+                            </button>
+                            -
+                            <button onclick="cargar_contenido('contenido_principal','/hacienda');"
+                                class="btn btn-danger">
+                                <i class="fa fa-svae"></i> Recargar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+
+        </div>
+    </section>
+</div>
+
+<script src="static/js/usuario.js"></script>
+
+<script>
+    var correo_usus = true;
+    document.getElementById("foto").addEventListener("change", () => {
+        var filename = document.getElementById("foto").value;
+        var idxdot = filename.lastIndexOf(".") + 1;
+        var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+        if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") { } else {
+            swal.fire(
+                "Mensaje de informacion",
+                "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." + extfile,
+                "warning"
+            );
+            document.getElementById("foto").value = "";
+        }
+    });
+
+    $("#correo").keyup(function() {
+        if (this.value != "") {
+            document.getElementById('correo').addEventListener('input', function() {
+                campo = event.target;
+                //este codigo me da formato email
+                email = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+                //esto es para validar si es un email valida
+                if (email.test(campo.value)) {
+                    //estilos para cambiar de color y ocultar el boton
+                    $(this).css("border", "1px solid green");
+                    $("#email_correcto").html("");
+                    correo_usus = true; 
+                } else {
+                    $(this).css("border", "1px solid red");
+                    $("#email_correcto").html("Email incorrecto");
+                    correo_usus = false; 
+                }
+            });
+        } else {
+            $(this).css("border", "1px solid green");
+            $("#email_correcto").html("");
+            correo_usus = false; 
+        }
+    });
+</script>

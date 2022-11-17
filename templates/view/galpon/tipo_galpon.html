@@ -1,0 +1,138 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fa fa-list"></i> Listado tipo de galpón -
+                    <a onclick="modal_new_raza();" class="btn btn-success"><i class="fa fa-plus"></i> Nueva tipo galpón</a>
+                </h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Lista tipo de galpón</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listado tipo de galpón</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-lg-12 col-12">
+                                    <table id="tabla_tipo_g_"
+                                        class="table table-display table-hover responsive nowrap text-center"
+                                        style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Nombre</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Nombre</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modal_nueva_tipo_galpon">
+    <div class="modal-dialog">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Nuevo tipo galpón</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+
+                <div class="row">
+                    <div class="form-group col-lg-12 col-12">
+                        <label for="nuevo_ti_g">Tipo de galpón</label>
+                        <input type="text" maxlength="30" class="form-control" id="nuevo_ti_g"
+                            placeholder="Nombre tipo galpón" />
+                        <span style="color: red" id="nuevo_ti_g_obligg"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="guardar_tipo_g();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div> 
+    </div> 
+</div>
+
+<div class="modal fade" id="modal_editar_tipo_g">
+    <div class="modal-dialog">
+        <div class="modal-content bg-primary">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar tipo galpón</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+
+                <input type="text" id="id_tipo_g" hidden>
+
+                <div class="row">
+                    <div class="form-group col-lg-12 col-12">
+                        <label for="editar_tipo_g">Tipo galpón</label>
+                        <input type="text" maxlength="30" class="form-control" id="editar_tipo_g"
+                            placeholder="Nombre tipo galpón" />
+                        <span style="color: red" id="editar_tipo_g_obligg"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_tipo_g();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="static/js/galpon.js"></script>
+
+<script>
+    listar_tipo_galpon();
+</script>

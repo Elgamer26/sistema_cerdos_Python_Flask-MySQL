@@ -1,0 +1,494 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-home"></i><i class="fa fa-paw"></i> Cerdos en galpón</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Crear galpón</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Nuevo galpón</h3>
+              </div>
+
+              <input type="text" hidden id="Id_global" value="{{dicc.id}}" >
+  
+              <div class="card-body">
+                <div class="row">
+
+                <div class="form-group col-lg-4 col-6">
+                    <label for="id_galpon">Galpones</label>
+                    <select disabled class="form-control id_galpon" style="width: 100%" id="id_galpon">
+                        <option value="0">--- Seleccione el galpón ---</option>
+    
+                        {% for datas in dicc.data %}
+                        <option value="{{datas[0]}}" >N°: {{datas[1]}} - Tipo: {{datas[3]}}</option>
+                        {% endfor %}
+                    </select>
+                    <span style="color: red" id="id_galpon_obligg"></span>
+                </div> 
+             
+                <div class="Capacidad_C form-group col-lg-2 col-6">
+                    <label for="capacidad">Capacidad</label>
+                    <input type="text" disabled maxlength="3" class="form-control" id="capacidad" placeholder="Capacidad" />
+                    <span style="color: red" id="capacidad_obligg"></span>
+                </div>
+                  
+                <div class="Disponible_C form-group col-lg-2 col-6">
+                    <label for="disponibe">Cantidad en galpón</label>
+                    <input type="text" disabled maxlength="3" class="form-control" id="disponibe" placeholder="Disponible" />
+                    <span style="color: red" id="disponibe_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-2 col-6">
+                    <label for="fecha_g">Fecha</label>
+                    <input type="date" class="form-control" id="fecha_g" /> 
+                </div>
+
+                <div class="form-group col-lg-1 col-6">
+                  <label for="capacidad">Recargar</label>
+                  <button onclick="cargar_contenido('contenido_principal','/ver_cerdos_galpo/{{dicc.id}}');" class="btn btn-info"><i class="fa fa-spinner"></i></button>
+              </div>
+
+              <div class="form-group col-lg-1 col-6">
+                <label for="capacidad">Pasar</label>
+                <button onclick="pasar_cerdos()" class="btn btn-dark"><i class="fa fa-paw"></i></button>
+              </div>
+
+                </div>
+              </div>
+ 
+            </div>
+          </div>
+
+          <div class="col-lg-13 col-12">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Cerdos</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+             
+                <div id="origin_cerds" class="form-group col-lg-12 col-3">
+                    <table class="table table-display table-hover responsive nowrap text-center">
+                        <thead style="background: orange;">
+                            <tr>
+                                <th hidden>Id cerdo</th> 
+                                <th>Fecha ingreso</th>
+                                <th>Cód. cerdo</th>
+                                <th>Sexo</th>
+                                <th>Raza</th>
+                                <th>Foto</th>
+                                <th>Peso Kg</th> 
+                                <th>Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                          {% for cerdos in dicc.cerdos %}
+
+                          <tr>
+                              <td hidden for='id'> {{cerdos[9]}}  </td>
+                              <td> {{cerdos[0]}} </td>
+                              <td> {{cerdos[1]}}  </td>
+                              <td> {{cerdos[2]}}  </td>
+                              <td> {{cerdos[3]}}  </td>
+                            
+                              <td> <img class='img-circle' src='static/uploads/cerdo/{{cerdos[4]}} ' width='50px' /> </td>
+                              <td> {{cerdos[5]}}  </td> 
+                              <td> {{cerdos[6]}}  </td> 
+                          </tr>
+                        
+                          {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div hidden id="pasar_cerdos" class="form-group col-lg-6 col-3">
+
+                  <div class="row">
+
+                    <div class="form-group col-lg-12 col-6">
+                      <label>Cerdos en galpón:</label>
+                      <select disabled class="form-control id_galpon" id="galpo_actual_cerdo" style="width: 100%">
+                          <option value="0">--- Seleccione el galpón ---</option>
+      
+                          {% for datas in dicc.data %}
+                          <option value="{{datas[0]}}" >N°: {{datas[1]}} - Tipo: {{datas[3]}}</option>
+                          {% endfor %}
+                      </select>
+                    </div> 
+               
+                  </div>
+
+                    <table id="tabla_pasar" class="table table-display table-hover responsive nowrap text-center">
+                        <thead style="background: orange;">
+                            <tr>                              
+                                <th hidden>Id</th>
+                                <th hidden>Id cerdo</th> 
+                                <th>Raza</th>
+                                <th>Cód. cerdo</th>  
+                                <th>Foto</th> 
+                                <th>Pasar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_tabla_pasar">
+
+                          {% for cerdos in dicc.cerdos %}
+
+                          <tr>
+                              <td hidden> {{cerdos[7]}}  </td> 
+                              <td hidden for='id'> {{cerdos[9]}}  </td> 
+                              <td> {{cerdos[3]}} </td> 
+                              <td> {{cerdos[1]}}  </td>  
+                            
+                              <td> <img class='img-circle' src='static/uploads/cerdo/{{cerdos[4]}} ' width='50px' /> </td> 
+                              <td>
+                                  <button class='pasar btn btn-success'><i class='fa fa-share'></i></button>
+                              </td>
+                          </tr>
+                        
+                          {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div hidden id="devolver_cerdos" class="form-group col-lg-6 col-3">
+
+                  <div class="row">
+
+                    <div class="form-group col-lg-6 col-6">
+                      <label for="id_galpon_nuevo">Galpones a cual se pasaran:</label>
+                      <select class="form-control id_galpon_nuevo" style="width: 100%" id="id_galpon_nuevo">
+                          <option value="0">--- Seleccione el galpón ---</option>
+      
+                          {% for datas in dicc.data %}
+                          <option value="{{datas[0]}}">N°: {{datas[1]}} - Tipo: {{datas[3]}}</option>
+                          {% endfor %}
+                      </select>
+                      <span style="color: red" id="id_galpon_nuevo_obligg"></span>
+                    </div> 
+               
+                    <div class="Capacidad_C_N form-group col-lg-2 col-6">
+                        <label for="capacidad_n">Capacidad</label>
+                        <input type="text" disabled maxlength="3" class="form-control" id="capacidad_n" placeholder="Capacidad" />
+                        <span style="color: red" id="capacidad_obligg_n"></span>
+                    </div>
+                      
+                    <div class="Disponible_C_N form-group col-lg-4 col-6">
+                        <label for="disponibe_n">Cantidad en galpón</label>
+                        <input type="text" disabled maxlength="3" class="form-control" id="disponibe_n" placeholder="Disponible" />
+                        <span style="color: red" id="disponibe_obligg_n"></span>
+                    </div>
+
+                    <div class="form-group col-lg-12 col-6 text-center">
+                      <h4> <b><span style="color: red" id="detalle_tabla_n"></span></b> </h4>
+                    </div>
+
+                  </div>
+
+                    <table id="tabla_devolvor" class="table table-display table-hover responsive nowrap text-center">
+                        <thead style="background: orange;">
+                            <tr>
+                                <th hidden>Id</th>
+                                <th hidden>Id cerdo</th> 
+                                <th>Fecha ingreso</th>
+                                <th>Raza</th>
+                                <th>Cód. cerdo</th> 
+                                <th>Foto</th> 
+                                <th>Devolver</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_tabla_devolvor">
+
+      
+                        </tbody>
+                    </table>
+
+                  <div class="form-group col-lg-4 col-6 mx-auto">
+                    <button onclick="editar_cambios_galpon();" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                  </div>
+
+                </div>
+
+                <div class="form-group col-lg-12 col-6">
+                  <button onclick="cargar_contenido('contenido_principal','/list_galpon_cerdo');" class="btn btn-danger"><i class="fa fa-reply"></i> Volver</button>
+                </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+<script src="static/js/galpon.js"></script>
+  
+<script> 
+
+  $(document).ready(function() {
+    $("#id_galpon").val({{dicc.id}}).trigger("change");
+    $("#galpo_actual_cerdo").val({{dicc.id}}).trigger("change");
+
+      var n = new Date();
+      var y = n.getFullYear();
+      var m = n.getMonth() + 1;
+      var d = n.getDate();
+      if (d < 10) {
+          d = '0' + d;
+      }
+      if (m < 10) {
+          m = '0' + m;
+      }
+      document.getElementById("fecha_g").value = y + "-" + m + "-" + d; 
+  });
+
+  $(document).ready(function(){ 
+      var id = {{dicc.id}}; 
+
+      if(id == 0 || id == "0"){
+        $("#capacidad").val("0");
+        $("#disponibe").val("0");
+        return false;
+      }
+      
+      $.ajax({
+        url: "/galpon/traer_disponible_capacidad",
+        type: "POST", 
+        data: {id: id}, 
+        success: function (resp) {
+          $("#capacidad").val(resp[1]);
+          $("#disponibe").val(resp[0]);
+          $(".Capacidad_C").LoadingOverlay("hide");
+          $(".Disponible_C").LoadingOverlay("hide");
+        },
+        beforeSend: function () {
+          $(".Capacidad_C").LoadingOverlay("show");
+          $(".Disponible_C").LoadingOverlay("show");
+        },
+      });
+  });
+
+  $("#id_galpon_nuevo").change(function(){
+    ///////////////////////s
+    // seelct del nuevo galpon
+    var id_n = $(this).val(); 
+
+    if(id_n == 0 || id_n == "0"){
+      $("#capacidad_n").val("0");
+      $("#disponibe_n").val("0");
+      return false;
+    }
+
+    $("#tbody_tabla_devolvor").html("");
+    
+    $.ajax({
+      url: "/galpon/traer_disponible_capacidad",
+      type: "POST", 
+      data: {id: id_n}, 
+      success: function (resp) {
+        $("#capacidad_n").val(resp[1]);
+        $("#disponibe_n").val(resp[0]);
+        $(".Capacidad_C_N").LoadingOverlay("hide");
+        $(".Disponible_C_N").LoadingOverlay("hide");
+      },
+      beforeSend: function () {
+        $(".Capacidad_C_N").LoadingOverlay("show");
+        $(".Disponible_C_N").LoadingOverlay("show");
+      },
+    });
+
+    ///////////////////////////
+    // select del gallpon origen
+    var id = {{dicc.id}}; 
+
+    if(id == 0 || id == "0"){
+      $("#capacidad").val("0");
+      $("#disponibe").val("0");
+      return false;
+    }
+    
+    $.ajax({
+      url: "/galpon/traer_disponible_capacidad",
+      type: "POST", 
+      data: {id: id}, 
+      success: function (resp) {
+        $("#capacidad").val(resp[1]);
+        $("#disponibe").val(resp[0]);
+        $(".Capacidad_C").LoadingOverlay("hide");
+        $(".Disponible_C").LoadingOverlay("hide");
+      },
+      beforeSend: function () {
+        $(".Capacidad_C").LoadingOverlay("show");
+        $(".Disponible_C").LoadingOverlay("show");
+      },
+    });
+
+    cargar_detalle_compra();
+  });
+  
+  function pasar_cerdos(){
+    var origin = document.getElementById("origin_cerds");
+    var pasar = document.getElementById("pasar_cerdos");
+    var devolver = document.getElementById("devolver_cerdos");
+ 
+    $("#origin_cerds").attr('hidden', 'hidden');
+    $("#pasar_cerdos").removeAttr('hidden');
+    $("#devolver_cerdos").removeAttr('hidden');
+  }
+
+  function cargar_detalle_compra() { 
+    $.ajax({
+      url: "/cedos_galpon",
+      type: "POST",
+      data: { 
+        id: {{dicc.id}},
+      },
+    }).done(function (resp) {
+      var llenat = "";
+      $("#tbody_tabla_pasar").html("");
+      resp["data"].forEach((row) => { 
+        llenat += `<tr> 
+          <td hidden>${row["id_galpon_cerdo"]}</td>
+          <td hidden>${row["id_cerdo"]}</td>
+          <td>${row["raza"]}</td>
+          <td>${row["codigo"]}</td> 
+          <td><img class='img-circle' src='static/uploads/cerdo/${row["foto"]}' width='50px' /> </td>
+          <td> <button class='pasar btn btn-success'><i class='fa fa-share'></i></button> </td>                           
+          </tr>`;
+          $("#tbody_tabla_pasar").html(llenat);
+      });
+
+    });
+  }
+
+  $("#tbody_tabla_pasar").on("click", ".pasar", function () {
+        //valores obtendra el dato del td por posciones [0]
+        var id_f = $(this).parents("tr").find("td")[0].innerHTML;
+        var id_c = $(this).parents("tr").find("td")[1].innerHTML;
+        var raza = $(this).parents("tr").find("td")[2].innerHTML;
+        var codigo = $(this).parents("tr").find("td")[3].innerHTML;
+        var foto = $(this).parents("tr").find("td")[4].innerHTML;
+
+        var fecha = $("#fecha_g").val();
+        var galpon_n = $("#id_galpon_nuevo").val();    
+        var disponibe = $("#disponibe_n").val();
+        var disponibe_a = $("#disponibe").val();
+            
+        if (galpon_n == "0" || galpon_n.length == 0) {
+          $("#id_galpon_nuevo_obligg").html("Seleccione el galpón");
+          return swal.fire(
+            "Seleccione el galpón",
+            "Debe seleccionar el galpón para ingresar al cerdo",
+            "warning"
+          );
+        } else {
+          $("#id_galpon_nuevo_obligg").html("");
+        }
+
+        if (galpon_n == {{dicc.id}}) { 
+          return swal.fire(
+            "Cerdo ya existe",
+            "El cerdo seleccionado ya existe en el galpón de destino, seleccione otro galpón para mover el cerdo",
+            "warning"
+          );
+        }  
+        
+        if (verificar_cerdo_pasar(id_c)) {
+          return Swal.fire(
+            "Mensaje de advertencia",
+            "El cerdo: '" +
+              codigo +
+              "' , ya fue agregado al detalle",
+            "warning"
+          );
+        }
+      
+        $("#disponibe_n").val(parseInt(disponibe) + parseInt(1));
+        $("#disponibe").val(parseInt(disponibe_a) - parseInt(1));
+      
+        var datos_agg = "<tr>";
+        datos_agg += "<td hidden>" + id_f + "</td>";
+        datos_agg += "<td hidden for='id'>" + id_c + "</td>";
+        datos_agg += "<td>" + fecha + "</td>";
+        datos_agg += "<td>" + raza + "</td>"; 
+        datos_agg += "<td>" + codigo + "</td>";     
+        datos_agg +=
+          "<td> " + foto + " </td>"; 
+        datos_agg +=
+          "<td> <button class='devolver_g btn btn-danger'><i class='fa fa-reply'></i></button></td>";
+        datos_agg += "</tr>";
+      
+        //esto me ayuda a enviar los datos a la tabla
+        $("#tbody_tabla_devolvor").append(datos_agg);
+
+        var td = this.parentNode;
+        var tr = td.parentNode;
+        var table = tr.parentNode;
+        table.removeChild(tr);
+     });
+ 
+
+   function verificar_cerdo_pasar(id) {
+    let idverificar = document.querySelectorAll(
+      "#tbody_tabla_devolvor td[for='id']"
+    );
+    return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+  }
+
+  $("#tbody_tabla_devolvor").on("click", ".devolver_g", function () {
+    //valores obtendra el dato del td por posciones [0]
+    var id = $(this).parents("tr").find("td")[0].innerHTML;
+    var id_c = $(this).parents("tr").find("td")[1].innerHTML;
+    var raza = $(this).parents("tr").find("td")[3].innerHTML;
+    var codigo = $(this).parents("tr").find("td")[4].innerHTML;
+    var foto = $(this).parents("tr").find("td")[5].innerHTML;
+ 
+    var disponibe = $("#disponibe_n").val();
+    var disponibe_a = $("#disponibe").val();
+        
+  
+    $("#disponibe_n").val(parseInt(disponibe) - parseInt(1));
+    $("#disponibe").val(parseInt(disponibe_a) + parseInt(1));
+  
+    var datos_agg = "<tr>";
+    datos_agg += "<td hidden>" + id + "</td>";
+    datos_agg += "<td hidden for='id'>" + id_c + "</td>";
+    datos_agg += "<td>" + raza + "</td>";
+    datos_agg += "<td>" + codigo + "</td>";     
+    datos_agg +=
+      "<td> " + foto + " </td>"; 
+    datos_agg +=
+      "<td>  <button class='pasar btn btn-success'><i class='fa fa-share'></i></button> </td>";
+    datos_agg += "</tr>";
+  
+    //esto me ayuda a enviar los datos a la tabla
+    $("#tbody_tabla_pasar").append(datos_agg);
+
+    var td = this.parentNode;
+    var tr = td.parentNode;
+    var table = tr.parentNode;
+    table.removeChild(tr);
+  });
+
+</script>

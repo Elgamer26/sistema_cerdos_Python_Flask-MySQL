@@ -1,0 +1,530 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Tratamientos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Tratamientos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 class="card-title"> Tratamientos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de tratamientos</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Historial de Tratamientos</a>
+                            </li> 
+                        </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de Tratamientos</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_tratamintos"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Cerdo</th>
+                                              <th>Peso Kg</th>
+                                              <th>Veterinario</th>                                           
+                                              <th>Fecha inicio</th>
+                                              <th>Fecha fin</th>
+                                              <th>Observación</th> 
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+                                            {% for c in data.lista %}
+                  
+                                            <tr>
+                                              <td></td>
+                                                {% if c[8] == True %}
+                                                <td>  
+                                                    <button onclick="ver_detalle_tratamiendo_cerdo({{c[0]}},{{c[1]}});" class="btn btn-outline-warning"><i class="fa fa-eye"></i></button> 
+                                                    -
+                                                    <a target="_blank" href="/reporte/historia_tratamiento_cerdo/{{c[0]}}/{{c[1]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a> 
+                                               </td>
+                                                {% else %}
+                                                <td> <a target="_blank" href="/reporte/historia_tratamiento_cerdo/{{c[0]}}/{{c[1]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a></td>
+                                                {% endif %} 
+ 
+                                                <td> {{c[2]}} </td>
+                                                <td> {{c[4]}}  </td>
+                                                <td> {{c[3]}}  </td>
+                                                <td> {{c[5]}}  </td>  
+                                                <td> {{c[6]}}  </td>  
+                                                <td> {{c[7]}}  </td>  
+                                                
+                                                {% if c[8] == True %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">Tratado</span> </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-danger">No tratado</span> </td>
+                                                {% endif %} 
+                                                 
+                                            </tr>
+                                          
+                                            {% endfor %}
+                  
+                                          </tbody>
+                      
+                                          <tfoot>
+                                            <tr> 
+                                                <th style="width: 1px;">#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Cerdo</th>
+                                                <th>Peso Kg</th>
+                                                <th>Veterinario</th>                                           
+                                                <th>Fecha inicio</th>
+                                                <th>Fecha fin</th>
+                                                <th>Observación</th> 
+                                                <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-warning">
+                                <div class="card-header">
+                                  <h3 class="card-title"> Historial de Tratamientos</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                    
+                                    <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                        <div class="form-group col-lg-7 col-6 text-center">
+                                            <label for="cerdo_se">Seleccione un cerdo:</label>
+                                            <select class="form-control cerdo_se" style="width: 100%" id="cerdo_se">
+                                                <option value="0">--- Seleccione cerdo ---</option>    
+                                                {% for datas in data.cerdo %}
+                                                <option value="{{datas[0]}}">Codigo {{datas[1]}}  - Nombre {{datas[2]}} - Sexo {{datas[3]}} - Raza {{datas[4]}}</option>
+                                                {% endfor %}
+                                            </select> 
+                                            <span style="color: red" id="cerdo_obligge"></span>
+                                        </div>  
+
+                                        <div class="form-group col-lg-2 col-6">
+                                            <label for="fecha_i">Fecha inicio</label>
+                                            <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_i" /> 
+                                        </div>
+                    
+                                        <div class="form-group col-lg-2 col-6">
+                                            <label for="fecha_f">Fecha final</label>
+                                            <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_f" /> 
+                                        </div> 
+
+                                        <div class="form-group col-lg-1 col-6">
+                                            <label for="fecha_f">Ver..</label>
+                                            <button onclick="buscar_historia_tratamiendos_cerdo();" class="btn btn-danger"><i class="fa fa-search"></i></button>
+                                        </div>                                         
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row text-center">
+                                        <div class="col-12" id="accordion">
+
+                                        <div id="unir_detalle_cerdo">
+
+                                           
+
+                                        </div>
+                                    </div>
+
+                                </div> 
+                            </div>
+                          </div> 
+                        </div>    
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+  
+<script src="static/js/enfermedades.js"></script> 
+
+<div class="modal fade" id="moodal_detalle">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalle del tratamiento</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+  
+                <div class="row">
+
+                    <div class="form-group col-lg-12 col-12 text-center">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-enfermedad-tab" data-toggle="pill" href="#pills-enfermedad" role="tab" aria-controls="pills-enfermedad" aria-selected="true">Enfermedad</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-insumo-tab" data-toggle="pill" href="#pills-insumo" role="tab" aria-controls="pills-insumo" aria-selected="false">Insumos</a>
+                            </li>
+                            <li  class="nav-item">
+                              <a class="nav-link" id="pills-medicamento-tab" data-toggle="pill" href="#pills-medicamento" role="tab" aria-controls="pills-medicamento" aria-selected="false">Medicamento</a>
+                            </li>
+                            <li  class="nav-item">
+                              <a class="nav-link" id="pills-tratamiento-tab" data-toggle="pill" href="#pills-tratamiento" role="tab" aria-controls="pills-tratamiento" aria-selected="false">Tratamiento</a>
+                            </li>
+
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-enfermedad" role="tabpanel" aria-labelledby="pills-enfermedad-tab">
+                                <div class="row">
+                                    <div class="form-group col-lg-12 col-6">
+                                        <label for="fecha_r">Fecha enfermedad</label>
+                                        <input type="date" class="form-control" id="fecha_r" /> 
+                                    </div>
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="sintomas">Sintomas</label>
+                                        <textarea class="form-control" id="sintomas" cols="3" rows="3" style="resize: none;"></textarea>  
+                                    </div>
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="diagnostico">Diagnóstico</label>
+                                        <textarea class="form-control" id="diagnostico" cols="3" rows="3" style="resize: none;"></textarea>  
+                                    </div>
+                                    <div class="form-group col-lg-12 col-6">
+                                        <table id="tabla_enfermedad" class="table table-display table-hover responsive nowrap text-center" style="width: 100%" >
+                                        <thead>
+                                        <tr>
+                                            <th>#</th> 
+                                            <th>Enfermedad</th> 
+                                        </tr>
+                                        </thead>            
+                                        <tbody id="tbody_enfermedad">             
+                                        </tbody>                
+                                        <tfoot>
+                                        <tr>
+                                            <th>#</th> 
+                                            <th>Enfermedad</th> 
+                                        </tr>
+                                        </tfoot>
+                                    </table>            
+                                    </div> 
+                                </div> 
+                            </div> 
+
+                            <div class="tab-pane fade" id="pills-tratamiento" role="tabpanel" aria-labelledby="pills-tratamiento-tab">
+ 
+                                  <div class="form-group col-lg-12 text-center clas_tble"> 
+                                    <table id="tabla_tratamiento" class="table table-bordered table-hover nowrap" style="width:100%">
+                                        <thead>
+                                        <tr> 
+                                            <th>#</th> 
+                                            <th>Tratamiento</th> 
+                                        </tr>
+                                        </thead>
+            
+                                        <tbody id="tbody_tabla_tratamiento">
+            
+                                        </tbody>
+                    
+                                        <tfoot>
+                                        <tr> 
+                                            <th>#</th>  
+                                            <th>Tratamiento</th> 
+                                        </tr>
+                                        </tfoot>
+                                        
+                                    </table>
+                                  </div>                             
+                                
+                            </div>
+  
+                            <div class="tab-pane fade" id="pills-insumo" role="tabpanel" aria-labelledby="pills-insumo-tab">
+                                <div class="form-group col-lg-12 col-6">
+                                     
+                                    <table id="tabla_insumo" class="table table-bordered table-hover nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>  
+                                                <th>Insumo</th> 
+                                                <th>Cantidad</th> 
+                                            </tr>
+                                        </thead>
+            
+                                        <tbody id="tbody_tabla_insumo">
+            
+                                        </tbody>
+                    
+                                        <tfoot>
+                                            <tr>  
+                                                <th>Insumo</th> 
+                                                <th>Cantidad</th> 
+                                            </tr>
+                                        </tfoot>
+                                        
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-medicamento" role="tabpanel" aria-labelledby="pills-medicamento-tab">
+
+                                  <div class="form-group col-lg-12 col-6">
+  
+                                      <table id="tabla_medicamento" class="table table-bordered table-hover nowrap" style="width:100%">
+                                          <thead>
+                                          <tr>  
+                                              <th>Medicamento</th> 
+                                              <th>Cantidad</th> 
+                                          </tr>
+                                          </thead>
+              
+                                          <tbody id="tbody_tabla_medicamento">
+              
+                                          </tbody>
+                      
+                                          <tfoot>
+                                          <tr>  
+                                              <th>medicamento</th> 
+                                              <th>Cantidad</th> 
+                                          </tr>
+                                          </tfoot>
+                                          
+                                      </table>
+  
+                                  </div> 
+
+                            </div>
+                        
+                        </div> 
+
+                    </div> 
+
+                </div> 
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button> 
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>  
+    $("#tabla_tratamintos").DataTable({
+      language: {
+        rows: "%d fila seleccionada",
+        processing: "Tratamiento en curso...",
+        search: "Buscar&nbsp;:",
+        lengthMenu: "Agrupar en _MENU_ items",
+        info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+        infoEmpty: "No existe datos.",
+        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+        infoPostFix: "",
+        loadingRecords: "Cargando...",
+        zeroRecords: "No se encontro resultados en tu busqueda",
+        emptyTable: "No hay datos disponibles en la tabla",
+        paginate: {
+          first: "Primero",
+          previous: "Anterior",
+          next: "Siguiente",
+          last: "Ultimo",
+        },
+        select: {
+          rows: "%d fila seleccionada",
+        },
+        aria: {
+          sortAscending: ": active para ordenar la columa en orden ascendente",
+          sortDescending: ": active para ordenar la columna en orden descendente",
+        },
+      },
+    });
+
+    $(".cerdo_se").select2();
+
+    $("#tabla_insumo_compra").DataTable({
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+          },
+    });
+
+    function buscar_historia_tratamiendos_cerdo(){
+        var id = document.getElementById("cerdo_se").value;
+        var f_i = document.getElementById("fecha_i").value;
+        var f_f = document.getElementById("fecha_f").value;
+
+        if(id == "0"){
+            $("#cerdo_obligge").html("Seleccione el cerdo");
+            return swal.fire(
+                "No hay cerdo",
+                "Seleccione el cerdo para realizar la busqueda",
+                "warning"
+              );
+        }else{
+            $("#cerdo_obligge").html("");
+        }
+  
+        if (f_i > f_f) {
+            return Swal.fire(
+                "Mensaje de advertencia",
+                "La fecha inicio '" +
+                f_i +
+                "' es mayor a la fecha final '" +
+                f_f +
+                "'",
+                "warning"
+            );
+        }
+
+        $.ajax({
+            url: "/enfermedad/buscar_historia_tratamiendos_cerdo",
+            type: "POST", 
+            data: {id: id, f_i: f_i, f_f: f_f}, 
+            success: function (resp) {
+
+              $(".card-warning").LoadingOverlay("hide");              
+              $('#unir_detalle_cerdo').empty();
+
+              if(resp != 0){
+            
+                let count = 0; 
+                var llenat = ""; 
+                resp['data'].forEach((row) => { 
+                    count++;   
+                    llenat += `<div class="card card-danger card-outline">
+                        <a class="d-block w-100" data-toggle="collapse" href="#collapse${count}" aria-expanded="false">
+                            <div class="card-header">
+                                <h4 class="card-title w-100">
+                                    ${count}. Fecha: '${row['fecha']}'
+                                </h4>
+                            </div>
+                        </a>
+                        <div id="collapse${count}" class="collapse" data-parent="#accordion" style="">
+                            <div class="card-body">
+                                
+                                <div class="row">
+                
+                                    <div class="form-group col-lg-2 col-6">
+                                        <label for="peso_a">Peso del cerdo</label>
+                                        <input type="text" readonly class="form-control" value="${row['peso']}" /> 
+                                    </div>
+                
+                                    <div class="form-group col-lg-2 col-6">
+                                        <label for="fecha_i">Fecha inicio</label>
+                                        <input type="date" class="form-control" value="${row['fecha_i']}" />
+                                    </div>
+                
+                                    <div class="form-group col-lg-2 col-6">
+                                    <label for="fecha_f">Fecha final</label>
+                                    <input type="date" class="form-control" value="${row['fecha_f']}" />
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="veterinario_id">Veterinario</label>
+                                        <input readonly type="text" class="form-control" value="${row['veterinario']}"/>
+                                    </div>                                                              
+                
+                                    <div class="form-group col-lg-12 col-6">
+                                    <label for="observacion">Observación</label>
+                                    <textarea class="form-control" id="observacion" cols="2" rows="2" style="resize: none;">${row['observacion']}</textarea> 
+                                    </div>
+
+                                    <div class="form-group col-lg-12 col-6"> 
+                                      <button onclick="ver_detalle_tratamiendo_cerdo(${row['id']},${row['enfer_cerdo_id']});" class="btn btn-outline-warning"><i class="fa fa-eye"></i></button> - <a target="_blank" href="/reporte/historia_tratamiento_cerdo/${row['id']}/${row['enfer_cerdo_id']}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a> 
+                                    </div>
+
+                                    </div>
+                                    
+                                    </div>
+                                </div>
+                            </div> `;           
+                    $("#unir_detalle_cerdo").html(llenat);           
+                }); 
+        
+              }else{
+                $("#unir_detalle_cerdo").html('<span style="font-size: 20px;" class="badge badge-danger"><b>.:No hay historia medica del cerdo:.</b></span>');  
+              }
+            },
+         
+            beforeSend: function () {
+                $(".card-warning").LoadingOverlay("show", {
+                  text: "Cargando..."});
+            },
+        });
+    }
+</script>
+  

@@ -1,0 +1,320 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Proveedor
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Proveedor</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Proveedor</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de proveedor</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de proveedor</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de proveedores</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_proveedore"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Razón social</th>
+                                              <th>Rúc</th>
+                                              <th>Telefono</th>
+                                              <th>Correo</th>
+                                              <th>Dirección</th>
+                                              <th>Encargado</th>
+                                              <th>Telefono encargado</th>
+                                              <th>Descripcion</th> 
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+                      
+                                          <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Razón social</th>
+                                                <th>Rúc</th>
+                                                <th>Telefono</th>
+                                                <th>Correo</th>
+                                                <th>Dirección</th>
+                                                <th>Encargado</th>
+                                                <th>Telefono encargado</th>
+                                                <th>Descripcion</th> 
+                                                <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de proveedores</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="razon_social">Razón social</label>
+                                        <input type="text"  class="form-control" id="razon_social" placeholder="Ingrese razon social" />
+                                        <span style="color: red" id="razon_social_oblig"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="ruc">Ruc</label> <label for="" id="ruc_valid"></label>
+                                        <input type="text" maxlength="13" class="form-control" id="ruc" placeholder="Ingrese ruc" onkeypress="return soloNumeros(event)" />
+                                        <span style="color: red" id="ruc_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="telefonoo">Telefono</label>
+                                        <input type="text" maxlength="13" class="form-control" id="telefonoo" placeholder="Ingrese telefono" onkeypress="return soloNumeros(event)" />
+                                        <span style="color: red" id="telefonoo_obligg"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-5 col-6">
+                                          <label for="correo">Correo</label>  <label for="" id="email_correcto" style="color: red;"></label>
+                                          <input type="text" class="form-control" id="correo" placeholder="Ingrese correo" />
+                                          <span style="color: red" id="correo_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-7 col-6">
+                                        <label for="direccion">Dirección</label>
+                                        <input type="text" class="form-control" id="direccion" placeholder="Ingrese dirección" />
+                                        <span style="color: red" id="direccion_obligg"></span>
+                                    </div>
+                                            
+                                    <div class="form-group col-lg-12 col-6">
+                                        <label for="descripcion">Descripción</label>
+                                        <textarea class="form-control" id="descripcion" cols="6" rows="3"> </textarea>
+                                        <span style="color: red" id="descripcion_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="encargdo">Encargado</label>
+                                        <input type="text" class="form-control" id="encargdo" placeholder="Ingrese el encargado" />
+                                        <span style="color: red" id="encargdo_oblig"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="telefonoo_en">Telefono encargado</label>
+                                        <input type="text" maxlength="13" class="form-control" id="telefonoo_en" placeholder="Ingrese telefono encargado" onkeypress="return soloNumeros(event)" />
+                                        <span style="color: red" id="telefonoo_en__obligg"></span>
+                                    </div>
+
+                        
+                                  </div> 
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registro_proveedor();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/proveedor');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+  </div>
+  
+
+<div class="modal fade" id="modal_editar_proveedor">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title">Editar proveedor</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="background: white; color: black">
+              <input type="text" id="id_proveedor" hidden />
+
+              <div class="row">
+
+                <div class="form-group col-lg-6 col-6">
+                    <label for="razon_social_edit">Razón social</label>
+                    <input type="text" class="form-control" id="razon_social_edit" placeholder="Ingrese razon social" />
+                    <span style="color: red" id="razon_social_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="ruc_edit">Ruc</label> <label for="" id="ruc_valid"></label>
+                    <input type="text" maxlength="13" class="form-control" id="ruc_edit" placeholder="Ingrese ruc" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="ruc_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="telefonoo_edit">Telefono</label>
+                    <input type="text" maxlength="13" class="form-control" id="telefonoo_edit" placeholder="Ingrese telefono" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="telefonoo_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-5 col-6">
+                      <label for="correo_edit">Correo</label>  <label for="" id="email_correcto" style="color: red;"></label>
+                      <input type="text" class="form-control" id="correo_edit" placeholder="Ingrese correo" />
+                      <span style="color: red" id="correo_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-7 col-6">
+                    <label for="direccion_edit">Dirección</label>
+                    <input type="text" class="form-control" id="direccion_edit" placeholder="Ingrese dirección" />
+                    <span style="color: red" id="direccion_oblig_edit"></span>
+                </div>
+                        
+                <div class="form-group col-lg-12 col-6">
+                    <label for="descripcion_edit">Descripción</label>
+                    <textarea class="form-control" id="descripcion_edit" cols="6" rows="3"> </textarea>
+                    <span style="color: red" id="descripcion_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                    <label for="encargdo_edit">Encargado</label>
+                    <input type="text" class="form-control" id="encargdo_edit" placeholder="Ingrese el encargado" />
+                    <span style="color: red" id="encargdo_oblig_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                    <label for="telefonoo_en_edit">Telefono encargado</label>
+                    <input type="text" maxlength="13" class="form-control" id="telefonoo_en_edit" placeholder="Ingrese telefono encargado" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="telefonoo_en_oblig_edit"></span>
+                </div>
+
+    
+              </div> 
+          </div>
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  Cerrar
+              </button>
+              <button onclick="editar_proveedor();" class="btn btn-success">
+                  <i class="fa fa-edit"></i> Guardar
+              </button>
+          </div>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script src="static/js/compras.js"></script>
+<script src="static/js/numero.min.js"></script>
+  
+<script>  
+    listado_proveedores();
+    var valid_email = false;
+
+    $("#ruc").validarCedulaEC({
+        onValid: function() {
+            $("#ruc_valid").html(' Ruc correcto'); 
+            $("#ruc_valid").css('color','green'); 
+        },
+        onInvalid: function() {
+            $("#ruc_valid").html(' Ruc incorrecto');
+            $("#ruc_valid").css('color','red'); 
+            $("#ruc").val("");
+            $("#ruc").focus();
+        }
+    });
+
+    $("#correo").keyup(function() {
+        if (this.value != "") {
+            document.getElementById('correo').addEventListener('input', function() {
+                campo = event.target;
+                //este codigo me da formato email
+                email = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+                //esto es para validar si es un email valida
+                if (email.test(campo.value)) {
+
+                    valid_email = true;
+                    //estilos para cambiar de color y ocultar el boton
+                    $(this).css("border", "1px solid green");
+                    $("#email_correcto").html("");
+                } else {
+
+                    valid_email = false;
+                    $(this).css("border", "1px solid red");
+                    $("#email_correcto").html(" Correo incorrecto");
+                }
+            });
+        } else {
+
+            valid_email = false;
+            $(this).css("border", "1px solid green");
+            $("#email_correcto").html("");
+        }
+    });
+
+</script>
+  

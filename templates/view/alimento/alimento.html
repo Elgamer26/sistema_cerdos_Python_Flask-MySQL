@@ -1,0 +1,382 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Alimento de cerdos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Alimento de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Alimento de los cerdos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de alimentos</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro sacos de alimentos</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de alimentos</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_alimento"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Código</th>
+                                              <th>Nombre</th>
+                                              <th>Tipo alimento</th>
+                                              <th>Marca alimento</th>
+                                              <th>Foto</th>
+                                              <th>Cantidad</th>
+                                              <th>Precio</th>
+                                              <th>Peso (Kg)</th>
+                                              <th>Detalle del alimento</th>
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+                      
+                                          <tfoot>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Código</th>
+                                              <th>Nombre</th>
+                                              <th>Tipo alimento</th>
+                                              <th>Marca alimento</th>
+                                              <th>Foto</th>
+                                              <th>Cantidad</th>
+                                              <th>Precio</th>
+                                              <th>Peso (Kg)</th>
+                                              <th>Detalle del alimento</th>
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de alimentos</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="codigo_alimento">Codigo del alimento</label>
+                                        <input type="text" maxlength="20" class="form-control" id="codigo_alimento"
+                                            value="{{codigo}}" placeholder="Ingrese codigo del alimento"
+                                            onkeypress="return soloNumeros(event)" />
+                                        <span style="color: red" id="codigo_oblig"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-5 col-6">
+                                        <label for="nombre">Nombre del alimento</label>
+                                        <input type="text" maxlength="70" class="form-control" id="nombre"
+                                            placeholder="Ingrese nombre" />
+                                        <span style="color: red" id="nombre_obligg"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-4 col-6">
+                                          <label for="tipo_id">Tipo de alimento</label>
+                                          <select class="form-control tipo_id" style="width: 100%" id="tipo_id">
+                                              <option value="0">--- Seleccione el tipo ---</option>
+      
+                                              {% for datas in data %}
+                                              <option value="{{datas[0]}}">{{datas[1]}}</option>
+                                              {% endfor %}
+                                          </select>
+                                          <span style="color: red" id="tipo_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-4 col-6">
+                                            <label for="marca_id">Marca de alimento</label>
+                                            <select class="form-control marca_id" style="width: 100%" id="marca_id">
+                                                <option value="0">--- Seleccione la marca ---</option>
+        
+                                                {% for marcas in marca %}
+                                                <option value="{{marcas[0]}}">{{marcas[1]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span style="color: red" id="marca_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-2 col-6">
+                                          <label for="cantidad">Cantidad</label>
+                                          <input type="text" maxlength="5" class="form-control" value="1" id="cantidad" placeholder="Ingrese cantidad" onkeypress="return soloNumeros(event)" />
+                                          <span style="color: red" id="cantidad_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="precio_c">Precio compra</label>
+                                        <input type="number" class="form-control" id="precio_c" placeholder="Ingrese precio" />
+                                        <span style="color: red" id="precio_obligg"></span>
+                                    </div>
+                                    
+                                    <div class="form-group col-lg-3 col-6">
+                                          <label for="peso">Peso del saco (Kg)</label>
+                                          <input type="number" maxlength="10" class="form-control" id="peso" placeholder="Ingrese peso (Kg)" />
+                                          <span style="color: red" id="peso_obligg"></span>
+                                    </div>    
+        
+                                    <div class="form-group col-lg-12 col-6">
+                                            <label for="detalle_a">Detalle del saco de alimento del cerdo</label>
+                                            <textarea class="form-control" id="detalle_a" cols="10" rows="3"> </textarea>
+                                            <span style="color: red" id="detalle_obligg"></span>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3 mx-auto text-center">
+                                          <label for="password_c">Foto del alimento</label>
+      
+                                          <img id="img_producto" height="197" width="200"
+                                              class="border rounded mx-auto d-block img-fluid" src="static/uploads/alimento/alimento.jpg" />
+      
+                                          <input type="file" class="form-control" id="foto" onchange="mostrar_imagen(this)" />
+                                    </div>
+
+                                  </div> 
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_alimento();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/alimento');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+  </div>
+  
+<div class="modal fade" id="modal_editar_foto_cerdo">
+    <div class="modal-dialog">
+        <div class="modal-content bg-warning">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar foto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+                <input type="text" id="id_cerdo_foto" hidden />
+                <input type="text" id="foto_actu_c" hidden />
+
+                <div class="row">
+                    <div class="col-md-12 mb-3 mx-auto text-center">
+                        <label>Foto del alimento</label>
+
+                        <img id="img_cerdo" height="200" width="300" class="border rounded mx-auto d-block img-fluid" />
+
+                        <input type="file" class="form-control" id="foto_new_c" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_foto_alimento();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal_editar_alimento">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title">Editar alimento</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="background: white; color: black">
+              <input type="text" id="id_Alimento_editt" hidden />
+
+              <div class="row">
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="codigo_alimento_edi">Codigo del alimento</label>
+                    <input type="text" maxlength="20" class="form-control" id="codigo_alimento_edi"  placeholder="Ingrese codigo del alimento" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="codigo_oblig_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-5 col-6">
+                    <label for="nombre_edi">Nombre del alimento</label>
+                    <input type="text" maxlength="70" class="form-control" id="nombre_edi"
+                        placeholder="Ingrese nombre" />
+                    <span style="color: red" id="nombre_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-6">
+                      <label for="tipo_id_edi">Tipo de alimento</label>
+                      <select class="form-control tipo_id" style="width: 100%" id="tipo_id_edi">
+                          <option value="0">--- Seleccione el tipo ---</option>
+
+                          {% for datas in data %}
+                          <option value="{{datas[0]}}">{{datas[1]}}</option>
+                          {% endfor %}
+                      </select>
+                      <span style="color: red" id="tipo_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-6">
+                        <label for="marca_id_edi">Marca de alimento</label>
+                        <select class="form-control marca_id" style="width: 100%" id="marca_id_edi">
+                            <option value="0">--- Seleccione la marca ---</option>
+
+                            {% for marcas in marca %}
+                            <option value="{{marcas[0]}}">{{marcas[1]}}</option>
+                            {% endfor %}
+                        </select>
+                        <span style="color: red" id="marca_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-2 col-6">
+                      <label for="cantidad_edi">Cantidad</label>
+                      <input type="text" maxlength="5" class="form-control" value="1" id="cantidad_edi" placeholder="Ingrese cantidad" onkeypress="return soloNumeros(event)" />
+                      <span style="color: red" id="cantidad_obligg_edi"></span>
+                </div>
+
+                <div class="form-group col-lg-3 col-6">
+                    <label for="precio_c_edi">Precio compra</label>
+                    <input type="number" class="form-control" id="precio_c_edi" placeholder="Ingrese precio" />
+                    <span style="color: red" id="precio_obligg_edi"></span>
+                </div>
+                
+                <div class="form-group col-lg-3 col-6">
+                      <label for="peso_edi">Peso del saco (Kg)</label>
+                      <input type="number" maxlength="10" class="form-control" id="peso_edi" placeholder="Ingrese peso (Kg)" />
+                      <span style="color: red" id="peso_obligg_edi"></span>
+                </div>    
+
+                <div class="form-group col-lg-12 col-6">
+                        <label for="detalle_a_edi">Detalle del saco de alimento del cerdo</label>
+                        <textarea class="form-control" id="detalle_a_edi" cols="10" rows="3"> </textarea>
+                        <span style="color: red" id="detalle_obligg_edi"></span>
+                </div>
+
+              </div> 
+
+          </div>
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  Cerrar
+              </button>
+              <button onclick="editar_alimento();" class="btn btn-success">
+                  <i class="fa fa-edit"></i> Guardar
+              </button>
+          </div>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+  <script src="static/js/alimento.js"></script>
+  
+  <script>  
+    listado_alimento_cerdo();
+    $(".tipo_id").select2();
+    $(".marca_id").select2();
+
+    function mostrar_imagen(input) {
+      var filename = document.getElementById("foto").value;
+      var idxdot = filename.lastIndexOf(".") + 1;
+      var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+      if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {
+          if (input.files) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  $("#img_producto")
+                      .attr("src", e.target.result)
+                      .width(200)
+                      .height(197);
+              };
+              reader.readAsDataURL(input.files[0]);
+          }
+      } else {
+          swal.fire(
+              "Mensaje de alerta",
+              "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." +
+              extfile,
+              "warning"
+          );
+          $("#img_producto")
+              .attr("src", "static/uploads/alimento/alimento.jpg")
+              .width(200)
+              .height(197);
+          return (document.getElementById("foto").value = "");
+      }
+   }
+  </script>
+  

@@ -1,0 +1,189 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Enfermedades
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Enfermedades</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 class="card-title"> Enfermedades de los cerdos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de enfermedades</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de enfermedades</a>
+                            </li> 
+                        </ul>
+                        
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de enfermedades</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_enfermedad"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Nombres</th>
+                                              <th>Descripción</th> 
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+                      
+                                          <tfoot>
+                                            <tr>
+                                            <th>#</th>
+                                            <th>Acci&oacute;n</th>
+                                            <th>Nombres</th>
+                                            <th>Descripción</th> 
+                                            <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de veterinario</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+
+                                    <div class="form-group col-lg-4 col-6">
+                                        <label for="enfermedad">Enfermedad</label>
+                                        <input type="text" class="form-control" id="enfermedad" placeholder="Ingrese enfermedad"/>
+                                        <span style="color: red" id="enfermedad_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-8 col-6">
+                                      <label for="descripcion">Descripción</label>
+                                      <input type="text" class="form-control" id="descripcion" placeholder="Ingrese descripción"/>
+                                      <span style="color: red" id="descripcion_obligg"></span>
+                                    </div>
+          
+                                  </div> 
+
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_tipo_enfermedad();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/tipo_enfermedad');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modal_editar_enfermedad">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title">Editar enfermedad</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="background: white; color: black">
+
+              <input type="text" id="id_enfermedad" hidden />
+
+              <div class="row">
+
+                <div class="form-group col-lg-4 col-6">
+                    <label for="enfermedad_edit">Enfermedad</label>
+                    <input type="text" class="form-control" id="enfermedad_edit" placeholder="Ingrese enfermedad"/>
+                    <span style="color: red" id="descripcion_obligg_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-8 col-6">
+                  <label for="descripcion_edit">Descripción</label>
+                  <input type="text" class="form-control" id="descripcion_edit" placeholder="Ingrese descripción"/>
+                  <span style="color: red" id="descripcion_obligg_edit"></span>
+                </div>
+
+              </div> 
+
+          </div>
+
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  Cerrar
+              </button>
+              <button onclick="editar_enfermedad();" class="btn btn-success">
+                  <i class="fa fa-edit"></i> Guardar
+              </button>
+          </div>
+
+      </div> 
+  </div> 
+</div>
+
+<script src="static/js/enfermedades.js"></script>
+
+<script>  
+    listar_enfermedad();
+</script>
+  

@@ -1,0 +1,496 @@
+<style>
+    .fc th {
+        background: orange !important;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-calendar"></i> Calendario
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Calendario</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Calendario</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Calendario</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"> Listado</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 class="card-title">  Calendario vacunas o desparasitación</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                            <div id="calendar"></div>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-warning">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Listado de eventos</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="form-group col-lg-12 col-12">
+                  
+                                    <table
+                                      id="tabla_eventos"
+                                      class="table table-display table-hover responsive nowrap text-center"
+                                      style="width: 100%" >
+                                    <thead>
+                                      <tr> 
+                                        <th style="width: 1px;">#</th>
+                                        <th>Acci&oacute;n</th>
+                                        <th>Cerdo</th>
+                                        <th>Titulo</th>
+                                        <th>Descripción</th>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>  
+                                      </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                      {% for c in data.evento %}
+            
+                                      <tr>
+                                        <td></td>
+                                       
+                                          <td> 
+                                              <button title="Revivir cerdo" onclick="eliminar-evento({{c['id']}});" class="btn btn-outline-danger"><i class="fa fa-times"></i></button>  
+                                          </td>
+                                  
+                                          <td> {{c['cerdo']}} </td>
+                                          <td> {{c['title']}}  </td>
+                                          <td> {{c['descripcion']}}  </td>
+                                          <td> {{c['start']}}  </td>
+
+                                          {% if c['tipo'] == "Vacuna" %}
+                                          <td> <span style="font-size: 13px;" class="badge badge-success">{{c['tipo']}}</span> </td>
+                                          {% else %}
+                                          <td> <span style="font-size: 13px;" class="badge badge-warning">{{c['tipo']}}</span> </td>
+                                          {% endif %}  
+                                                                                                          
+                                      {% endfor %}
+            
+                                    </tbody>
+                
+                                        <tfoot>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Cerdo</th>
+                                              <th>Titulo</th>
+                                              <th>Descripción</th>
+                                              <th>Fecha</th>
+                                              <th>Tipo</th>  
+                                            </tr>
+                                        </tfoot>
+                                     </table>
+
+                                  </div>
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="cargar_contenido('contenido_principal','/calendario_vacunas_despara');"
+                                      class="btn btn-danger">
+                                       Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+  </div>
+  
+<script src="static/js/vacuna_despara.js"></script> 
+
+<script>  
+    $(document).ready(function(){
+      listar_calendario();
+
+      $("#tabla_eventos").DataTable({
+        language: {
+          rows: "%d fila seleccionada",
+          processing: "Tratamiento en curso...",
+          search: "Buscar&nbsp;:",
+          lengthMenu: "Agrupar en _MENU_ items",
+          info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+          infoEmpty: "No existe datos.",
+          infoFiltered: "(filtrado de _MAX_ elementos en total)",
+          infoPostFix: "",
+          loadingRecords: "Cargando...",
+          zeroRecords: "No se encontro resultados en tu busqueda",
+          emptyTable: "No hay datos disponibles en la tabla",
+          paginate: {
+            first: "Primero",
+            previous: "Anterior",
+            next: "Siguiente",
+            last: "Ultimo",
+          },
+          select: {
+            rows: "%d fila seleccionada",
+          },
+          aria: {
+            sortAscending: ": active para ordenar la columa en orden ascendente",
+            sortDescending: ": active para ordenar la columna en orden descendente",
+          },
+        },
+      });
+    });
+
+    function listar_calendario(){
+      var n = new Date();
+      var y = n.getFullYear();
+      var m = n.getMonth() + 1;
+      var d = n.getDate();
+      if (d < 10) {
+          d = '0' + d;
+      }
+      if (m < 10) {
+          m = '0' + m;
+      }
+      var dia = y + "-" + m + "-" + d;
+      
+      $("#calendar").fullCalendar({
+          height: 650,
+          header: {
+              language: 'es',
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay,listWeek'
+          },
+          defaultDate: dia,
+          editable: true,
+          eventLimit: true, // allow "more" link when too many events
+          selectHelper: true,
+          selectable: true,
+          //-----------------
+          customButtons: {
+              // este boton yo lo cree
+              Miboton: {
+                  text: "Boton 1",
+                  click: function() {
+                      alert("Acciom del boton");
+                  }
+              }
+          },
+
+          //esto es para obtener los valores de dia fecha y cambir de color
+          dayClick: function(date, jsEvent, view) {
+
+              if (dia > date.format()) {
+                  return Swal.fire(
+                      "Mensaje de advertencia",
+                      "La fecha seleccionada '" +
+                      date.format() +
+                      "' es menor que la fecha '" +
+                      dia +
+                      "'",
+                      "warning"
+                  );
+              }
+
+              // alert("valor es: " + date.format() + "Vista actual: " + view.name);
+              $("#titulo_evento_re").html("Fecha seleccionada: " + date.format());
+              $("#fecha_evento").val(date.format()); 
+
+              $("#modal_canlendario_register").modal({ backdrop: "static", keyboard: false });
+              $("#modal_canlendario_register").modal("show");
+          },
+
+          events: "/vacunas/listar_calendario",
+
+            //este funcion mostrara los datos del evento seleccionado del cintillo
+          eventClick: function(calEvent, jsEvent, view) {
+
+              $("#id_calendario").val(calEvent.id);
+              $("#titulo_evento_editar").html("Editar evento: " + moment(calEvent.start).format("YYYY-MM-DD"));
+              $("#evento_titulo_edit").val((calEvent.title));
+              $("#cerdo_edit").val(calEvent.id_cerdo).trigger("change");
+              $("#fecha_evento_edit").val(moment(calEvent.start).format("YYYY-MM-DD"));
+              $("#descripcion_edit").val(calEvent.descripcion);
+              $("#tipo_edit").val(calEvent.tipo);
+
+              $("#color_edit").val(calEvent.textColor);
+              $("#color_etiqueta_edit").val(calEvent.color); 
+
+              $("#modal_canlendario_editar").modal({
+                  backdrop: "static",
+                  keyboard: false,
+              });
+              $("#modal_canlendario_editar").modal("show");
+          },
+
+      });
+    }
+
+    $(".cerdo_select").select2();
+
+    $("#tabla_muertes_cerdo").DataTable({
+      language: {
+        rows: "%d fila seleccionada",
+        processing: "Tratamiento en curso...",
+        search: "Buscar&nbsp;:",
+        lengthMenu: "Agrupar en _MENU_ items",
+        info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+        infoEmpty: "No existe datos.",
+        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+        infoPostFix: "",
+        loadingRecords: "Cargando...",
+        zeroRecords: "No se encontro resultados en tu busqueda",
+        emptyTable: "No hay datos disponibles en la tabla",
+        paginate: {
+          first: "Primero",
+          previous: "Anterior",
+          next: "Siguiente",
+          last: "Ultimo",
+        },
+        select: {
+          rows: "%d fila seleccionada",
+        },
+        aria: {
+          sortAscending: ": active para ordenar la columa en orden ascendente",
+          sortDescending: ": active para ordenar la columna en orden descendente",
+        },
+      },
+    });
+</script>
+
+
+<div class="modal fade" id="modal_canlendario_register">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title" id="titulo_evento_re"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="background: white; color: black">
+  
+                <div class="row text-center">
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="evento_titulo">Titulo</label>
+                            <input autocomplete="off" type="text" maxlength="30" class="form-control" id="evento_titulo" placeholder="Ingrese titulo" onkeypress="return soloLetras(event)">
+                            <span style="color: red" id="titulo_obligg"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <label for="cerdo">Cerdo:</label>
+                        <select class="form-control cerdo_select" style="width: 100%" id="cerdo">
+                            <option value="0">--- Seleccione cerdo ---</option>    
+                            {% for datas in data.cerdo %}
+                            <option value="{{datas[0]}}">Código: {{datas[1]}} - Raza: {{datas[4]}} - Sexo: {{datas[3]}}</option>
+                            {% endfor %}
+                        </select>
+                        <span style="color: red" id="cerdo_obligg"></span>
+                    </div>
+
+                    <div class="col-lg-9">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <input autocomplete="off" type="text" maxlength="50" placeholder="Ingrese descripción" class="form-control" id="descripcion">
+                            <span style="color: red" id="descripcion_obligg"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" style="width: 100%;" class="form-control">
+                            <option value="0">Seleccione el tipo</option>
+                            <option value="Vacuna">Vacuna</option>
+                            <option value="Desparasitación">Desparasitación</option> 
+                        </select>
+                        <span style="color: red" id="tipoo_obligg"></span>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="fecha_evento">Fecha</label> 
+                            <input type="date" class="form-control" readonly id="fecha_evento">
+                        </div>
+                    </div>
+ 
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="color">Color letra</label>
+                            <input type="color" class="form-control" id="color" value="#ff0000" name="color">
+                            <span style="color: red" id="color_obligg"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="color_etiqueta">Color etiqueta</label>
+                            <input type="color" class="form-control" id="color_etiqueta" value="#ff0000" name="color_etiqueta">
+                            <span style="color: red" id="etiqueta_obligg"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"> Cerrar </button> 
+                <button type="button" class="btn btn-success" onclick="registrar_calendario_cerdo()"> <i class="fa fa-save"></i> Guardar </button>  
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal_canlendario_editar">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title" id="titulo_evento_editar"></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+
+          <div class="modal-body" style="background: white; color: black">
+
+              <div class="row text-center">
+                
+                  <input id="id_calendario" hidden type="number">
+
+                  <div class="col-lg-6">
+                      <div class="form-group">
+                          <label for="evento_titulo_edit">Titulo</label>
+                          <input autocomplete="off" type="text" maxlength="30" class="form-control" id="evento_titulo_edit" placeholder="Ingrese titulo" onkeypress="return soloLetras(event)">
+                          <span style="color: red" id="titulo_obligg_edit"></span>
+                      </div>
+                  </div>
+
+                  <div class="form-group col-lg-6">
+                      <label for="cerdo_edit">Cerdo:</label>
+                      <select class="form-control cerdo_select" style="width: 100%" id="cerdo_edit">
+                          <option value="0">--- Seleccione cerdo ---</option>    
+                          {% for datas in data.cerdo %}
+                          <option value="{{datas[0]}}">Código: {{datas[1]}} - Raza: {{datas[4]}} - Sexo: {{datas[3]}}</option>
+                          {% endfor %}
+                      </select>
+                      <span style="color: red" id="cerdo_obligg_edit"></span>
+                  </div>
+
+                  <div class="col-lg-9">
+                      <div class="form-group">
+                          <label for="descripcion_edit">Descripción</label>
+                          <input autocomplete="off" type="text" maxlength="50" placeholder="Ingrese descripción" class="form-control" id="descripcion_edit">
+                          <span style="color: red" id="descripcion_obligg_edit"></span>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-3">
+                      <label for="tipo_edit">Tipo</label>
+                      <select id="tipo_edit" style="width: 100%;" class="form-control">
+                          <option value="0">Seleccione el tipo</option>
+                          <option value="Vacuna">Vacuna</option>
+                          <option value="Desparasitación">Desparasitación</option> 
+                      </select>
+                      <span style="color: red" id="tipoo_obligg_edit"></span>
+                  </div>
+
+                  <div class="col-lg-3">
+                      <div class="form-group">
+                          <label for="fecha_evento_edit">Fecha</label> 
+                          <input type="date" class="form-control" readonly id="fecha_evento_edit">
+                      </div>
+                  </div>
+
+                  <div class="col-lg-3">
+                      <div class="form-group">
+                          <label for="color_edit">Color letra</label>
+                          <input type="color" class="form-control" id="color_edit" value="#ff0000">
+                          <span style="color: red" id="color_obligg_edit"></span>
+                      </div>
+                  </div>
+
+                  <div class="col-lg-3">
+                      <div class="form-group">
+                          <label for="color_etiqueta_edit">Color etiqueta</label>
+                          <input type="color" class="form-control" id="color_etiqueta_edit" value="#ff0000">
+                          <span style="color: red" id="etiqueta_obligg_edit"></span>
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal"> Cerrar </button> 
+              <button type="button" class="btn btn-success" onclick="editar_calendario_cerdo()"> <i class="fa fa-save"></i> Guardar </button>  
+          </div>
+      </div>
+      <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+ 
+ 

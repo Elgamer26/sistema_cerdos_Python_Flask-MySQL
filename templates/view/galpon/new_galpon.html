@@ -1,0 +1,98 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-home"></i> Crear galpón</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Crear galpón</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Nuevo galpón</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                  <div class="form-group col-lg-2 col-6">
+                    <label for="numero_g">Número galpón</label>
+                    <input type="text" maxlength="15" class="form-control" id="numero_g" placeholder="Número galpón" onkeypress="return soloNumeros(event)" />
+                    <span style="color: red" id="numero_g_oblig"></span>
+                  </div>
+  
+                  <div class="form-group col-lg-4 col-6">
+                    <label for="id_tipo_g">Tipo de galpón</label>
+                    <select class="form-control" style="width: 100%" id="id_tipo_g">
+                      <option value="0">--- Seleccione el tipo de galpón ---</option>
+  
+                      {% for datas in data %}
+                      <option value="{{datas[0]}}">{{datas[1]}}</option>
+                      {% endfor %}
+                    </select>
+                    <span style="color: red" id="tipo_g_obligg"></span>
+                  </div>
+
+                  <div class="form-group col-lg-2 col-6">
+                    <label for="capacidad">Capacidad</label>
+                    <input type="text" maxlength="3" class="form-control" id="capacidad" placeholder="Capacidad" onkeypress="return soloNumeros(event)"  />
+                    <span style="color: red" id="capacidad_obligg"></span>
+                  </div>
+                  
+                  <div class="form-group col-lg-4 col-6">
+                    <label for="observacion">Observación</label>
+                    <input type="text" maxlength="150" class="form-control" id="observacion" placeholder="Ingrese observación" />
+                    <span style="color: red" id="observacion_obligg"></span>
+                  </div>
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+  
+              <div class="card-footer">
+                <button onclick="registrar_galpon();" class="btn btn-success">
+                  <i class="fa fa-save"></i> Guadar
+                </button>
+                -
+                <button onclick="cargar_contenido('contenido_principal','/create_galpon');" class="btn btn-danger">
+                  <i class="fa fa-svae"></i> Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/galpon.js"></script>
+  
+ <script>
+    // $(document).ready(function() {
+    //     var n = new Date();
+    //     var y = n.getFullYear();
+    //     var m = n.getMonth() + 1;
+    //     var d = n.getDate();
+    //     if (d < 10) {
+    //         d = '0' + d;
+    //     }
+    //     if (m < 10) {
+    //         m = '0' + m;
+    //     }
+
+    //     document.getElementById("fecha_g").value = y + "-" + m + "-" + d; 
+    // });
+ </script>

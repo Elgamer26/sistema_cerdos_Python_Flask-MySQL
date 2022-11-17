@@ -1,0 +1,218 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Cerdos muertos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Cerdos muertos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Cerdos muertos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Listado</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false"> Nuevo registro</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 class="card-title"> Listado de muertes</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_muertes_cerdo"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Código</th>
+                                              <th>Raza</th>
+                                              <th>Sexo</th>
+                                              <th>Fecha muerte</th>
+                                              <th>Peso</th> 
+                                              <th>Detalle</th> 
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+                                            {% for c in data.muertos %}
+                  
+                                            <tr>
+                                              <td></td>
+                                             
+                                                <td> 
+                                                    <button title="Revivir cerdo" onclick="eliminar_cerdo_muerto({{c[0]}});" class="btn btn-outline-danger"><i class="fa fa-times"></i></button>  
+                                                </td>
+                                        
+                                                <td> {{c[2]}} </td>
+                                                <td> {{c[4]}}  </td>
+                                                <td> {{c[3]}}  </td>
+                                                <td> {{c[6]}}  </td>
+                                                <td> {{c[5]}} Kg </td>  
+                                                
+                                                                               
+
+                                                <td> {{c[7]}} </td>  
+ 
+                                            {% endfor %}
+                  
+                                          </tbody>
+                      
+                                          <tfoot>
+                                            <tr> 
+                                                <th style="width: 1px;">#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Código</th>
+                                                <th>Raza</th>
+                                                <th>Sexo</th>
+                                                <th>Fecha muerte</th>
+                                                <th>Peso</th> 
+                                                <th>Detalle</th> 
+                                            </tr>
+                                          </tfoot>
+                                           </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de muertes</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row text-center">
+
+                                    <div class="form-group col-lg-8 col-6 text-center">
+                                        <label for="cerdo">Cerdo:</label>
+                                        <select class="form-control cerdo_select" style="width: 100%" id="cerdo">
+                                            <option value="0">--- Seleccione cerdo ---</option>    
+                                            {% for datas in data.cerdo %}
+                                            <option value="{{datas[0]}}">Código: {{datas[1]}} - Raza: {{datas[4]}} - Sexo: {{datas[3]}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span style="color: red" id="cerdo_obligg"></span>
+                                    </div>
+    
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label for="fecha_c">Fecha</label>
+                                        <input type="date" class="form-control" value="{{data.fecha}}" id="fecha_c" />
+                                        <span style="color: red" id="fecha_c_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-12 col-6">
+                                        <label for="detalle">Detalle de la muerte</label>
+                                        <textarea class="form-control" id="detalle" cols="2" rows="2" style="resize: none;"></textarea> 
+                                        <span style="color: red" id="detalle_oblig"></span>
+                                    </div>
+
+                                  </div> 
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_muertes_cerdos();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/cerdos_muertos');"
+                                      class="btn btn-danger">
+                                       Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+  </div>
+  
+<script src="static/js/cerdos.js"></script> 
+
+<script>  
+    $(".cerdo_select").select2();
+
+    $("#tabla_muertes_cerdo").DataTable({
+      language: {
+        rows: "%d fila seleccionada",
+        processing: "Tratamiento en curso...",
+        search: "Buscar&nbsp;:",
+        lengthMenu: "Agrupar en _MENU_ items",
+        info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+        infoEmpty: "No existe datos.",
+        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+        infoPostFix: "",
+        loadingRecords: "Cargando...",
+        zeroRecords: "No se encontro resultados en tu busqueda",
+        emptyTable: "No hay datos disponibles en la tabla",
+        paginate: {
+          first: "Primero",
+          previous: "Anterior",
+          next: "Siguiente",
+          last: "Ultimo",
+        },
+        select: {
+          rows: "%d fila seleccionada",
+        },
+        aria: {
+          sortAscending: ": active para ordenar la columa en orden ascendente",
+          sortDescending: ": active para ordenar la columna en orden descendente",
+        },
+      },
+    });
+</script>
+  

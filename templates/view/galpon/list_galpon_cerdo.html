@@ -1,0 +1,96 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fa fa-list"></i> Listado de galpón cerdos -
+                    <a onclick="cargar_contenido('contenido_principal','/create_galpon_cerdo');" class="btn btn-success"><i class="fa fa-plus"></i> Nueva registro</a>
+                </h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Lista de galpones cerdos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-lg-12 col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listado de galpón cerdos</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row"> 
+ 
+
+                              {% for cerdo  in data %}
+                              
+                              <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                                  <div class="card bg-light d-flex flex-fill">
+                                    <div class="card-header text-muted border-bottom-0">
+                                      Galpón de cerdos
+                                    </div>
+                                    <div class="card-body pt-0">
+                                      <div class="row">
+                                        <div class="col-7">
+                                          <h2 class="lead"><b>Número galpón:</b></h2>
+                                          <p class="text-muted text-sm"><b>  {{cerdo[1]}} </b> </p>
+                                          <ul class="ml-4 mb-0 fa-ul text-muted"> 
+
+                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-bookmark"></i></span> Tipo: <b>{{cerdo[5]}}</b></li>
+                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Capacidad: <b>{{cerdo[2]}}</b></li>
+                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-paw"></i></span> Cerdos en galpón:  <b>{{cerdo[4]}}</b></li>
+                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-eye"></i></span> Observación:  <b>{{cerdo[3]}}</b></li>
+
+                                          </ul>
+                                        </div>
+                                        <div class="col-5 text-center">
+                                          <img src="static/uploads/cerdo/cerdo.jpg" alt="user-avatar" class="img-circle img-fluid">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="card-footer">
+
+                                      <div class="text-right">
+
+                                        <a onclick="cargar_contenido('contenido_principal','/ver_cerdos_galpo/{{cerdo[0]}}');" class="btn btn-sm bg-warning">
+                                          <b> <i class="fas fa-eye"></i> Ver cerdos </b>
+                                        </a>
+
+                                        <a target="_blank" href="/reporte/reporte_galpo_cerdo/{{cerdo[0]}}" class="btn btn-sm btn-primary">
+                                          <b> <i class="fas fa-file"></i> Reporte </b>
+                                        </a>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                              </div>
+                              
+                              {% endfor %}
+                                 
+                             
+                                     
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row"></div>
+        </div>
+    </section>
+</div>
+
+<script src="static/js/galpon.js"></script>
+
+<script>
+    listar_galpones();
+</script>

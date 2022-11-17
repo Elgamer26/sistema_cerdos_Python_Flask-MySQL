@@ -1,0 +1,599 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-balance-scale"></i> Pesaje de cerdos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Pesaje de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-lg-12 col-12">
+              <div class="card card-dark">
+                <div class="card-header">
+                  <h3 id="unir_texto" class="card-title"> Pesaje</h3>
+                </div>
+    
+                <div class="card-body">
+                  <div class="row">
+  
+                    <div class="form-group col-lg-12 col-12">
+
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                          <li class="nav-item">
+                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de pesaje</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de pesaje</a>
+                          </li> 
+
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-profile2-tab" data-toggle="pill" href="#pills-profile2" role="tab" aria-controls="pills-profile2" aria-selected="false">Seguimiento de pesaje por cerdo</a>
+                          </li> 
+
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+
+                          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                              <div class="card card-info">
+                                  <div class="card-header">
+                                    <h3 id="unir_texto" class="card-title"> Listado de pesaje</h3>
+                                  </div>
+                      
+                                  <div class="card-body">
+                                    <div class="row">
+                    
+                                      <div class="form-group col-lg-2 col-2">
+                                        <label for="fecha_i">Fecha inicio</label>
+                                        <input type="date" class="form-control" id="fecha_i" /> 
+                                    </div>
+    
+                                    <div class="form-group col-lg-2 col-2">
+                                        <label for="fecha_f">Fecha fin</label>
+                                        <input type="date" class="form-control" id="fecha_f" /> 
+                                    </div>
+    
+                                    <div class="form-group col-lg-1 col-1">
+                                        <label>Buscar</label>
+                                        <button onclick="cargar_fechas();" class="btn btn-info"> <i class="fa fa-search"></i> </button>
+                                    </div>
+    
+                                    <div class="form-group col-lg-1 col-1">
+                                        <label>Todo</label>
+                                        <button onclick="cargar_contenido('contenido_principal','/peso_cerdo');" class="btn btn-success"> <i class="fa fa-eye"></i> </button>
+                                    </div>
+
+                                      <div class="form-group col-lg-12 col-12">
+                
+                                        <table
+                                          id="tabla_alimentacion_cerdo"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Cerdo</th>
+                                              <th>Fecha peso</th>
+                                              <th>Metodo</th>
+                                              <th>Estado del cerdo</th>
+                                              <th>Peso anterior (Kg)</th>
+                                              <th>Peso actual (Bascula)</th>  
+                                              <th>Peso actual (Vivo)</th> 
+                                              <th>Observación</th> 
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+                                            {% for c in data.pesaje %}
+                  
+                                            <tr>
+                                              <td>
+
+                                                <td> 
+                                                  <a onclick="eliminar_peso_cerdo({{c[0]}});" title="eliminar peso del cerdo" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+                                                </td>
+
+                                                <td> {{c[1]}} </td>
+                                                <td> {{c[2]}}  </td>
+
+                                                {% if c[3] == 'exacto'  %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">Peso exacto (Bascula)</span>  </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-warning">Peso vivo aproximado</span>  </td>
+                                                {% endif %}   
+                                                
+                                                {% if c[4] == 'd_flaco'  %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-danger">Demasiado flaco</span>  </td>
+                                                {% elif c[4] == 'flaco' %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-warning">Flaco</span>  </td>
+                                                {% elif c[4] == 'gordo' %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-info">Gordo</span>  </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">Demasiado Gordo</span>  </td>
+                                                {% endif %}  
+        
+                                                <td> <span style="font-size: 13px;" class="badge badge-dark">{{c[6]}} Kg</span> </td>
+                                                
+
+                                                {% if c[3] == 'exacto'  %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">{{c[7]}} Kg</span>  </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-warning">0 Kg</span>  </td>
+                                                {% endif %}  
+
+                                                {% if c[3] == 'vivo'  %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">{{c[10]}} Kg</span>  </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-warning">0 Kg</span>  </td>
+                                                {% endif %}  
+                                                  
+                                                <td> {{c[5]}}  </td>   
+                                            </tr>
+                                          
+                                            {% endfor %}
+                  
+                                          </tbody>
+                      
+                                          <tfoot>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Cerdo</th>
+                                              <th>Fecha peso</th>
+                                              <th>Metodo</th>
+                                              <th>Estado del cerdo</th>
+                                              <th>Peso anterior (Kg)</th>
+                                              <th>Peso actual (Bascula)</th>  
+                                              <th>Peso actual (Vivo)</th> 
+                                              <th>Observación</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+
+                                      </div>
+                    
+                                    </div>
+                                  </div>
+                              </div>
+
+                          </div>
+                            
+                          <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                            <div class="card card-success">
+                              <div class="card-header">
+                                <h3 id="unir_texto" class="card-title"> Registro de pesaje</h3>
+                              </div>
+                  
+                              <div class="card-body">
+                                
+                                <div class="row">
+                                  <div class="form-group col-lg-12 col-6 text-center">
+
+                                      <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                      <div class="form-group col-lg-7 col-6 text-center">
+                                          <label for="cerdo_p">Cerdo:</label>
+                                          <select class="form-control cerdo_p" style="width: 100%" id="cerdo_p">
+                                              <option value="0">--- Seleccione cerdo ---</option>    
+                                              {% for datas in data.cerdo %}
+                                              <option value="{{datas[0]}}">Codigo: {{datas[1]}}  - Nombre: {{datas[2]}} - Sexo: {{datas[3]}} - Raza: {{datas[4]}}</option>
+                                              {% endfor %}
+                                          </select>
+                                          <span style="color: red" id="cerdo_p_obligg"></span>
+                                      </div>
+
+                                      <div class="form-group col-lg-2 col-6">
+                                          <label for="fecha_c">Fecha</label>
+                                          <input type="date" class="form-control" value="{{data.fecha}}" id="fecha_c" />
+                                          <span style="color: red" id="fecha_c_obligg"></span>
+                                      </div>  
+                                  
+                                      <div class="form-group col-lg-3 col-6">
+                                          <label for="metodo">Metodo pesaje:</label>
+                                          <select class="form-control" style="width: 100%" id="metodo">
+                                              <option value="exacto">Peso exacto (Bascula)</option>   
+                                              <option value="vivo">Peso vivo aproximado</option>     
+                                          </select>
+                                      </div>
+
+                                      <div class="form-group col-lg-3 col-6">
+                                          <label for="estado_c">Estado cerdo:</label>
+                                          <select class="form-control" style="width: 100%" id="estado_c">
+                                              <option value="d_flaco">Demasiado flaco</option>   
+                                              <option value="flaco">Flaco</option>   
+                                              <option value="gordo">Gordo</option>  
+                                              <option value="d_gordo">Demasiado gordo</option>     
+                                          </select>
+                                      </div>
+
+                                      <div class="form-group col-lg-9 col-6">
+                                          <label for="observacion">Observación:</label>
+                                          <input type="text" maxlength="150" class="form-control" id="observacion" placeholder="Ingrese observación" />
+                                          <span style="color: red" id="observacion_obligg"></span>
+                                      </div>                                    
+
+                                      <div class="form-group col-lg-12 col-6 text-center">
+
+                                          <div class="row" style="border: solid 1px #20c997; border-radius: 10px;">
+
+                                              <div class="form-group col-lg-2 col-6">
+                                                  <label for="peso_actual">Peso actual (Kg)</label>
+                                                  <input readonly type="text" class="form-control" id="peso_actual" /> 
+                                              </div>
+
+                                              <div id="peso_exacto" class="form-group col-lg-4 col-6">
+                                                  <label for="nuevo_pesaje">Ingrese nuevo pesaje (Kg):</label>
+                                                  <input type="number" class="form-control" id="nuevo_pesaje" placeholder="Ingrese nuevo pesaje" />
+                                                  <span style="color: red" id="nuevo_pesaje_obligg"></span>
+                                              </div>
+                                          
+                                              <div  id="peso_vivo1" style="display: none;" class="form-group col-lg-3 col-6">
+                                                  <label for="perimetro_t">Perimetro toracico(cm):</label>
+                                                  <input type="text" maxlength="5" class="form-control" id="perimetro_t" onkeypress="return soloNumeros(event)" placeholder="Perimetro toracico(cm)" />
+                                                  <span style="color: red" id="perimetro_t_obligg"></span>
+                                              </div>
+
+                                              <div  id="peso_vivo2" style="display: none;" class="form-group col-lg-3 col-6">
+                                                  <label for="largo_c">Largo del cuerpo(cm):</label>
+                                                  <input type="text" maxlength="5" class="form-control" id="largo_c" onkeypress="return soloNumeros(event)" placeholder="Largo del cuerpo(cm)" />
+                                                  <span style="color: red" id="largo_c_obligg"></span>
+                                              </div>
+
+                                              <div  id="peso_vivo3" style="display: none;" class="form-group col-lg-3 col-6">
+                                                  <label for="peso_v">Peso vivo (Kg):</label>
+                                                  <input readonly type="text" maxlength="10" class="form-control" id="peso_v" placeholder="Peso vivo" />
+                                                  <span style="color: red" id="peso_v_obligg"></span>
+                                              </div>
+
+                                              <div  id="peso_vivo4" style="display: none;" class="form-group col-lg-1 col-6">
+                                                  <label for="peso_v">Calcular:</label>
+                                                  <button onclick="calcular_peso();" class="btn btn-primary"><i class="fa fa-spinner"></i></button>
+                                              </div>                                           
+
+                                          </div>
+
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                </div> 
+                              
+                              </div> 
+
+                              <div class="card-footer">
+                                <button onclick="registrar_peso_cerdo();" class="btn btn-success">
+                                    <i class="fa fa-save"></i> Guadar
+                                </button>
+                                -
+                                <button onclick="cargar_contenido('contenido_principal','/peso_cerdo');"
+                                    class="btn btn-danger">
+                                    <i class="fa fa-svae"></i> Volver
+                                </button>
+                              </div>
+
+                            </div>
+
+                          </div> 
+
+                          <div class="tab-pane fade" id="pills-profile2" role="tabpanel" aria-labelledby="pills-profile2-tab">
+
+                            <div class="card card-warning">
+                              <div class="card-header">
+                                <h3 id="unir_texto" class="card-title"> Seguimiento de pesaje</h3>
+                              </div>
+                  
+                              <div class="card-body">
+                                
+                                <div class="row">
+                                  <div class="form-group col-lg-12 col-6 text-center">
+
+                                      <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                        <div class="form-group col-lg-12 col-6 text-center">
+                                            <label for="cerdo_se">Seleccione un cerdo:</label>
+                                            <select class="form-control cerdo_se" style="width: 100%" id="cerdo_se">
+                                                <option value="0">--- Seleccione cerdo ---</option>    
+                                                {% for datas in data.cerdo %}
+                                                <option value="{{datas[0]}}">Codigo {{datas[1]}}  - Nombre {{datas[2]}} - Sexo {{datas[3]}} - Raza {{datas[4]}}</option>
+                                                {% endfor %}
+                                            </select> 
+                                        </div>                                                                
+
+                                      </div>
+                                  </div>
+
+                                  <div class="select_cerdo_seguir form-group col-lg-12 col-12 text-center">
+                
+                                    <table id="tbala_seguimento_peso" class="table table-bordered table-hover nowrap" style="width:100%">
+                                      <thead>
+                                        <tr> 
+                                          <th style="width: 1px;">#</th>  
+                                          <th>Fecha peso</th>
+                                          <th>Metodo</th>
+                                          <th>Estado del cerdo</th>
+                                          <th>Peso anterior (Kg)</th>
+                                          <th>Peso actual (Bascula)</th>  
+                                          <th>Peso actual (Vivo)</th> 
+                                          <th>Observación</th> 
+                                        </tr>
+                                      </thead>
+
+                                      <tbody id="tbody_detalle_seguimiento_alimentacion">
+
+                                      </tbody>
+                  
+                                      <tfoot>
+                                        <tr> 
+                                          <th style="width: 1px;">#</th>  
+                                          <th>Fecha peso</th>
+                                          <th>Metodo</th>
+                                          <th>Estado del cerdo</th>
+                                          <th>Peso anterior (Kg)</th>
+                                          <th>Peso actual (Bascula)</th>  
+                                          <th>Peso actual (Vivo)</th> 
+                                          <th>Observación</th> 
+                                        </tr>
+                                      </tfoot>
+                                      
+                                    </table>
+
+                                  </div>
+
+                                </div> 
+
+                              </div> 
+
+                            </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+          </div>
+          
+        </div>
+       </div>
+    </section>
+  </div>
+  
+<script src="static/js/alimento.js"></script> 
+
+<script>  
+    $(".cerdo_p").select2();
+    $(".cerdo_se").select2();
+
+    $("#cerdo_p").on("change", function(){
+        var id = $(this).val();
+        traer_peso_cerdo_actual(id)
+    });
+  
+    function traer_peso_cerdo_actual(id) { 
+  
+          if(id == 0){
+              return  $("#peso_actual").val("");;
+          }
+  
+          $.ajax({
+              url: "/alimento/traer_peso_cerdo_actual",
+              type: "POST",
+              data: {
+                  id: id
+              },
+          }).done(function(data) { 
+              $("#peso_actual").val(""); 
+              if (data.length > 0) { 
+                  $("#peso_actual").val(data[0]);
+              } else { 
+                  $("#peso_actual").val("");
+              }
+          });
+    }
+
+    function calcular_peso() {
+      var gana = $("#cerdo_p option:selected").text();
+      var id = $("#cerdo_p").val();
+
+      if(id == 0 || id == "0"){
+        $("#cerdo_p_obligg").html("Seleccione el cerdo"); 
+        return swal.fire(
+          "Mensaje de advertencia",
+          "Seleccione el cerdo",
+          "warning"
+      );
+      }else{
+        $("#cerdo_p_obligg").html("");
+      }
+
+      var quitar = gana.split(["-"]);
+      var sepa = quitar[2].split(["Sexo"]);
+
+      var dato = "";
+
+      if (sepa[1] == "Macho ") {
+          dato = 90;
+      } else {
+          dato = 87.5;
+      }
+
+      var pt = $("#perimetro_t").val();
+      var lc = $("#largo_c").val();
+
+      if (pt.length == 0) {
+        $("#perimetro_t_obligg").html("Ingrese perimetro toracico");
+        return swal.fire(
+            "Mensaje de advertencia",
+            "Ingrese perimetro toracico",
+            "warning"
+        );
+      } else if (lc.length == 0) {
+        $("#perimetro_t_obligg").html("");
+        $("#largo_c_obligg").html("Ingrese largo de cuerpo");
+        return swal.fire(
+            "Mensaje de advertencia",
+            "Ingrese largo de cuerpo",
+            "warning"
+        );
+      }else{
+        $("#perimetro_t_obligg").html("");
+        $("#largo_c_obligg").html("");
+      }
+
+      var metro_pt = pt / 100;
+      var metro_lc = lc / 100;
+
+      var elevar = Math.pow(metro_pt, 2);
+      var pv = Math.trunc(elevar * metro_lc * dato);
+
+      $("#peso_v").val(pv);
+    }
+
+    $("#metodo").change(function() {
+      var metodo = $("#metodo").val();
+      if (metodo == "vivo") {
+        $("#peso_exacto").css("display", "none");
+
+        $("#nuevo_pesaje").val("");
+
+        $("#peso_vivo1").css("display", "block");
+        $("#peso_vivo2").css("display", "block");
+        $("#peso_vivo3").css("display", "block");
+        $("#peso_vivo4").css("display", "block");
+
+      } else {
+          $("#peso_exacto").css("display", "block");
+          
+          $("#perimetro_t").val("");
+          $("#largo_c").val("");
+          $("#peso_v").val(""); 
+
+          $("#peso_vivo1").css("display", "none");
+          $("#peso_vivo2").css("display", "none");
+          $("#peso_vivo3").css("display", "none");
+          $("#peso_vivo4").css("display", "none");
+      }
+    });
+
+    $(document).ready(function() {
+      var n = new Date();
+      var y = n.getFullYear();
+      var m = n.getMonth() + 1;
+      var d = n.getDate();
+      if (d < 10) {
+          d = '0' + d;
+      }
+      if (m < 10) {
+          m = '0' + m;
+      }
+      document.getElementById("fecha_i").value = y + "-" + m + "-" + d; 
+      document.getElementById("fecha_f").value = y + "-" + m + "-" + d; 
+    });
+
+    $("#tabla_alimentacion_cerdo").DataTable({
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+          },
+    });
+
+    function Crear_tabla_seguiminto(){
+      $("#tbala_seguimento_peso").DataTable({
+        ordering: true,
+        paging: true,
+        aProcessing: true,
+        destroy: true,
+        async: false,
+        processing: true,
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+        },
+        responsive: "true", 
+      });
+    }
+
+    function cargar_fechas(){
+      var f_i = document.getElementById("fecha_i").value;
+      var f_f = document.getElementById("fecha_f").value;
+
+      if (f_i > f_f) {
+          return Swal.fire(
+              "Mensaje de advertencia",
+              "La fecha inicio '" +
+              f_i +
+              "' es mayor a la fecha final '" +
+              f_f +
+              "'",
+              "warning"
+          );
+      }
+
+      cargar_contenido('contenido_principal','/peso_cerdos_fecha/'+f_i+'/'+f_f+'');
+    }
+</script>
+  

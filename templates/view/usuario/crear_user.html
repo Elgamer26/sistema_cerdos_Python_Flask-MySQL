@@ -1,0 +1,244 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"><i class="fa fa-user-plus"></i> Crear usuario</h1>
+      </div>
+
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+          <li class="breadcrumb-item active">Crear usuario</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Nuevo usuario</h3>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-lg-6 col-6">
+                  <label for="nombres">Nombres</label>
+                  <input type="text" maxlength="60" class="form-control" id="nombres" placeholder="Ingrese nombres"
+                    onkeypress="return soloLetras(event)" />
+                  <span style="color: red" id="nombre_oblig"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="apellidos">Apellidos</label>
+                  <input type="text" maxlength="60" class="form-control" id="apellidos" placeholder="Ingrese apellidos"
+                    onkeypress="return soloLetras(event)" />
+                  <span style="color: red" id="apellidos_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="domicilio">Domicilio</label>
+                  <input type="text" maxlength="60" class="form-control" id="domicilio"
+                    placeholder="Ingrese domicilio" />
+                  <span style="color: red" id="domicilio_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="telefono">Telefono</label>
+                  <input type="text" maxlength="10" class="form-control" id="telefono" placeholder="Ingrese telefono"
+                    onkeypress="return soloNumeros(event)" />
+                  <span style="color: red" id="telefono_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-3 col-6">
+                  <label for="rol_id">Rol de usuario</label>
+                  <select class="form-control rol_id" style="width: 100%" id="rol_id">
+                    <option value="0">--- Seleccione el rol ---</option>
+
+                    {% for datas in data %}
+                    <option value="{{datas[0]}}">{{datas[1]}}</option>
+                    {% endfor %}
+                  </select>
+                  <span style="color: red" id="rol_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-4 col-6">
+                  <label for="usuario">Usuario</label>
+                  <input type="text" maxlength="35" class="form-control" id="usuario" placeholder="Ingrese usuario" />
+                  <span style="color: red" id="usuario_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-5 col-6">
+                  <label for="correo">Correo</label>
+                  <input type="text" maxlength="60" class="form-control" id="correo"
+                    placeholder="Ingrese correo" />
+                  <span style="color: red" id="correo_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="password">Password</label>
+                  <b><span id="passstrength"></span></b>
+                  <input type="password" maxlength="35" class="form-control" id="password"
+                    placeholder="Ingrese password" />
+                  <span style="color: red" id="password_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-5 col-5">
+                  <label for="password_c">Confirmar password</label>
+                  <input type="password" maxlength="35" class="form-control" id="password_c"
+                    placeholder="Confirme password" />
+                  <span style="color: red" id="password_c_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-1 col-1">
+                  <label>...</label>
+                  <button class="btn btn-primary" onclick="ver_password();">
+                    <i class="fa fa-eye"></i> Ver
+                  </button>
+                </div>
+
+                <div class="col-md-6 mb-3 mx-auto text-center">
+                  <label for="password_c">Foto del usuario</label>
+
+                  <img id="img_producto" height="187" width="200" class="border rounded mx-auto d-block img-fluid"
+                    src="static/uploads/usuario/user.png" />
+
+                  <input type="file" class="form-control" id="foto" onchange="mostrar_imagen(this)" />
+                </div>
+              </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <button onclick="registra_uuario();" class="btn btn-success">
+                <i class="fa fa-save"></i> Guadar
+              </button>
+              -
+              <button onclick="cargar_contenido('contenido_principal','/create_user');" class="btn btn-danger">
+                <i class="fa fa-svae"></i> Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"></div>
+    </div>
+  </section>
+</div>
+
+<script src="static/js/usuario.js"></script>
+
+<script>
+  $(".rol_id").select2();
+
+  var pass_usus = false;
+
+  function ver_password() {
+    var ver = document.getElementById("password");
+    var con = document.getElementById("password_c");
+
+    if (ver.type == "password") {
+      ver.type = "text";
+      con.type = "text";
+    } else {
+      ver.type = "password";
+      con.type = "password";
+    }
+  }
+
+  $("#password").keyup(function (e) {
+    var strongRegex = new RegExp(
+      "^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$",
+      "g"
+    );
+    var mediumRegex = new RegExp(
+      "^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$",
+      "g"
+    );
+    var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+    if (false == enoughRegex.test($(this).val())) {
+      $("#passstrength").html("Más caracteres.");
+      $("#passstrength").css("color", "red");
+
+      pass_usus = false;
+    } else if (strongRegex.test($(this).val())) {
+      $("#passstrength").className = "ok";
+      $("#passstrength").html("Fuerte!");
+      $("#passstrength").css("color", "green");
+
+      pass_usus = true;
+    } else if (mediumRegex.test($(this).val())) {
+      $("#passstrength").className = "alert";
+      $("#passstrength").html("Media!");
+      $("#passstrength").css("color", "orange");
+
+      pass_usus = false;
+    } else {
+      $("#passstrength").className = "error";
+      $("#passstrength").html("Débil!");
+      $("#passstrength").css("color", "red");
+
+      pass_usus = false;
+    }
+    return true;
+  });
+
+  function mostrar_imagen(input) {
+    var filename = document.getElementById("foto").value;
+    var idxdot = filename.lastIndexOf(".") + 1;
+    var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+    if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $("#img_producto")
+            .attr("src", e.target.result)
+            .width(200)
+            .height(197);
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    } else {
+      swal.fire(
+        "Mensaje de alerta",
+        "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." +
+        extfile,
+        "warning"
+      );
+      $("#img_producto")
+        .attr("src", "static/uploads/usuario/user.png")
+        .width(200)
+        .height(197);
+      return (document.getElementById("foto").value = "");
+    }
+  }
+
+  $("#correo").keyup(function() {
+    if (this.value != "") {
+        document.getElementById('correo').addEventListener('input', function() {
+            campo = event.target;
+            //este codigo me da formato email
+            email = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+            //esto es para validar si es un email valida
+            if (email.test(campo.value)) {
+                //estilos para cambiar de color y ocultar el boton
+                $(this).css("border", "1px solid green");
+                $("#correo_obligg").html("");
+                // $("#ocutar_p").show();
+            } else {
+                $(this).css("border", "1px solid red");
+                $("#correo_obligg").html("Email incorrecto");
+                // $("#ocutar_p").hide();
+            }
+        });
+    } else {
+        $(this).css("border", "1px solid green");
+        $("#correo_obligg").html("");
+    }
+  });
+</script>

@@ -1,0 +1,553 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Compra de medicamento
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Compra de medicamento</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Compras</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de compras</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de compra</a>
+                            </li> 
+                          </ul>
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de compras</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_compra_medicamento"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr> 
+                                              <th style="width: 1px;">#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Usuario</th>
+                                              <th>Proveedor</th>
+                                              <th>Fecha</th>
+                                              <th>N° compra</th>
+                                              <th>Tipo documento</th>
+                                              <th>Iva</th>
+                                              <th>Subtotal</th>
+                                              <th>Impuesto</th> 
+                                              <th>Total</th> 
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+
+                                            {% for c in data.lista %}
+                  
+                                            <tr>
+                                              <td></td>
+                                                {% if c[10] == True %}
+                                                <td> <button onclick="anular_compa_medicamento({{c[0]}});" class="btn btn-outline-danger"><i class="fa fa-times"></i></button> 
+                                                - 
+                                                <a target="_blank" href="/reporte/compra_medicamento/{{c[0]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a> </td>
+                                                {% else %}
+                                                <td> <a target="_blank" href="/reporte/compra_medicamento/{{c[0]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a></td>
+                                                {% endif %} 
+ 
+                                                <td> {{c[1]}} </td>
+                                                <td> {{c[2]}}  </td>
+                                                <td> {{c[3]}}  </td>
+                                                <td> {{c[4]}}  </td>  
+                                                
+                                                  {% if c[5] == "Factura" %}
+                                                  <td> <span style="font-size: 13px;" class="badge badge-success">Factura</span> </td>
+                                                  {% else %}
+                                                  <td> <span style="font-size: 13px;" class="badge badge-warning">Nota compra</span> </td>
+                                                  {% endif %}                                                
+
+                                                <td> {{c[6]}} % </td> 
+                                                <td>$ {{c[7]}}  </td> 
+                                                <td>$ {{c[8]}} </td>
+                                                <td>$ {{c[9]}}  </td> 
+
+                                                {% if c[10] == True %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-success">Activo</span> </td>
+                                                {% else %}
+                                                <td> <span style="font-size: 13px;" class="badge badge-danger">Anulado</span> </td>
+                                                {% endif %} 
+                                                 
+                                            </tr>
+                                          
+                                            {% endfor %}
+                  
+                                          </tbody>
+                      
+                                          <tfoot>
+                                            <tr> 
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Usuario</th>
+                                              <th>Proveedor</th>
+                                              <th>Fecha</th>
+                                              <th>N° compra</th>
+                                              <th>Tipo documento</th>
+                                              <th>Iva</th>
+                                              <th>Subtotal</th>
+                                              <th>Impuesto</th> 
+                                              <th>Total</th> 
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de compras</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+                                    <div class="form-group col-lg-9 col-6 text-center">
+                                       <div class="row" style="border: solid 1px; border-radius: 10px;">
+
+                                        <div class="form-group col-lg-12 col-6 text-center">
+                                            <label for="proveedor">Proveedor:</label>
+                                            <select class="form-control proveedor_select" style="width: 100%" id="proveedor">
+                                                <option value="0">--- Seleccione proveedor ---</option>    
+                                                {% for datas in data.proveedor %}
+                                                <option value="{{datas[0]}}">Razón social: {{datas[1]}} - Rúc: {{datas[2]}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span style="color: red" id="proveedor_obligg"></span>
+                                        </div>
+        
+                                        <div class="form-group col-lg-4 col-6">
+                                            <label for="fecha_c">Fecha</label>
+                                            <input type="date" class="form-control" value="{{data.fecha}}" id="fecha_c" />
+                                            <span style="color: red" id="fecha_c_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-4 col-6">
+                                            <label for="numero_compra">Número compra</label>
+                                            <input type="text" maxlength="15" class="form-control" id="numero_compra" placeholder="Ingrese numero compra" onkeypress="return soloNumeros(event)" />
+                                            <span style="color: red" id="numero_c_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-4 col-6">
+                                            <label for="tipo_comprobante">Tipo comprobante</label>
+                                            <select class="form-control" style="width: 100%" id="tipo_comprobante">
+                                                <option value="Factura">Factura</option>
+                                                <option value="nota_venta">Nota de venta</option>
+                                            </select>                                       
+                                        </div>
+
+                                        <div class="form-group col-lg-3 col-6">
+                                            <label for="iva">Impuesto iva%</label>
+                                            <input type="text" maxlength="2" class="form-control" id="iva" value="12" placeholder="Ingrese Iva" onkeypress="return soloNumeros(event)" />
+                                            <span style="color: red" id="ivaa_obligg"></span>
+                                        </div>
+
+                                        <div class="form-group col-lg-1 col-6">
+                                            <label for="iva">Buscar</label>
+                                            <button class="btn btn-info" onclick="ver_medicamento_comprar();"><i class="fa fa-search"></i> </button>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-1 col-6 text-center">
+                                    </div>
+
+                                    <div class="form-group col-lg-2 col-6 text-center  ">
+                                      <div class="row" style="border: solid 1px; border-radius: 10px;">
+       
+                                       <div class="form-group col-lg-12 col-6">
+                                           <label for="subtotal">Subtotal:</label>
+                                           <input readonly type="number" class="form-control" value="0.00" id="subtotal" /> 
+                                       </div>
+
+                                       <div class="form-group col-lg-12 col-6">
+                                        <label for="impuesto_sub">Impuesto:</label>
+                                        <input readonly type="number" class="form-control" value="0.00" id="impuesto_sub" /> 
+                                       </div>
+
+                                       <div class="form-group col-lg-12 col-6">
+                                        <label for="total_pagar">Total a pagar:</label>
+                                        <input readonly type="number" class="form-control" value="0.00" id="total_pagar" /> 
+                                       </div>
+
+                                     </div>
+                                   </div>
+
+                                    <div class="form-group col-lg-12 col-6 text-center">
+                                        <h3> <span class="badge badge-dark"><b>.:Detalle compra:.</b></span> </h3>                                
+                                        <h3 id="unir_no_hay">  </h3> 
+                                        <table id="tabla_compra_medicamentoo" class="table table-display table-hover responsive nowrap text-center">
+                                            <thead style="background: orange;">
+                                                <tr>                              
+                                                    <th hidden>Id</th>
+                                                    <th>Código</th> 
+                                                    <th>medicamento</th> 
+                                                    <th>Precio</th> 
+                                                    <th>Cantidad</th>
+                                                    <th>Descuento $</th>
+                                                    <th>Total</th>
+                                                    <th>Quitar</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody_tabla_compra_medicamentoo">                  
+                    
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                  </div> 
+                                
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registra_compra_medicamento();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/compra_medicamento');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </section>
+</div>
+  
+<script src="static/js/compras.js"></script> 
+
+<div class="modal fade" id="modal_medicamento_disponible">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Medicamento disponibles</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+  
+                <div class="row">
+  
+                    <div class="form-group col-lg-12 col-6">
+                        
+                        <table id="tabla_medicamento_compra" class="table table-display table-hover responsive nowrap text-center" style="width: 100%" >
+                        <thead>
+                          <tr>
+                            <th hidden>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Tipo medicamento</th> 
+                            <th>Foto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th> 
+                          </tr>
+                        </thead>
+
+                        <tbody id="tbody_tabla_pasar">
+                            {% for a in data.insumo %}  
+                            <tr>
+                                <td hidden>{{a[0]}}</td>
+                                <td><buttin class="evniar_detalle btn btn-success"><i class="fa fa-check"></i> </button></td>
+                                <td>{{a[1]}}</td>
+                                <td>{{a[2]}}</td>
+                                <td>{{a[4]}}</td>                            
+                                <td><img class='img-circle' src='static/uploads/medicamento/{{a[8]}}' width='50px' /></td>
+                                <td> <span style="font-size: 15px;" class="badge badge-warning">{{a[5]}}</span></td>
+                                <td>{{a[6]}}</td> 
+                              </tr>                          
+                            {% endfor %}  
+                          </tbody>
+    
+                        <tfoot>
+                          <tr>
+                            <th hidden>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Tipo medicamento</th> 
+                            <th>Foto</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th> 
+                          </tr>
+                        </tfoot>
+                      </table>
+
+                    </div>  
+      
+                </div> 
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button> 
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>  
+    $("#tabla_compra_medicamento").DataTable({
+      language: {
+        rows: "%d fila seleccionada",
+        processing: "Tratamiento en curso...",
+        search: "Buscar&nbsp;:",
+        lengthMenu: "Agrupar en _MENU_ items",
+        info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+        infoEmpty: "No existe datos.",
+        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+        infoPostFix: "",
+        loadingRecords: "Cargando...",
+        zeroRecords: "No se encontro resultados en tu busqueda",
+        emptyTable: "No hay datos disponibles en la tabla",
+        paginate: {
+          first: "Primero",
+          previous: "Anterior",
+          next: "Siguiente",
+          last: "Ultimo",
+        },
+        select: {
+          rows: "%d fila seleccionada",
+        },
+        aria: {
+          sortAscending: ": active para ordenar la columa en orden ascendente",
+          sortDescending: ": active para ordenar la columna en orden descendente",
+        },
+      },
+    });
+
+    $(".proveedor_select").select2();
+
+    $("#tabla_medicamento_compra").DataTable({
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+          },
+    });
+
+    function ver_medicamento_comprar(){
+        $("#modal_medicamento_disponible").modal({ backdrop: "static", keyboard: false });
+        $("#modal_medicamento_disponible").modal("show");
+    }
+
+    $(".evniar_detalle").on("click", function(){
+      var iva = $("#iva").val();      
+      var id = $(this).parents("tr").find("td")[0].innerHTML;
+      var codigo = $(this).parents("tr").find("td")[2].innerHTML;
+      var alimento = $(this).parents("tr").find("td")[3].innerHTML +" - "+ $(this).parents("tr").find("td")[4].innerHTML;
+      var foto = $(this).parents("tr").find("td")[5].innerHTML;
+      var precio = $(this).parents("tr").find("td")[7].innerHTML;
+
+      if(iva.trim() == "" || iva.length == 0){
+        $("#ivaa_obligg").html("Ingrese iva");
+        $("#modal_medicamento_disponible").modal("hide");
+        return Swal.fire(
+          "Campo vacío",
+          "Ingrese un valor en el campos iva",
+          "warning"
+        );
+      }else{
+        $("#ivaa_obligg").html("");
+      }
+
+      if (validar_alimento_tabla(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "El alimento: '" +
+          alimento +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + codigo + "</td>";
+        datos_agg += "<td>" + alimento + "</td>"; 
+        datos_agg += "<td>" + precio + "</td>";   
+        
+        datos_agg += "<td><input id='cantida_a' style='width: 100px;' type='number' min='1' class='form-control' value='1' placeholder='cantidad' /></td>";
+        datos_agg += "<td><input id='descuento_a' style='width: 100px;' type='text' class='form-control' value='0' placeholder='descuento' onkeypress='return soloNumeros(event);' /></td>";
+        datos_agg += "<td>" + precio + "</td>";   
+        
+        datos_agg +=
+          "<td> <button class='remover btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+        //esto me ayuda a enviar los datos a la tabla
+        $("#tbody_tabla_compra_medicamentoo").append(datos_agg);
+        $("#modal_medicamento_disponible").modal("hide");
+        sumartotalneto();
+    });
+
+    function validar_alimento_tabla(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_compra_medicamentoo td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_compra_medicamentoo").on("click", ".remover", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+      sumartotalneto();
+    });
+
+    // para la cantidad del producto
+    $("#tbody_tabla_compra_medicamentoo").on("keyup", "#cantida_a", function () {
+      var cantidad = $(this).parents("tr").find('input[type="number"]').val();
+      var descuento = $(this).parents("tr").find('#descuento_a').val();
+      var precio = $(this).parents("tr").find("td")[3].innerHTML; 
+      var total = parseFloat(precio).toFixed(2) * parseInt(cantidad) - parseInt(descuento);
+      $(this).parents("tr").find("td")[6].innerHTML = parseFloat(total).toFixed(2);  
+      sumartotalneto();    
+    });
+
+    $("#tbody_tabla_compra_medicamentoo").on("change", "#cantida_a", function () {
+      var cantidad = $(this).parents("tr").find('input[type="number"]').val();
+      var descuento = $(this).parents("tr").find('#descuento_a').val();
+      var precio = $(this).parents("tr").find("td")[3].innerHTML; 
+      var total = parseFloat(precio).toFixed(2) * parseInt(cantidad) - parseInt(descuento);
+      $(this).parents("tr").find("td")[6].innerHTML = parseFloat(total).toFixed(2);  
+      sumartotalneto();    
+    });
+
+    //para el descuento del producto
+    $("#tbody_tabla_compra_medicamentoo").on("keyup", "#descuento_a", function () {
+      var cantidad = $(this).parents("tr").find('#cantida_a').val();
+      var descuento = $(this).parents("tr").find('#descuento_a').val();
+      var precio = $(this).parents("tr").find("td")[3].innerHTML; 
+      var total = parseFloat(precio).toFixed(2) * parseInt(cantidad) - parseInt(descuento) ;
+      $(this).parents("tr").find("td")[6].innerHTML = parseFloat(total).toFixed(2);  
+      sumartotalneto();
+    });
+
+    function sumartotalneto() {
+      let arreglo_total = new Array();
+      let count = 0;
+      let total = 0;
+      let impuestototal = 0;
+      let subtotal = 0;
+      let impuesto = document.getElementById("iva").value;
+
+      $("#tabla_compra_medicamentoo tbody#tbody_tabla_compra_medicamentoo tr").each(
+          function() {
+              arreglo_total.push($(this).find("td").eq(6).text());
+              count++;
+          }
+      );
+
+      for (var i = 0; i < count; i++) {
+          var suma = arreglo_total[i];
+          subtotal = (parseFloat(subtotal) + parseFloat(suma)).toFixed(2);
+          impuestototal = parseFloat(subtotal * impuesto / 100).toFixed(2);
+      }
+      total = (parseFloat(subtotal) + parseFloat(impuestototal)).toFixed(2);
+
+      $("#subtotal").val(subtotal);
+      $("#impuesto_sub").val(impuestototal);
+      $("#total_pagar").val(total);
+ 
+    }
+
+    $("#tipo_comprobante").on("change", function() {
+      var valor = $(this).val();
+
+      if (valor != "Factura") {
+          $("#iva").attr("disabled", true);
+          $("#iva").val("0");
+      } else {
+          $("#iva").removeAttr("disabled");
+          $("#iva").val("12");
+      }
+    });
+</script>
+  

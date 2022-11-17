@@ -1,0 +1,267 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Veterinario
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Veterinario</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 class="card-title"> Veterinario de los cerdos</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+ 
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Lista de veterinarios</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Registro de veterinario</a>
+                            </li> 
+                        </ul>
+                        
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                      <h3 id="unir_texto" class="card-title"> Listado de veterinarios</h3>
+                                    </div>
+                        
+                                    <div class="card-body">
+                                      <div class="row">
+                      
+                                        <div class="form-group col-lg-12 col-12">
+                  
+                                          <table
+                                          id="tabla_veterinario"
+                                          class="table table-display table-hover responsive nowrap text-center"
+                                          style="width: 100%" >
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Nombres</th>
+                                              <th>Apellidos</th>
+                                              <th>Telefono</th> 
+                                              <th>Dirección</th>
+                                              <th>Sucursal</th>
+                                              <th>Número de documento</th>  
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </thead>
+                      
+                                          <tfoot>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Acci&oacute;n</th>
+                                              <th>Nombres</th>
+                                              <th>Apellidos</th>
+                                              <th>Telefono</th> 
+                                              <th>Dirección</th>
+                                              <th>Sucursal</th>
+                                              <th>Número de documento</th>  
+                                              <th>Estado</th> 
+                                            </tr>
+                                          </tfoot>
+                                        </table>
+ 
+                                        </div>
+                      
+                                      </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                             
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="card card-success">
+                                <div class="card-header">
+                                  <h3 id="unir_texto" class="card-title"> Registro de veterinario</h3>
+                                </div>
+                    
+                                <div class="card-body">
+                                  
+                                  <div class="row">
+
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="nombres">Nombres</label>
+                                        <input type="text" class="form-control" id="nombres" placeholder="Ingrese nombres" onkeypress="return soloLetras(event)" />
+                                        <span style="color: red" id="nombre_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                      <label for="apellidos">Apelllidos</label>
+                                      <input type="text" class="form-control" id="apellidos" placeholder="Ingrese apellidos" onkeypress="return soloLetras(event)" />
+                                      <span style="color: red" id="apellido_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                      <label for="numero_doc">Número de documento</label>
+                                      <input type="text" maxlength="13" class="form-control" id="numero_doc" placeholder="Ingrese número de documento" onkeypress="return soloNumeros(event)" />
+                                      <span style="color: red" id="numero_doc_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                      <label for="telefono">Telefono</label>
+                                      <input type="text" maxlength="15" class="form-control" id="telefono" placeholder="Ingrese telefono" onkeypress="return soloNumeros(event)" />
+                                      <span style="color: red" id="telefono_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-6">
+                                      <label for="direccion">Dirección</label>
+                                      <input type="text" class="form-control" id="direccion" placeholder="Ingrese dirección" />
+                                      <span style="color: red" id="direccion_obligg"></span>
+                                    </div>  
+
+                                    <div class="form-group col-lg-6 col-6">
+                                      <label for="sucursal">Nombre de la sucursal</label>
+                                      <input type="text" maxlength="70" class="form-control" id="sucursal" placeholder="Ingrese sucursal" />
+                                      <span style="color: red" id="sucursal_obligg"></span>
+                                    </div>
+          
+                                  </div> 
+                                </div> 
+
+                                <div class="card-footer">
+                                  <button onclick="registrar_veterinario();" class="btn btn-success">
+                                      <i class="fa fa-save"></i> Guadar
+                                  </button>
+                                  -
+                                  <button onclick="cargar_contenido('contenido_principal','/veterinario');"
+                                      class="btn btn-danger">
+                                      <i class="fa fa-svae"></i> Volver
+                                  </button>
+                                </div>
+
+                            </div>
+
+                          </div> 
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modal_editar_veterinario">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-primary">
+          <div class="modal-header">
+              <h4 class="modal-title">Editar veterinario</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="background: white; color: black">
+
+              <input type="text" id="id_veterinario" hidden />
+
+              <div class="row">
+
+                <div class="form-group col-lg-6 col-6">
+                    <label for="nombres_edit">Nombres</label>
+                    <input type="text" class="form-control" id="nombres_edit" placeholder="Ingrese nombres" onkeypress="return soloLetras(event)" />
+                    <span style="color: red" id="nombre_obligg_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="apellidos_edit">Apelllidos</label>
+                  <input type="text" class="form-control" id="apellidos_edit" placeholder="Ingrese apellidos" onkeypress="return soloLetras(event)" />
+                  <span style="color: red" id="apellido_obligg_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="numero_doc_edit">Número de documento</label>
+                  <input type="text" maxlength="13" class="form-control" id="numero_doc_edit" placeholder="Ingrese número de documento" onkeypress="return soloNumeros(event)" />
+                  <span style="color: red" id="numero_doc_obligg_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="telefono_edit">Telefono</label>
+                  <input type="text" maxlength="15" class="form-control" id="telefono_edit" placeholder="Ingrese telefono" onkeypress="return soloNumeros(event)" />
+                  <span style="color: red" id="telefono_obligg_edit"></span>
+                </div>
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="direccion_edit">Dirección</label>
+                  <input type="text" class="form-control" id="direccion_edit" placeholder="Ingrese dirección" />
+                  <span style="color: red" id="direccion_obligg_edit"></span>
+                </div>  
+
+                <div class="form-group col-lg-6 col-6">
+                  <label for="sucursal_edit">Nombre de la sucursal</label>
+                  <input type="text" maxlength="70" class="form-control" id="sucursal_edit" placeholder="Ingrese sucursal" />
+                  <span style="color: red" id="sucursal_obligg_edit"></span>
+                </div>
+
+              </div> 
+
+          </div>
+
+          <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                  Cerrar
+              </button>
+              <button onclick="editar_veterinario();" class="btn btn-success">
+                  <i class="fa fa-edit"></i> Guardar
+              </button>
+          </div>
+
+      </div> 
+  </div> 
+</div>
+
+<script src="static/js/enfermedades.js"></script>
+<script src="static/js/numero.min.js"></script>
+
+<script>  
+  listar_veterinario();
+
+  $("#numero_doc").validarCedulaEC({
+    onValid: function() {
+        alertify.success('Documento correcto');
+    },
+    onInvalid: function() {
+        alertify.error('Documento incorrecto');
+        $("#numero_doc").val("");
+        $("#numero_doc").focus();
+    }
+  });
+
+  $("#numero_doc_edit").validarCedulaEC({
+    onValid: function() {
+        alertify.success('Documento correcto');
+    },
+    onInvalid: function() {
+        alertify.error('Documento incorrecto');
+        $("#numero_doc_edit").val("");
+        $("#numero_doc_edit").focus();
+    }
+  });
+</script>
+  

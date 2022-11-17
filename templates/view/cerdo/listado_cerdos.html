@@ -1,0 +1,232 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0"><i class="fa fa-list"></i> Listado de cerdos</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Lista cerdos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listado de cerdos</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-lg-12 col-12">
+                                    <table id="tabla_cerdo_"
+                                        class="table table-display table-hover responsive nowrap text-center"
+                                        style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Codigo</th>
+                                                <th>Nombre o Alias</th>
+                                                <th>Sexo</th>
+                                                <th>Raza</th>
+                                                <th>Foto</th>
+                                                <th>Peso (Kg)</th>
+                                                <th>Origen</th>
+                                                <th>Fecha</th>
+                                                <th>Detalle del cerdo</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>Codigo</th>
+                                                <th>Nombre o Alias</th>
+                                                <th>Sexo</th>
+                                                <th>Raza</th>
+                                                <th>Foto</th>
+                                                <th>Peso (Kg)</th>
+                                                <th>Origen</th>
+                                                <th>Fecha</th>
+                                                <th>Detalle del cerdo</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modaleditar_cerdo">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-primary">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar usuario</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+                <input type="text" id="id_cerdo_edit" hidden />
+
+                <div class="row">
+
+                    <div class="form-group col-lg-3 col-6">
+                        <label for="codigo_cerdo">Codigo del cerdo</label>
+                        <input type="text" maxlength="20" class="form-control" id="codigo_cerdo"
+                            value="{{codigo}}" placeholder="Ingrese codigo del cerdo"
+                            onkeypress="return soloNumeros(event)" />
+                        <span style="color: red" id="codigo_oblig"></span>
+                    </div>
+
+                    <div class="form-group col-lg-9 col-6">
+                        <label for="nombre">Nombre o Alias del cerdo</label>
+                        <input type="text" maxlength="70" class="form-control" id="nombre"
+                            placeholder="Ingrese nombre" onkeypress="return soloLetras(event)" />
+                        <span style="color: red" id="nombre_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-3 col-6">
+                        <label for="sexo_cerdo">Sexo</label>
+                        <select class="form-control" style="width: 100%" id="sexo_cerdo">
+                            <option value="Macho">Macho</option>
+                            <option value="Hembra">Hembra</option>
+                        </select>
+                        <span style="color: red" id="sexo_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-5 col-6">
+                        <label for="raza_id">Razas de cerdo</label>
+                        <select class="form-control raza_id" style="width: 100%" id="raza_id">
+                            <option value="0">--- Seleccione la raza ---</option>
+
+                            {% for datas in data %}
+                            <option value="{{datas[0]}}">{{datas[1]}}</option>
+                            {% endfor %}
+                        </select>
+                        <span style="color: red" id="raza_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-6">
+                        <label for="peso">Peso del cerdo (Kg)</label>
+                        <input type="number" maxlength="10" class="form-control" id="peso"
+                            placeholder="Ingrese peso (Kg)" />
+                        <span style="color: red" id="peso_obligg"></span>
+                    </div>
+
+
+                    <div class="form-group col-lg-8 col-6">
+                        <label for="origen">Origen del cerdo</label>
+                        <input type="text" maxlength="80" class="form-control" id="origen"
+                            placeholder="Ingrese origen" />
+                        <span style="color: red" id="origen_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-4 col-6">
+                        <label for="fecha">Fecha de origen</label> 
+                        <input type="date" class="form-control" id="fecha" />
+                        <span style="color: red" id="fecha_obligg"></span> 
+                    </div>
+
+                    <div class="form-group col-lg-12 col-6">
+                        <label for="detalle_c">Detalle del cerdo</label> 
+                        <textarea class="form-control" id="detalle_c" cols="10" rows="3"> </textarea>
+                        <span style="color: red" id="detalle_c_obligg"></span> 
+                    </div>
+                   
+                   
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_cerdos();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal_editar_foto_cerdo">
+    <div class="modal-dialog">
+        <div class="modal-content bg-warning">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar foto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+                <input type="text" id="id_cerdo_foto" hidden />
+                <input type="text" id="foto_actu_c" hidden />
+
+                <div class="row">
+                    <div class="col-md-12 mb-3 mx-auto text-center">
+                        <label>Foto del cerdo</label>
+
+                        <img id="img_cerdo" height="200" width="300" class="border rounded mx-auto d-block img-fluid" />
+
+                        <input type="file" class="form-control" id="foto_new_c" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_foto_cerdo();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="static/js/cerdos.js"></script>
+
+<script>
+
+    listado_cerdos();
+    $(".raza_id").select2();
+
+    document.getElementById("foto_new_c").addEventListener("change", () => {
+        var filename = document.getElementById("foto_new_c").value;
+        var idxdot = filename.lastIndexOf(".") + 1;
+        var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+        if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {
+        } else {
+            swal.fire(
+                "Mensaje de alerta",
+                "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." +
+                extfile,
+                "warning"
+            );
+            document.getElementById("foto_new_c").value = "";
+        }
+    });
+</script>

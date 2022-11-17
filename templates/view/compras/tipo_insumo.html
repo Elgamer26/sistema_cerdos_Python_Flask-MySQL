@@ -1,0 +1,124 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Tipo de insumo
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Tipo insumo</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-6 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto" class="card-title"> Registrar tipo insumo</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+
+                        <div style="display: none;" class="alerta_smsm_tipo_i alert alert-danger text-center" role="alert">
+                            <span id="mensaje_tipo_i">  <span>
+                        </div>
+
+                        <div style="display: none;" class="alerta_smsm_tipo_i_success alert alert-success text-center" role="alert">
+                            <span id="mensaje_tipo_i_success">  <span>
+                        </div>
+
+                        <input id="id_tipo_i" hidden type="number">
+                        
+                        <label for="tipo_insumo">Tipo de insumo</label>
+                        <input type="text" maxlength="30" class="form-control" id="tipo_insumo" placeholder="Ingrese tipo de insumo" /> 
+
+                      </div>
+
+                      <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important" >
+                        <button onclick="cargar_contenido('contenido_principal','/tipo_insumo');" class="btn btn-danger"> Limpiar </button>
+                        <button id="btn_nuevo" style="display: none" onclick="nuevo_tipo_insumo();" class="btn btn-warning"> Nuevo </button>
+                        <button id="btn_registrar" onclick="registra_tipo_insumo();" class="btn btn-success"> <i class="fa fa-save"></i> Guardar </button>
+                        <button id="btn_editar" style="display: none" onclick="editar_tipo_insumo();" class="btn btn-primary"> <i class="fa fa-edit"></i> Editar </button>
+                      </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Listado tipo de insumo</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                  <div class="form-group col-lg-12 col-12">
+                    <table
+                      id="tabla_tipo_i_"
+                      class="table table-display table-hover responsive nowrap text-center"
+                      style="width: 100%" >
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Acci&oacute;n</th>
+                          <th>Nombre</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+  
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th>Acci&oacute;n</th>
+                          <th>Nombre</th>
+                          <th>Estado</th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/compras.js"></script>
+  
+  <script>  
+    Listar_tipo_insumo();
+
+    function nuevo_tipo_insumo(){
+        $("#mensaje_tipo_i_success").text("");
+        $(".alerta_smsm_tipo_i_success").hide(1000);
+        $("#mensaje_tipo_i").text("");
+        $(".alerta_smsm_tipo_i").hide(1000);   
+        document.getElementById("id_tipo_i").value = "";
+        document.getElementById("tipo_insumo").value = "";
+        $("#unir_texto").text("Registrar tipo insumo");
+        $("#btn_registrar").show();
+        $("#btn_editar").hide();
+        $("#btn_nuevo").hide();
+    }
+  </script>
+  

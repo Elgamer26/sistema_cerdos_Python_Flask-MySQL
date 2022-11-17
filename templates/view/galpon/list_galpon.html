@@ -1,0 +1,135 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">
+                    <i class="fa fa-list"></i> Listado de galpón 
+                </h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Lista de galpones</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Listado de galpón</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-lg-12 col-12">
+                                    <table id="tabla_galpon_"
+                                        class="table table-display table-hover responsive nowrap text-center"
+                                        style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>N° galpón</th>
+                                                <th>Tipo galpón</th>
+                                                <th>Capacidad</th>
+                                                <th>Observación</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Acci&oacute;n</th>
+                                                <th>N° galpón</th>
+                                                <th>Tipo galpón</th>
+                                                <th>Capacidad</th>
+                                                <th>Observación</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+        </div>
+    </section>
+</div>
+
+<div class="modal fade" id="modal_editar_galpon">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-primary">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar galpón</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+
+                <input type="text" id="id_galpon" hidden>
+
+                <div class="row">
+
+                    <div class="form-group col-lg-6 col-6">
+                      <label for="numero_g">Número galpón</label>
+                      <input type="text" maxlength="15" class="form-control" id="numero_g" placeholder="Número galpón" onkeypress="return soloNumeros(event)" />
+                      <span style="color: red" id="numero_g_oblig"></span>
+                    </div>
+    
+                    <div class="form-group col-lg-6 col-6">
+                      <label for="id_tipo_g">Tipo de galpón</label>
+                      <select class="form-control" style="width: 100%" id="id_tipo_g">
+                        <option value="0">--- Seleccione el tipo de galpón ---</option>
+    
+                        {% for datas in data %}
+                        <option value="{{datas[0]}}">{{datas[1]}}</option>
+                        {% endfor %}
+                      </select>
+                      <span style="color: red" id="tipo_g_obligg"></span>
+                    </div>
+  
+                    <div class="form-group col-lg-6 col-6">
+                      <label for="capacidad">Capacidad</label>
+                      <input type="text" maxlength="3" class="form-control" id="capacidad" placeholder="Capacidad" onkeypress="return soloNumeros(event)"  />
+                      <span style="color: red" id="capacidad_obligg"></span>
+                    </div>
+                    
+                    <div class="form-group col-lg-6 col-6">
+                      <label for="observacion">Observación</label>
+                      <input type="text" maxlength="150" class="form-control" id="observacion" placeholder="Ingrese observación" />
+                      <span style="color: red" id="observacion_obligg"></span>
+                    </div>
+  
+                  </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button onclick="editar_galpon();" class="btn btn-success">
+                    <i class="fa fa-edit"></i> Guardar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="static/js/galpon.js"></script>
+
+<script>
+    listar_galpones();
+</script>

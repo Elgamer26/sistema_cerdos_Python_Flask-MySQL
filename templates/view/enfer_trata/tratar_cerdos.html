@@ -1,0 +1,662 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-medkit"></i> Tratamientos de cerdos</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Tratamientos de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Nuevo registro</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="cerdo_id">Cerdo</label>
+                        <select class="form-control cerdo_id text-center" style="width: 100%" id="cerdo_id">
+                          <option value="0">--- Seleccione el cerdo enfermo ---</option>      
+                          {% for datas in data.enfer %}
+                          <option value="{{datas[0]}}">{{datas[1]}}Kg</option>
+                          {% endfor %}
+                        </select>
+                        <span style="color: red" id="cerdo_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-6">
+                        <label for="peso_a">Peso actual</label>
+                        <input type="text" readonly class="form-control" id="peso_a" /> 
+                    </div>
+
+                    <div class="form-group col-lg-2 col-6">
+                        <label for="fecha_i">Fecha inicio</label>
+                        <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_i" />
+                        <span style="color: red" id="fecha_i_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-6">
+                      <label for="fecha_f">Fecha final</label>
+                      <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_f" />
+                      <span style="color: red" id="fecha_f_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="sintomas">Sintomas</label>
+                        <textarea readonly class="form-control" id="sintomas" cols="3" rows="3" style="resize: none;"></textarea> 
+                        <span style="color: red" id="sintomas_oblig"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="diagnostico">Diagnóstico</label>
+                        <textarea readonly class="form-control" id="diagnostico" cols="3" rows="3" style="resize: none;"></textarea> 
+                        <span style="color: red" id="diagnostico_oblig"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="veterinario_id">Veterinario</label>
+                        <input readonly type="text" class="form-control" id="veterinario_id"/>
+                        <span style="color: red" id="veterinario_obligg"></span>
+                    </div> 
+
+                    <div class="form-group col-lg-12 col-6">
+                      <label for="observacion">Observación</label>
+                      <textarea class="form-control" id="observacion" cols="2" rows="2" style="resize: none;"></textarea> 
+                      <span style="color: red" id="observacion_oblig"></span>
+                    </div>
+                    
+                    <div class="form-group col-lg-12 text-center">
+                          <h3> <span class="badge badge-dark"><b>.:Detalle tratamiento:.</b></span> </h3>
+                          <div id="unir_no_hay"></div>
+
+                          <br>
+
+                          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Insumos</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Medicamento</a>
+                            </li>
+                            <li  class="nav-item">
+                              <a class="nav-link" id="pills-tratamientos-tab" data-toggle="pill" href="#pills-tratamientos" role="tab" aria-controls="pills-tratamientos" aria-selected="false">Tratamientos</a>
+                            </li>
+                            <li  class="nav-item">
+                              <a style="background: red; color: white;" class="nav-link" id="pills-enfermedad-tab" data-toggle="pill" href="#pills-enfermedad" role="tab" aria-controls="pills-enfermedad" aria-selected="false">Enfermedades</a>
+                            </li>
+
+                          </ul>
+
+                          <div class="tab-content" id="pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                
+                                <div class="row">
+
+                                    <div class="form-group col-lg-7 col-6">
+                                        <label for="insumo_id">Insumo</label>
+                                        <select class="form-control insumo_id text-center" style="width: 100%" id="insumo_id">
+                                          <option value="0">--- Seleccione el insumo ---</option>      
+                                          {% for datas in data.insumo %}
+                                          <option value="{{datas[0]}}">Codigo: {{datas[1]}} - Nombre: {{datas[2]}} - Tipo: {{datas[4]}}</option>
+                                          {% endfor %}
+                                        </select>
+                                        <span style="color: red" id="insumo_obligg"></span>
+                                    </div>
+                
+                                    <div class="form-group col-lg-2 col-6">
+                                        <label for="disponible_insumo">Disponible</label>
+                                        <input type="text" readonly class="form-control" id="disponible_insumo" /> 
+                                        <span style="color: red" id="disponible_insumo_obligg"></span>
+                                    </div>
+                
+                                    <div class="form-group col-lg-2 col-6">
+                                        <label for="cantidad_insumo">Cantidad</label>
+                                        <input type="number" value="1" class="form-control" id="cantidad_insumo" />
+                                        <span style="color: red" id="cantidad_insumo_obligg"></span>
+                                    </div>
+
+                                    <div class="form-group col-lg-1 col-6">
+                                        <label for="cantidad_insumo">Agregar</label>
+                                        <button onclick="agg_tabla_insumos();" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                    </div>
+
+                                    <div class="form-group col-lg-12 col-6">
+                                     
+                                        <table id="tabla_insumo" class="table table-bordered table-hover nowrap" style="width:100%">
+                                            <thead>
+                                            <tr> 
+                                                <th hidden>#</th> 
+                                                <th>Insumo</th> 
+                                                <th>Cantidad</th>
+                                                <th>Quitar</th> 
+                                            </tr>
+                                            </thead>
+                
+                                            <tbody id="tbody_tabla_insumo">
+                
+                                            </tbody>
+                        
+                                            <tfoot>
+                                            <tr> 
+                                                <th hidden>#</th> 
+                                                <th>Insumo</th> 
+                                                <th>Cantidad</th>
+                                                <th>Quitar</th>  
+                                            </tr>
+                                            </tfoot>
+                                            
+                                        </table>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                              <div class="row">
+
+                                <div class="form-group col-lg-7 col-6">
+                                    <label for="medicamento_id">Medicamento</label>
+                                    <select class="form-control medicamento_id text-center" style="width: 100%" id="medicamento_id">
+                                      <option value="0">--- Seleccione el medicamento ---</option>      
+                                      {% for datas in data.medicamento %}
+                                      <option value="{{datas[0]}}">Codigo: {{datas[1]}} - Nombre: {{datas[2]}} - Tipo: {{datas[3]}}</option>
+                                      {% endfor %}
+                                    </select>
+                                    <span style="color: red" id="medicamento_obligg"></span>
+                                </div>
+            
+                                <div class="form-group col-lg-2 col-6">
+                                    <label for="disponible_medicamento">Disponible</label>
+                                    <input type="text" readonly class="form-control" id="disponible_medicamento" /> 
+                                    <span style="color: red" id="disponible_medicamento_obligg"></span>
+                                </div>
+            
+                                <div class="form-group col-lg-2 col-6">
+                                    <label for="cantidad_medicamento">Cantidad</label>
+                                    <input type="number" value="1" class="form-control" id="cantidad_medicamento" />
+                                    <span style="color: red" id="cantidad_medicamento_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-1 col-6">
+                                    <label for="cantidad_medicamento">Agregar</label>
+                                    <button onclick="agg_tabla_medicamentos();" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                </div>
+
+                                <div class="form-group col-lg-12 col-6">
+
+                                    <table id="tabla_medicamento" class="table table-bordered table-hover nowrap" style="width:100%">
+                                        <thead>
+                                        <tr> 
+                                            <th hidden>#</th> 
+                                            <th>Medicamento</th> 
+                                            <th>Cantidad</th>
+                                            <th>Quitar</th> 
+                                        </tr>
+                                        </thead>
+            
+                                        <tbody id="tbody_tabla_medicamento">
+            
+                                        </tbody>
+                    
+                                        <tfoot>
+                                        <tr> 
+                                            <th hidden>#</th> 
+                                            <th>medicamento</th> 
+                                            <th>Cantidad</th>
+                                            <th>Quitar</th>  
+                                        </tr>
+                                        </tfoot>
+                                        
+                                    </table>
+
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-tratamientos" role="tabpanel" aria-labelledby="pills-tratamientos-tab">
+                              <div class="row">
+
+                                <div class="form-group col-lg-7 col-6">
+                                  <label for="tratamiento_id">Tratamientos</label>
+                                  <select class="form-control tratamiento_id text-center" style="width: 100%" id="tratamiento_id">
+                                    <option value="0">--- Seleccione el tratamiento ---</option>      
+                                    {% for datas in data.tratamiento %}
+                                    <option value="{{datas[0]}}">{{datas[1]}}</option>
+                                    {% endfor %}
+                                  </select>
+                                  <span style="color: red" id="tratamiento_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-1 col-6">
+                                  <label for="cantidad_insumo">Agregar</label>
+                                  <button onclick="agg_tratamiento_tabla();" class="btn btn-warning"><i class="fa fa-download"></i></button>
+                                </div>
+
+                                <div class="form-group col-lg-12 text-center clas_tble"> 
+                                  <table id="tabla_tratamiento" class="table table-bordered table-hover nowrap" style="width:100%">
+                                      <thead>
+                                      <tr> 
+                                          <th>#</th> 
+                                          <th>Enfermedad</th> 
+                                      </tr>
+                                      </thead>
+          
+                                      <tbody id="tbody_tabla_tratamiento">
+          
+                                      </tbody>
+                  
+                                      <tfoot>
+                                      <tr> 
+                                          <th>#</th>  
+                                          <th>Enfermedad</th> 
+                                      </tr>
+                                      </tfoot>
+                                      
+                                  </table>
+                                </div>
+                              </div>
+                              
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-enfermedad" role="tabpanel" aria-labelledby="pills-enfermedad-tab">
+                              <div class="form-group col-lg-12 text-center clas_tble">
+                                <div id="unir_no_hay"></div>
+                                <table id="tabla_enfermedad" class="table table-bordered table-hover nowrap" style="width:100%">
+                                    <thead>
+                                    <tr> 
+                                        <th>#</th> 
+                                        <th>Enfermedad</th> 
+                                    </tr>
+                                    </thead>
+        
+                                    <tbody id="tbody_tabla_enfermedad">
+        
+                                    </tbody>
+                
+                                    <tfoot>
+                                    <tr> 
+                                        <th>#</th>  
+                                        <th>Enfermedad</th> 
+                                    </tr>
+                                    </tfoot>
+                                    
+                                </table>
+                              </div>
+                            </div>
+                            
+                          </div>
+                    
+                    </div>
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+  
+              <div class="card-footer">
+                <button onclick="registra_tratamientos_cerdoos();" class="btn btn-success">
+                  <i class="fa fa-save"></i> Guadar
+                </button>
+                -
+                <button onclick="cargar_contenido('contenido_principal','/tratar_cerdos');" class="btn btn-danger">
+                  <i class="fa fa-svae"></i> Limpiar
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/enfermedades.js"></script>
+  
+  <script>
+    $(".cerdo_id").select2();
+    $(".insumo_id").select2();
+    $(".tratamiento_id").select2();
+    $(".medicamento_id").select2();
+
+    $("#cerdo_id").on("change", function(){
+        var id = $(this).val();
+
+        if(id == 0){  
+            $("#peso_a").val("");        
+            $("#sintomas").val("");        
+            $("#diagnostico").val("");          
+            $("#veterinario_id").val(""); 
+            $("#tbody_tabla_enfermedad").empty();
+            return false;       
+        }
+
+        $.ajax({
+            url: "/enfermedad/traer_cerdo_enfermo",
+            type: "POST",
+            data: {
+                id: id
+            },
+        }).done(function(data) { 
+            if(data != 0)
+            {
+                $("#peso_a").val(data[1]+ " Kg");        
+                $("#sintomas").val(data[4]);        
+                $("#diagnostico").val(data[5]);          
+                $("#veterinario_id").val(data[2]);  
+            }else{
+                $("#peso_a").val("");        
+                $("#sintomas").val("");        
+                $("#diagnostico").val("");          
+                $("#veterinario_id").val(""); 
+                $("#tbody_tabla_enfermedad").empty();
+                return false;  
+            }
+        });
+        enfermedad_detalle(id);
+    });
+
+    function enfermedad_detalle(id){
+        $.ajax({
+          url: "/enfermedad/modal_enfermedad_detalle",
+          type: "POST", 
+          data: {id: id}, 
+          success: function (resp) {           
+            if(resp != 0){
+                $(".clas_tble").LoadingOverlay("hide");
+                $("#tbody_tabla_enfermedad").empty();
+                let count = 0; 
+                var llenat = ""; 
+                  resp['data'].forEach((row) => {  
+                  count++;   
+                  llenat += `<tr>
+                              <td> ${count}  </td>
+                              <td> ${row["nombre"]} </td>   
+                            </tr>`;           
+                  $("#tbody_tabla_enfermedad").html(llenat);           
+                }); 
+            }else{ 
+                $(".clas_tble").LoadingOverlay("hide");
+                $("#unir_no_hay").html('<span class="badge badge-danger"><b>.:No hay enfermedades en la tabla:.</b></span>');
+                $("#tbody_tabla_enfermedad").empty();
+            }
+      
+          },
+       
+          beforeSend: function () {
+             $(".clas_tble").LoadingOverlay("show", {
+             text: "Cargando..."});
+          },
+        });
+    }
+
+    $("#insumo_id").on("change", function(){
+        var id = $(this).val();
+
+        if(id == 0){  
+            $("#disponible_insumo").val("");      
+            return false;       
+        }
+
+        $.ajax({
+            url: "/enfermedad/traer_cantidad_insumo",
+            type: "POST",
+            data: {
+                id: id
+            },
+        }).done(function(data) { 
+            if(data != 0) {
+                $("#disponible_insumo").val(data[0]);        
+            }else{
+                $("#disponible_insumo").val("");        
+            }
+        });
+    });
+
+    //////
+    function agg_tabla_insumos()
+    {
+      var id = $("#insumo_id").val();  
+      var txt = $("#insumo_id option:selected").text(); 
+      var disponible = $("#disponible_insumo").val();   
+      var cantidad = $("#cantidad_insumo").val();    
+       
+      if(id == "0"){
+        $("#insumo_obligg").html("Seleccione el insumo"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Seleccione el insumo",
+          "warning"
+        );
+      }else{
+        $("#insumo_obligg").html("");
+      }
+
+      if(cantidad < 0 || cantidad.trim() == ""){
+        $("#cantidad_insumo_obligg").html("Ingrese la cantidad"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Ingrese la cantidad",
+          "warning"
+        );
+      }else{
+        $("#cantidad_insumo_obligg").html("");
+      }
+
+      if(parseInt(cantidad) > parseInt(disponible)){
+        $("#cantidad_insumo_obligg").html("Ingrese la cantidad menor"); 
+        $("#disponible_insumo_obligg").html("No hay suficiente"); 
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "No hay suficiente cantidad disponibe",
+          "warning"
+        );
+      }else{
+        $("#cantidad_insumo_obligg").html("");
+        $("#disponible_insumo_obligg").html(""); 
+      }
+
+      if (validar_insumo_id(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "El insumo: '" +
+          txt +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + txt + "</td>";
+        datos_agg += "<td>" + cantidad + "</td>";
+        datos_agg += "<td> <button class='remover btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+      //esto me ayuda a enviar los datos a la tabla
+      $("#tbody_tabla_insumo").append(datos_agg); 
+    }
+
+    function validar_insumo_id(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_insumo td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_insumo").on("click", ".remover", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+    });
+
+    //////
+    function agg_tratamiento_tabla()
+    {
+      var id = $("#tratamiento_id").val();  
+      var txt = $("#tratamiento_id option:selected").text();  
+       
+      if(id == "0"){
+        $("#tratamiento_obligg").html("Seleccione el tratamiento"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Seleccione el tratamiento",
+          "warning"
+        );
+      }else{
+        $("#tratamiento_obligg").html("");
+      }
+
+      if (validar_tratamiento_id(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "El tratamiento: '" +
+          txt +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + txt + "</td>"; 
+        datos_agg += "<td> <button class='remover_trata btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+      //esto me ayuda a enviar los datos a la tabla
+      $("#tbody_tabla_tratamiento").append(datos_agg); 
+    }
+
+    function validar_tratamiento_id(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_tratamiento td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_tratamiento").on("click", ".remover_trata", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+    });
+
+    //////
+    $("#medicamento_id").on("change", function(){
+      var id = $(this).val();
+
+      if(id == 0){  
+          $("#disponible_medicamento").val("");      
+          return false;       
+      }
+
+      $.ajax({
+          url: "/enfermedad/traer_cantidad_medicamento",
+          type: "POST",
+          data: {
+              id: id
+          },
+      }).done(function(data) { 
+          if(data != 0) {
+              $("#disponible_medicamento").val(data[0]);        
+          }else{
+              $("#disponible_medicamento").val("");        
+          }
+      });
+    });
+    
+    function agg_tabla_medicamentos()
+    {
+      var id = $("#medicamento_id").val();  
+      var txt = $("#medicamento_id option:selected").text(); 
+      var disponible = $("#disponible_medicamento").val();   
+      var cantidad = $("#cantidad_medicamento").val();    
+       
+      if(id == "0"){
+        $("#medicamento_obligg").html("Seleccione el medicamento"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Seleccione el medicamento",
+          "warning"
+        );
+      }else{
+        $("#medicamento_obligg").html("");
+      }
+
+      if(cantidad < 0 || cantidad.trim() == ""){
+        $("#cantidad_medicamento_obligg").html("Ingrese la cantidad"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Ingrese la cantidad",
+          "warning"
+        );
+      }else{
+        $("#cantidad_medicamento_obligg").html("");
+      }
+
+      if(parseInt(cantidad) > parseInt(disponible)){
+        $("#cantidad_medicamento_obligg").html("Ingrese la cantidad menor"); 
+        $("#disponible_medicamento_obligg").html("No hay suficiente"); 
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "No hay suficiente cantidad disponibe",
+          "warning"
+        );
+      }else{
+        $("#cantidad_medicamento_obligg").html("");
+        $("#disponible_medicamento_obligg").html(""); 
+      }
+
+      if (validar_medicamento_id(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "El medicamento: '" +
+          txt +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + txt + "</td>";
+        datos_agg += "<td>" + cantidad + "</td>";
+        datos_agg += "<td> <button class='remover_medi btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+      //esto me ayuda a enviar los datos a la tabla
+      $("#tbody_tabla_medicamento").append(datos_agg); 
+    }
+
+    function validar_medicamento_id(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_medicamento td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_medicamento").on("click", ".remover_medi", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+    });
+  </script>

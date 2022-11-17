@@ -1,0 +1,186 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0"><i class="fa fa-home"></i> Página web</h1>
+            </div>
+
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+                    <li class="breadcrumb-item active">Página web</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <div class="card card-success">
+                        <div class="card-header">
+                            <h3 class="card-title">Página web</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Foto 1 página web</b></h4> 
+                                            <div class="m-t-20">
+                                                <img src="/static/uploads/web/{{dato[1]}}" width="250px" height="250px">
+                                            </div>
+                                            <br>
+                                            <input type="file" class="form-control" id="foto1">
+                                            <input type="hidden" class="form-control" value="{{dato[1]}}" id="foto1_ruta">
+                                            <br>
+                                            <div>
+                                                <button class="btn btn-outline-warning btn-rounded m-b-5" onclick="subir_foto_1();"><i class="fa fa-image"></i> Subir</button>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Foto 2 página web</b></h4>
+                                            <div class="m-t-20">
+                                                <img src="/static/uploads/web/{{dato[2]}}" width="250px" height="250px">
+                                            </div>
+                                            <br>
+                                            <input type="file" class="form-control" id="foto2">
+                                            <input type="hidden" class="form-control" value="{{dato[2]}}" id="foto2_ruta">
+                                            <br>
+                                            <div>
+                                                <button class="btn btn-outline-warning btn-rounded m-b-5" onclick="subir_foto_2();"><i class="fa fa-image"></i> Subir</button>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Foto 3 página web</b></h4>
+                                            <div class="m-t-20">
+                                                <img src="/static/uploads/web/{{dato[3]}}" width="250px" height="250px">
+                                            </div>
+                                            <br>
+                                            <input type="file" class="form-control" id="foto3">
+                                            <input type="hidden" class="form-control" value="{{dato[3]}}" id="foto3_ruta">
+                                            <br>
+                                            <div>
+                                                <button class="btn btn-outline-warning btn-rounded m-b-5" onclick="subir_foto_3();"><i class="fa fa-image"></i> Subir</button>
+                                            </div>
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Detalle foto 1</b> <label style="color:red;" id="lbldetalle_1"></label> </h4> 
+                                            <div class="m-t-20">
+                                                <textarea class="form-control" id="detalle_1" cols="5" rows="3">{{dato[4]}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Detalle foto 2</b>  <label style="color:red;" id="lbldetalle_2"></label> </h4>
+                                            <div class="m-t-20">
+                                                <textarea class="form-control" id="detalle_2" cols="5" rows="3">{{dato[5]}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-4 form-group">
+                                    <div class="ibox">
+                                        <div class="ibox-body text-center">
+                                            <h4> <b>Detalle foto 3</b>  <label style="color:red;" id="lbldetalle_3"></label> </h4>
+                                            <div class="m-t-20">
+                                                <textarea class="form-control" id="detalle_3" cols="5" rows="3">{{dato[6]}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+    
+                            <div class="col-sm-12 form-group">
+                                <button onclick="editar_detalle_foto();" class="btn btn-info btn-rounded m-b-5" type="button"><i class="fa fa-edit"></i> Cambiar detalle</button>
+                                <button onclick="cargar_contenido('contenido_principal','/pag_web');" class="btn btn-danger btn-rounded m-b-5" type="button"><i class="fa fa-loading"></i> Recargar</button>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"></div>
+        </div>
+    </section>
+</div>
+
+<script src="static/js/system.js"></script>
+
+<script>
+    document.getElementById("foto1").addEventListener("change", () => {
+        var filename = document.getElementById("foto1").value;
+        var idxdot = filename.lastIndexOf(".") + 1;
+        var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+        if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {} else {
+            swal.fire(
+                "Mensaje de alerta",
+                "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." + extfile,
+                "warning"
+            );
+            document.getElementById("foto1").value = "";
+        }
+    });
+
+    document.getElementById("foto2").addEventListener("change", () => {
+        var filename = document.getElementById("foto2").value;
+        var idxdot = filename.lastIndexOf(".") + 1;
+        var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+        if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {} else {
+            swal.fire(
+                "Mensaje de alerta",
+                "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." + extfile,
+                "warning"
+            );
+            document.getElementById("foto2").value = "";
+        }
+    });
+
+    document.getElementById("foto3").addEventListener("change", () => {
+        var filename = document.getElementById("foto3").value;
+        var idxdot = filename.lastIndexOf(".") + 1;
+        var extfile = filename.substr(idxdot, filename.length).toLowerCase();
+        if (extfile == "jpg" || extfile == "jpeg" || extfile == "png") {} else {
+            swal.fire(
+                "Mensaje de alerta",
+                "Solo se aceptan imagenes - USTED SUBIO UN ARCHIVO CON LA EXTENCIO ." + extfile,
+                "warning"
+            );
+            document.getElementById("foto3").value = "";
+        }
+    });
+</script>

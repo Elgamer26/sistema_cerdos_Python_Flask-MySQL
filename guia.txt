@@ -1,0 +1,21 @@
+crear un entorno virtual 
+(virtualenv -p python3) nombre --> env
+freamewok flask
+pip install flask
+Mysql conexion
+pip install flask_MySql, pip install flask-mysqldb, 
+pip install Flask-MySQL
+pip install pdfkit
+pip install fpdf
+
+
+
+para el mysql del pythonanywhere subir la base de datos
+USE Amadangelica1$cerdos; SOURCE cerdos/DB/tesis_cerdo.sql;
+entornoo virtual
+virtualenv --python=python3.9 env 
+correr servidor
+source env/bin/activate
+
+
+DROP DATABASE Amadangelica1$cerdos;

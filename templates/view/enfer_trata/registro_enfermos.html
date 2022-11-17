@@ -1,0 +1,201 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-paw"></i> Registro cerdo enfermo</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Registro cerdo enfermo</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Nuevo registro</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-lg-9 col-6">
+                        <label for="cerdo_id">Cerdo</label>
+                        <select class="form-control cerdo_id text-center" style="width: 100%" id="cerdo_id">
+                          <option value="0">--- Seleccione el cerdo ---</option>      
+                          {% for datas in data.cerdo %}
+                          <option value="{{datas[0]}}">Código: {{datas[1]}} - Sexo: {{datas[3]}} - Raza: {{datas[4]}} - peso: {{datas[6]}}Kg</option>
+                          {% endfor %}
+                        </select>
+                        <span style="color: red" id="cerdo_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-3 col-6">
+                        <label for="fecha_r">Fecha</label>
+                        <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_r" />
+                        <span style="color: red" id="fecha_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="sintomas">Sintomas</label>
+                        <textarea class="form-control" id="sintomas" cols="3" rows="3" style="resize: none;"></textarea> 
+                        <span style="color: red" id="sintomas_oblig"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="diagnostico">Diagnóstico</label>
+                        <textarea class="form-control" id="diagnostico" cols="3" rows="3" style="resize: none;"></textarea> 
+                        <span style="color: red" id="diagnostico_oblig"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-6">
+                        <label for="veterinario_id">Veterinario</label>
+                        <select class="form-control veterinario_id text-center" style="width: 100%" id="veterinario_id">
+                          <option value="0">--- Seleccione el veterinario ---</option>      
+                          {% for datas in data.vete %}
+                          <option value="{{datas[0]}}">Nombres: {{datas[1]}} {{datas[2]}}</option>
+                          {% endfor %}
+                        </select>
+                        <span style="color: red" id="veterinario_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6">
+                        <div class="row">
+
+                            <div class="form-group col-lg-10">
+
+                                <label for="enfermedad_id">Enfermedades</label>
+                                <select class="form-control enfermedad_id text-center" style="width: 100%" id="enfermedad_id">
+                                <option value="0">--- Seleccione la enfermedad ---</option>      
+                                {% for datas in data.enfer %}
+                                <option value="{{datas[0]}}"> {{datas[1]}} </option>
+                                {% endfor %}
+                                </select>
+                                <span style="color: red" id="enfermedad_obligg"></span>
+
+                            </div>
+
+                            <div class="form-group col-lg-1" style="margin: 20px;">
+                                <button onclick="ingresar_tabla();" class="btn btn-primary"><i class="fa fa-download"></i></button>                            
+                            </div>
+
+                            <div class="form-group col-lg-12 text-center">
+                                <div id="unir_no_hay"></div>
+                                <table id="tabla_enfermedad" class="table table-bordered table-hover nowrap" style="width:100%">
+                                    <thead>
+                                    <tr> 
+                                        <th hidden>#</th> 
+                                        <th>Nombre</th>
+                                        <th>Quitar</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="tbody_tabla_enfermedad">
+
+                                    </tbody>
+                
+                                    <tfoot>
+                                    <tr> 
+                                        <th hidden>#</th>  
+                                        <th>Nombre</th>
+                                        <th>Quitar</th> 
+                                    </tr>
+                                    </tfoot>
+                                    
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+  
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+  
+              <div class="card-footer">
+                <button onclick="registra_enfermedad();" class="btn btn-success">
+                  <i class="fa fa-save"></i> Guadar
+                </button>
+                -
+                <button onclick="cargar_contenido('contenido_principal','/registro_enfermos');" class="btn btn-danger">
+                  <i class="fa fa-svae"></i> Limpiar
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/enfermedades.js"></script>
+  
+  <script>
+
+    $(".cerdo_id").select2();
+    $("#veterinario_id").select2();
+    $(".enfermedad_id").select2();
+
+    function ingresar_tabla()
+    {
+      var id = $("#enfermedad_id").val();  
+      var txt = $("#enfermedad_id option:selected").text();      
+       
+      if(id == "0"){
+        $("#enfermedad_obligg").html("Seleccione la enfermedad"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Seleccione la enfermedad",
+          "warning"
+        );
+      }else{
+        $("#enfermedad_obligg").html("");
+      }
+
+      if (validar_enfermedaddId(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "La enfermedad: '" +
+          txt +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + txt + "</td>";
+        datos_agg += "<td> <button class='remover btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+        //esto me ayuda a enviar los datos a la tabla
+        $("#tbody_tabla_enfermedad").append(datos_agg); 
+    }
+
+    function validar_enfermedaddId(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_enfermedad td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_enfermedad").on("click", ".remover", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+    });
+    
+  </script>

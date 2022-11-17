@@ -1,0 +1,108 @@
+<style>
+    .contennidor {
+        background: gray;
+        min-height: 100vh;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-file"></i> Informe de compra insumos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Informe de compra</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                      <h3 id="unir_texto" class="card-title"> Informe de compras por rango de fecha</h3>
+                    </div>
+        
+                    <div class="card-body">
+                        <div class="row">
+                                <div class="form-group col-lg-4 col-2">
+                                <label for="fecha_i">Fecha inicio</label>
+                                <input type="date" class="form-control" id="fecha_i" /> 
+                                </div>
+
+                                <div class="form-group col-lg-4 col-2">
+                                    <label for="fecha_f">Fecha fin</label>
+                                    <input type="date" class="form-control" id="fecha_f" /> 
+                                </div>
+
+                                <div class="form-group col-lg-1 col-1">
+                                    <label>Buscar</label>
+                                    <button onclick="cargar_fechas();" class="btn btn-info"> <i class="fa fa-search"></i> </button>
+                                </div>  
+                                
+                                <div class="form-group col-lg-12 col-2" style="text-align: center;">
+                                    <label>Compras de insumos para cerdo</label>
+                                    <center>
+                                        <iframe width="100%" height="100%" class="contennidor" id="iframe_c_insumos"></iframe>
+                                    </center>
+                                </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+  
+<script> 
+
+    $(document).ready(function() {
+          var n = new Date();
+          var y = n.getFullYear();
+          var m = n.getMonth() + 1;
+          var d = n.getDate();
+          if (d < 10) {
+              d = '0' + d;
+          }
+          if (m < 10) {
+              m = '0' + m;
+          }
+          document.getElementById("fecha_i").value = y + "-" + m + "-" + d; 
+          document.getElementById("fecha_f").value = y + "-" + m + "-" + d; 
+    });
+
+ 
+
+    function cargar_fechas(){
+      var f_i = document.getElementById("fecha_i").value;
+      var f_f = document.getElementById("fecha_f").value;
+
+      if (f_i > f_f) {
+          return Swal.fire(
+              "Mensaje de advertencia",
+              "La fecha inicio '" +
+              f_i +
+              "' es mayor a la fecha final '" +
+              f_f +
+              "'",
+              "warning"
+          );
+      }
+      var ifrm = document.getElementById("iframe_c_insumos");
+      ifrm.setAttribute("src", "/reporte/informa_c_insumos/"+ f_i + "/" + f_f + "");
+   
+    }
+
+ 
+</script>
+  

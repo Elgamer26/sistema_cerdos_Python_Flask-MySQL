@@ -1,0 +1,162 @@
+<style>
+    .contennidor {
+        background: gray;
+        min-height: 100vh;
+    }
+</style>
+
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-file"></i> Informe de cerdos
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Informe de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                      <h3 id="unir_texto" class="card-title"> Informe de cerdos </h3>
+                    </div>
+        
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="form-group col-lg-12 col-12">
+
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                      <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Informe de cerdos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                      <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Informe cerdos por galón</a>
+                                    </li>  
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                                        <div class="row">
+
+                                            <div class="form-group col-lg-5 col-2">
+                                                <label for="raza">Razas</label>
+                                                <select class="form-control raza" id="raza" style="width: 100%;">
+                                                    <option value="0">--- Seleccione raza ---</option>    
+                                                    {% for datas in data.raza %}
+                                                    <option value="{{datas[0]}}"> {{datas[1]}} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </div>
+
+                                            <div class="form-group col-lg-1 col-1">
+                                                <label>Ver todo</label>
+                                                <button onclick="ver_todo_cerdos();" class="btn btn-danger"> <i class="fa fa-eye"></i> </button>
+                                            </div>  
+                                            
+                                            <div class="form-group col-lg-12 col-2" style="text-align: center;">
+                                                <label>Cerdos disponibles</label>
+                                                <center>
+                                                    <iframe width="100%" height="100%" class="contennidor" id="iframe_cerdo"></iframe>
+                                                </center>
+                                            </div>
+                                        
+                                        </div>
+                                    
+                                    </div>
+
+                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                    
+                                        <div class="row">
+
+                                            <div class="form-group col-lg-5 col-2">
+                                                <label for="galpon">Galpones</label>
+                                                <select class="form-control galpon" id="galpon" style="width: 100%;">
+                                                    <option value="0">--- Seleccione galpon ---</option>    
+                                                    {% for datas in data.galpon %}
+                                                    <option value="{{datas[0]}}">N° galpón: {{datas[1]}} </option>
+                                                    {% endfor %}
+                                                </select> 
+                                            </div> 
+                                            
+                                            <div class="form-group col-lg-12 col-2" style="text-align: center;">
+                                                <label>Cerdos en galpón disponibles</label>
+                                                <center>
+                                                    <iframe width="100%" height="100%" class="contennidor" id="iframe_galpon"></iframe>
+                                                </center>
+                                            </div>
+                                        
+                                        </div>
+
+                                    </div>
+                                
+                                </div> 
+                            
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+  
+<script> 
+
+    $(document).ready(function() {
+          $(".raza").select2();
+          $(".galpon").select2();
+    });
+
+    $("#raza").on('change', function(){
+        var id = $(this).val();
+        var cerdo = $('#raza option:selected').html(); 
+      
+        if(id == '0' || id.trim() == ''){
+            return Swal.fire(
+                "Mensaje de advertencia",
+                "Seleccione una raza",
+                "warning"
+            );
+        }
+    
+        var ifrm = document.getElementById("iframe_cerdo");
+        ifrm.setAttribute("src", "/reporte/informa_cerdo_raza/"+ id +"/"+ cerdo +"");
+    })
+
+    function ver_todo_cerdos(){
+        var ifrm = document.getElementById("iframe_cerdo");
+        ifrm.setAttribute("src", "/reporte/informa_cerdo_full");
+    }
+
+    //////////////////
+    $("#galpon").on('change', function(){
+        var id = $(this).val();
+        var galpon = $('#galpon option:selected').html(); 
+
+        if(id == '0' || id.trim() == ''){
+            return Swal.fire(
+                "Mensaje de advertencia",
+                "Seleccione un galpón",
+                "warning"
+            );
+        }
+    
+        var ifrm = document.getElementById("iframe_galpon");
+        ifrm.setAttribute("src", "/reporte/informa_galpon_numero/"+ id +"/"+ galpon +"");
+    })
+</script>
+  

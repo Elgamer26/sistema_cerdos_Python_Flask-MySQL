@@ -1,0 +1,184 @@
+<style>
+  input[type="checkbox"] {
+      position: relative;
+      width: 60px;
+      height: 30px;
+      -webkit-appearance: none;
+      background: rgb(168, 168, 168);
+      outline: none;
+      border-radius: 15px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, .5);
+  }
+
+  input:checked[type="checkbox"] {
+     background: rgb(255 106 0);
+  }
+
+  input[type="checkbox"]:before {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      background: white;
+      transition: 0.5s;
+
+  }
+
+  input:checked[type="checkbox"]:before {
+      left: 30px;
+  }
+</style>
+
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0"><i class="fa fa-tags"></i> Crear rol</h1>
+      </div>
+
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+          <li class="breadcrumb-item active">Crear rol</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Nuevo rol</h3>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-lg-12 col-12">
+                  <label for="exampleInputEmail1">Nombre del rol</label>
+                  <input
+                    type="text"
+                    maxlength="30"
+                    class="form-control"
+                    id="nuevo_rol"
+                    placeholder="Nombre del rol"
+                  />
+                  <span style="color: red;" id="rol_obligg"></span>
+                </div>
+
+                <div class="col-sm-12 form-group" style="text-align: center;background: greenyellow;">
+                  <h4 style="margin: 0;"><b>Permisos del rol</b></h4>
+                </div>
+
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='usuario_p'>Usuario</label><br>
+                        <input type='checkbox' id='usuario_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='config_p'>Configuraciones</label><br>
+                        <input type='checkbox' id='config_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='cerdo_p'>Cerdos</label><br>
+                        <input type='checkbox' id='cerdo_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='galpon_p'>Galpon</label><br>
+                        <input type='checkbox' id='galpon_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='cergal_p'>Cerdo galpon</label><br>
+                        <input type='checkbox' id='cergal_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='compraventa_p'>Compras y ventas</label><br>
+                        <input type='checkbox' id='compraventa_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='alicerdo_p'>Alimento cerdos</label><br>
+                        <input type='checkbox' id='alicerdo_p'><br>
+                    </div>
+
+                    <br>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='insumo_p'>Insumo cerdo</label><br>
+                        <input type='checkbox' id='insumo_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='medicamento_p'>Medicamento</label><br>
+                        <input type='checkbox' id='medicamento_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='alimentacion_p'>Alimentación</label><br>
+                        <input type='checkbox' id='alimentacion_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='alimcerdo_p'>Alimentación de cerdos</label><br>
+                        <input type='checkbox' id='alimcerdo_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='pesaje_p'>Pesaje</label><br>
+                        <input type='checkbox' id='pesaje_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='enfertrata_p'>Enfermedades y tratmientos</label><br>
+                        <input type='checkbox' id='enfertrata_p'><br>
+                    </div>
+
+                    <br>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='cerdosenfer_p'>Cerdos enfermos</label><br>
+                        <input type='checkbox' id='cerdosenfer_p'><br>
+                    </div>
+
+                    <div class='col-sm-2 form-group' style="text-align:center">
+                        <label for='tratamiento_p'>Tratamiento</label><br>
+                        <input type='checkbox' id='tratamiento_p'><br>
+                    </div>
+
+              </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <button onclick="registra_rol();" class="btn btn-success">
+                <i class="fa fa-save"></i> Guadar
+              </button>
+              -
+              <button
+                onclick="cargar_contenido('contenido_principal','/listar_rol');"
+                class="btn btn-danger"
+              >
+                <i class="fa fa-svae"></i> Volver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="static/js/usuario.js"></script>

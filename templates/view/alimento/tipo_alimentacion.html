@@ -1,0 +1,123 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Tipo de alimentación
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Tipo de alimentación</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-6 col-12">
+                <div class="card card-dark">
+                  <div class="card-header">
+                    <h3 id="unir_texto_a" class="card-title"> Registrar tipo alimentación</h3>
+                  </div>
+      
+                  <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-12 col-12">
+
+                        <div style="display: none;" class="alerta_sms_tipo_alimentacion alert alert-danger text-center" role="alert">
+                            <span id="mensaje_tipo_alimentacion">  <span>
+                        </div>
+
+                        <div style="display: none;" class="alerta_sms_tipo_alimentacion_success alert alert-success text-center" role="alert">
+                            <span id="mensaje_tipo_alimentacion_success">  <span>
+                        </div>
+
+                        <input id="id_tipo_alimentacion" hidden type="number">
+                        
+                        <label for="tipo_alimentacion">Tipo de alimentación</label>
+                        <input type="text" maxlength="30" class="form-control" id="tipo_alimentacion" placeholder="Ingrese tipo de alimento" /> 
+
+                      </div>
+
+                      <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important" >
+                        <button onclick="cargar_contenido('contenido_principal','/tipo_alimentacion');" class="btn btn-danger"> Limpiar </button>
+                        <button id="btn_nuevo" style="display: none" onclick="nuevo_tipo_alimentacion();" class="btn btn-warning"> Nuevo </button>
+                        <button id="btn_registrar" onclick="registra_tipo_alimentacion();" class="btn btn-success"> <i class="fa fa-save"></i> Guardar </button>
+                        <button id="btn_editar" style="display: none" onclick="editar_tipo_alimentacion();" class="btn btn-primary"> <i class="fa fa-edit"></i> Editar </button>
+                      </div>
+    
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Listado tipo de alimentación</h3>
+                </div>
+    
+                <div class="card-body">
+                    <div class="row">
+
+                    <div class="form-group col-lg-12 col-12">
+                        <table
+                        id="tabla_tipo_alimentacion"
+                        class="table table-display table-hover responsive nowrap text-center"
+                        style="width: 100%" >
+                        <thead>
+                            <tr>
+                            <th>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            </tr>
+                        </thead>
+    
+                        <tfoot>
+                            <tr>
+                            <th>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            </tr>
+                        </tfoot>
+                        </table>
+                    </div>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/alimento.js"></script>
+  
+  <script> 
+    listar_tipo_alimentacion();
+    function nuevo_tipo_alimentacion(){
+        $("#mensaje_tipo_alimentacion_success").text("");
+        $(".alerta_sms_tipo_alimentacion_success").hide(1000);
+        $("#mensaje_tipo_alimentacion").text("");
+        $(".alerta_sms_tipo_alimentacion").hide(1000);   
+        document.getElementById("id_tipo_alimentacion").value = "";
+        document.getElementById("tipo_alimentacion").value = "";
+        $("#unir_texto_a").text("Registrar tipo alimentación");
+        $("#btn_registrar").show();
+        $("#btn_editar").hide();
+        $("#btn_nuevo").hide();
+    }
+  </script>
+  

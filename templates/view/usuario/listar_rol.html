@@ -1,0 +1,275 @@
+<style>
+  input[type="checkbox"] {
+      position: relative;
+      width: 60px;
+      height: 30px;
+      -webkit-appearance: none;
+      background: rgb(168, 168, 168);
+      outline: none;
+      border-radius: 15px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, .5);
+  }
+
+  input:checked[type="checkbox"] {
+     background: rgb(255 106 0);
+  }
+
+  input[type="checkbox"]:before {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 20px;
+      top: 0;
+      left: 0;
+      background: white;
+      transition: 0.5s;
+
+  }
+
+  input:checked[type="checkbox"]:before {
+      left: 30px;
+  }
+</style>
+
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">
+          <i class="fa fa-list"></i> Listado de rol -
+          <a
+            onclick="cargar_contenido('contenido_principal','/vista_rol');"
+            class="btn btn-success"
+            ><i class="fa fa-plus"></i> Nuevo rol</a
+          >
+        </h1>
+      </div>
+
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+          <li class="breadcrumb-item active">Crear rol</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Listado de roles</h3>
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-lg-12 col-12">
+                  <table
+                    id="tabla_rol_"
+                    class="table table-display table-hover responsive nowrap text-center"
+                    style="width: 100%"
+                  >
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Acci&oacute;n</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+
+                    <tfoot>
+                      <tr>
+                        <th>#</th>
+                        <th>Acci&oacute;n</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row"></div>
+    </div>
+  </section>
+</div>
+
+<div class="modal fade" id="modal-primary">
+  <div class="modal-dialog">
+    <div class="modal-content bg-primary">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar rol</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background: white; color: black">
+        <input type="text" id="id_rol" hidden />
+
+        <div class="row">
+          <div class="form-group col-lg-12 col-12">
+            <label for="nuevo_rol_edit">Nombre del rol</label>
+            <input
+              type="text"
+              maxlength="30"
+              class="form-control"
+              id="nuevo_rol_edit"
+              placeholder="Nombre del rol"
+            />
+            <span style="color: red" id="rol_obligg_edit"></span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer justify-content-between"
+        style="background: #f5f4f3 !important"
+      >
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button onclick="editar_rol();" class="btn btn-success">
+          <i class="fa fa-edit"></i> Guardar
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="modal_editar_permisos">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content bg-warning">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar permisos del rol</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="background: white; color: black">
+        <input type="text" id="id_rol_p" hidden />
+        <input type="text" id="id_permiso" hidden />
+
+        <div class="row">
+       
+          <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='usuario_p'>Usuario</label><br>
+            <input type='checkbox' id='usuario_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='config_p'>Configuraciones</label><br>
+            <input type='checkbox' id='config_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='cerdo_p'>Cerdos</label><br>
+            <input type='checkbox' id='cerdo_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='galpon_p'>Galpon</label><br>
+            <input type='checkbox' id='galpon_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='cergal_p'>Cerdo galpon</label><br>
+            <input type='checkbox' id='cergal_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='compraventa_p'>Compras y ventas</label><br>
+            <input type='checkbox' id='compraventa_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='alicerdo_p'>Alimento cerdos</label><br>
+            <input type='checkbox' id='alicerdo_p'><br>
+        </div>
+
+        <br>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='insumo_p'>Insumo cerdo</label><br>
+            <input type='checkbox' id='insumo_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='medicamento_p'>Medicamento</label><br>
+            <input type='checkbox' id='medicamento_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='alimentacion_p'>Alimentación</label><br>
+            <input type='checkbox' id='alimentacion_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='alimcerdo_p'>Alimentación de cerdos</label><br>
+            <input type='checkbox' id='alimcerdo_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='pesaje_p'>Pesaje</label><br>
+            <input type='checkbox' id='pesaje_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='enfertrata_p'>Enfermedades y tratmientos</label><br>
+            <input type='checkbox' id='enfertrata_p'><br>
+        </div>
+
+        <br>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='cerdosenfer_p'>Cerdos enfermos</label><br>
+            <input type='checkbox' id='cerdosenfer_p'><br>
+        </div>
+
+        <div class='col-sm-2 form-group' style="text-align:center">
+            <label for='tratamiento_p'>Tratamiento</label><br>
+            <input type='checkbox' id='tratamiento_p'><br>
+        </div>
+          
+        </div>
+      </div>
+      <div
+        class="modal-footer justify-content-between"
+        style="background: #f5f4f3 !important"
+      >
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+          Cerrar
+        </button>
+        <button onclick="editar_permisos();" class="btn btn-success">
+          <i class="fa fa-edit"></i> Guardar
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<script src="static/js/usuario.js"></script>
+
+<script>
+  listar_rol();
+</script>

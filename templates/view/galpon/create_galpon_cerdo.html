@@ -1,0 +1,224 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-home"></i><i class="fa fa-paw"></i> Crear galpón cerdo</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Crear galpón</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Nuevo galpón</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                <div class="form-group col-lg-4 col-6">
+                    <label for="id_galpon">Galpones</label>
+                    <select class="form-control id_galpon" style="width: 100%" id="id_galpon">
+                        <option value="0">--- Seleccione el galpón ---</option>
+    
+                        {% for datas in data %}
+                        <option value="{{datas[0]}}">N°: {{datas[1]}} - Tipo: {{datas[3]}}</option>
+                        {% endfor %}
+                    </select>
+                    <span style="color: red" id="id_galpon_obligg"></span>
+                </div> 
+             
+                <div class="Capacidad_C form-group col-lg-2 col-6">
+                    <label for="capacidad">Capacidad</label>
+                    <input type="text" disabled maxlength="3" class="form-control" id="capacidad" placeholder="Capacidad" />
+                    <span style="color: red" id="capacidad_obligg"></span>
+                </div>
+                  
+                <div class="Disponible_C form-group col-lg-2 col-6">
+                    <label for="disponibe">Cantidad en galpón</label>
+                    <input type="text" disabled maxlength="3" class="form-control" id="disponibe" placeholder="Disponible" />
+                    <span style="color: red" id="disponibe_obligg"></span>
+                </div>
+
+                <div class="form-group col-lg-2 col-6">
+                    <label for="fecha_g">Fecha</label>
+                    <input type="date" class="form-control" id="fecha_g" /> 
+                </div>
+
+                <div class="form-group col-lg-1 col-6">
+                    <label for="capacidad">Buscar</label>
+                    <button onclick="modal_cerdo_sin_galpon();" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </div>
+
+                <div class="form-group col-lg-1 col-6">
+                  <label for="capacidad">Recargar</label>
+                  <button onclick="cargar_contenido('contenido_principal','/create_galpon_cerdo');" class="btn btn-info"><i class="fa fa-spinner"></i></button>
+              </div>
+
+                </div>
+              </div>
+ 
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-12">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Cerdos</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+             
+                <div class="form-group col-lg-12 col-6 text-center">
+                  <h4> <b><span style="color: red" id="detalle_tabla"></span></b> </h4>
+                </div>
+
+                  <div class="form-group col-lg-12 col-6">
+                      <table id="tabla_galpo_cerdo" class="table table-display table-hover responsive nowrap text-center" style="width: 100%">
+                          <thead style="background: orange;">
+                              <tr>
+                                  <th hidden>Id cerdo</th> 
+                                  <th>Fecha ingreso</th>
+                                  <th>Cód. cerdo</th>
+                                  <th>Sexo</th>
+                                  <th>Raza</th>
+                                  <th>Foto</th>
+                                  <th>Peso Kg</th>
+                                  <th>Origen</th>
+                                  <th>Remover</th>
+                              </tr>
+                          </thead>
+                          <tbody id="tbody_tabla_galpo_cerdo">
+                              
+                          </tbody>
+                      </table>
+                  </div>
+
+                  <div class="form-group col-lg-12 col-6">
+                    <button class="btn btn-success" onclick="registrar_cerdo_galpon();"><i class="fa fa-save"></i> Guardar</button> - <button onclick="cargar_contenido('contenido_principal','/list_galpon_cerdo');" class="btn btn-danger"><i class="fa fa-reply"></i> Volver</button>
+                </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <div class="modal fade" id="model_cerdos_sin_galpon">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-primary">
+            <div class="modal-header">
+                <h4 class="modal-title">Cerdos sin galpón</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+
+                <div class="row">
+
+                    <div class="form-group col-lg-12 col-12">
+                        <table id="tabla_cerdo_sin_galpon" class="table table-display table-hover responsive nowrap text-center" style="width: 100%">
+                            <thead>
+                                <tr> 
+                                    <th>Acci&oacute;n</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre o Alias</th>
+                                    <th>Sexo</th>
+                                    <th>Raza</th>
+                                    <th>Foto</th>
+                                    <th>Peso (Kg)</th>
+                                    <th>Origen</th>  
+                                </tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr>
+                                    <th>Acci&oacute;n</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre o Alias</th>
+                                    <th>Sexo</th>
+                                    <th>Raza</th>
+                                    <th>Foto</th>
+                                    <th>Peso (Kg)</th>
+                                    <th>Origen</th>  
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+  
+                  </div>
+
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+<script src="static/js/galpon.js"></script>
+  
+<script>
+    $(".id_galpon").select2();
+    listar_cerdo_galpon();
+    $(document).ready(function() {
+        var n = new Date();
+        var y = n.getFullYear();
+        var m = n.getMonth() + 1;
+        var d = n.getDate();
+        if (d < 10) {
+            d = '0' + d;
+        }
+        if (m < 10) {
+            m = '0' + m;
+        }
+        document.getElementById("fecha_g").value = y + "-" + m + "-" + d; 
+    });
+    $("#id_galpon").on("change", function(){
+      var id = $(this).val();
+      $("#tbody_tabla_galpo_cerdo").empty();
+
+      if(id == 0 || id == "0"){
+        $("#capacidad").val("0");
+        $("#disponibe").val("0");
+        return false;
+      }
+      
+      $.ajax({
+        url: "/galpon/traer_disponible_capacidad",
+        type: "POST", 
+        data: {id: id}, 
+        success: function (resp) {
+          $("#capacidad").val(resp[1]);
+          $("#disponibe").val(resp[0]);
+          $(".Capacidad_C").LoadingOverlay("hide");
+          $(".Disponible_C").LoadingOverlay("hide");
+        },
+        beforeSend: function () {
+          $(".Capacidad_C").LoadingOverlay("show");
+          $(".Disponible_C").LoadingOverlay("show");
+        },
+      });
+    });
+</script>
