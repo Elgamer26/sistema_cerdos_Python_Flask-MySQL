@@ -155,6 +155,7 @@
             //}
           }
         </script>
+
       </ul>
     </nav>
     <!-- /.navbar -->
@@ -361,7 +362,7 @@
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle"></i>
                     <p>
-                      Insumo para tratamiento
+                      Insumo para el cerdo
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
@@ -386,7 +387,7 @@
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle"></i>
                     <p>
-                      Medicamento para cerdos
+                      Medicamento y desparasitantes para cerdos
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
@@ -395,35 +396,79 @@
                     <li class="nav-item">
                       <a onclick="cargar_contenido('contenido_principal','/tipo_medicamento');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Tipo medicamento</p>
+                        <p>Tipo medicamento y desparasitante</p>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a onclick="cargar_contenido('contenido_principal','/medicamentos');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Medicamentos</p>
+                        <p>Medicamentos y desparasitantes</p>
                       </a>
                     </li>
              
                   </ul>
-                </li>              
-                <li class="nav-item">
-                  <a onclick="cargar_contenido('contenido_principal','/compra_alimento');" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Compra de alimento</p>
-                  </a>
-                </li>       
-                <li class="nav-item">
-                  <a onclick="cargar_contenido('contenido_principal','/compra_insumos');" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Compra de insumos</p>
-                  </a>
                 </li>
                 <li class="nav-item">
-                  <a onclick="cargar_contenido('contenido_principal','/compra_medicamento');" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Compra de medicamento</p>
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p>
+                      Vacunas para cerdo
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
                   </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/tipo_vacuna');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Tipo de vacunas</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/vacunas');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Vacunas</p>
+                      </a>
+                    </li> 
+             
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p>
+                      Compras y abastecimiento
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_alimento');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Compra de alimento</p>
+                      </a>
+                    </li>       
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_insumos');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Compra de insumos</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_medicamento');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Compra de medicamento y desparasitante</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_vacunas');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Compra de vacunas</p>
+                      </a>
+                    </li>
+             
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -562,46 +607,34 @@
                     <i class="far fa-circle nav-icon"></i>
                     <p>Calendario vacunas o desparasitación </p>
                   </a>
-                </li> 
-                <li class="nav-item">
-                  <a onclick="cargar_contenido('contenido_principal','/tipo_enfermedad');" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tipo de enfermedad </p>
-                  </a>
-                </li> 
-                <li class="nav-item">
-                  <a onclick="cargar_contenido('contenido_principal','/tipo_tratamientos');" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Tipo de tratamiento </p>
-                  </a>
-                </li> 
+                </li>
 
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle"></i>
                     <p>
-                      Cerdos enfermos
+                      Vacunación
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
 
                     <li class="nav-item">
-                      <a onclick="cargar_contenido('contenido_principal','/registro_enfermos');" class="nav-link">
+                      <a onclick="cargar_contenido('contenido_principal','/registro_vacunacion');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Registro</p>
+                        <p>Registro de vacunación</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a onclick="cargar_contenido('contenido_principal','/cerdos_enfermos_espera');" class="nav-link">
+                      <a onclick="cargar_contenido('contenido_principal','/listado_vacunacion');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>En espera</p>
+                        <p>Listado de vacunación</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a onclick="cargar_contenido('contenido_principal','/cerdos_tratados');" class="nav-link">
+                      <a onclick="cargar_contenido('contenido_principal','/historial_de_vacunacion');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Tratados</p>
+                        <p>Historial de cerdo vacunados</p>
                       </a>
                     </li>
              

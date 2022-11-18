@@ -596,3 +596,63 @@ class Reportes():
             error = "Ocurrio un problema: " + str(e)
             return error
         return 0
+
+    ######################### COMPRAS VACUNAS
+
+    #modelo para listar la compra de la vacuns
+    def Listar_compra_vacuna(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                            compra_vacuna.id,
+                            CONCAT_WS( ' ', usuario.nombres, usuario.apellidos ) AS usuario,
+                            CONCAT_WS( ' ', proveedor.razon) AS proveedor,
+                            proveedor.ruc,
+                            compra_vacuna.fecha,
+                            compra_vacuna.numero_compra,
+                            compra_vacuna.documento,
+                            compra_vacuna.iva,
+                            compra_vacuna.subtotal,
+                            compra_vacuna.impuesto,
+                            compra_vacuna.total,
+                            compra_vacuna.estado 
+                        FROM
+                            compra_vacuna
+                            INNER JOIN usuario ON compra_vacuna.usuario_id = usuario.usuario_id
+                            INNER JOIN proveedor ON compra_vacuna.proveedor_id = proveedor.id WHERE compra_vacuna.id='{0}'""". format(id))
+            data = query.fetchone()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+      
+    #modelo para traer el detalle de la compra
+    def Detalle_compra_vacuna(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                            detalle_compra_vacuna.compra_vacuna_id,
+                            vacuna.codigo,
+                            vacuna.nombre,
+                            detalle_compra_vacuna.precio,
+                            detalle_compra_vacuna.cantidad,
+                            detalle_compra_vacuna.descuento,
+                            detalle_compra_vacuna.total,
+                            detalle_compra_vacuna.estado 
+                        FROM
+                            detalle_compra_vacuna
+                            INNER JOIN vacuna ON detalle_compra_vacuna.vacuna_id = vacuna.id 
+                        WHERE
+                            detalle_compra_vacuna.compra_vacuna_id = '{0}'""".format(id))
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+ 

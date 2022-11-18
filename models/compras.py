@@ -884,3 +884,104 @@ class Compras():
             return error
         return 0
     
+    # modelo para registrar la compra de la vacuna
+    def Registrar_compra_vacuna(_id_pro, _fecha_c, _numero_compra, _tipo_comprobante, _iva, _subtotal, _impuesto_sub, _total_pagar, _id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute('SELECT * FROM compra_vacuna WHERE numero_compra = "{0}"'. format(_numero_compra))
+            data = query.fetchone()
+            if not data:
+                query.execute('INSERT INTO compra_vacuna (usuario_id,proveedor_id,fecha,numero_compra,documento,iva,subtotal,impuesto,total) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}")'.format(_id,_id_pro,_fecha_c,_numero_compra,_tipo_comprobante,_iva,_subtotal,_impuesto_sub,_total_pagar))
+                query.connection.commit()
+                # me devuelve el ultimo id insertado
+                id = query.lastrowid
+                query.close()
+                return id  # se inserto correcto
+            else:
+                query.close()
+                return 2
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para registra el detalle de compra de vacuna
+    def Registrar_detalle_compra_vacuna(_id, ida, precio, cantidad, descuento, total):
+        try:
+            query = mysql.connection.cursor()         
+            query.execute('INSERT INTO detalle_compra_vacuna (compra_vacuna_id,vacuna_id,precio,cantidad,descuento,total) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}")'.format(_id,ida,precio,cantidad,descuento,total))
+            query.connection.commit()
+
+            query.execute('UPDATE vacuna SET cantidad = cantidad + "{0}" WHERE id = "{1}" '.format(cantidad,ida))
+            query.connection.commit()
+
+            query.close()
+            return 1  # se inserto correcto
+
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listar las compras de vacunas
+    def Listar_compras_vacunas():
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                            compra_vacuna.id,
+                            CONCAT_WS( ' ', usuario.nombres, usuario.apellidos ) AS usuario,
+                            CONCAT_WS( ' ', proveedor.razon, ' - ', proveedor.ruc ) AS proveedor,
+                            compra_vacuna.fecha,
+                            compra_vacuna.numero_compra,
+                            compra_vacuna.documento,
+                            compra_vacuna.iva,
+                            compra_vacuna.subtotal,
+                            compra_vacuna.impuesto,
+                            compra_vacuna.total,
+                            compra_vacuna.estado 
+                        FROM
+                            compra_vacuna
+                            INNER JOIN usuario ON compra_vacuna.usuario_id = usuario.usuario_id
+                            INNER JOIN proveedor ON compra_vacuna.proveedor_id = proveedor.id 
+                        ORDER BY
+                            compra_vacuna.id DESC""")
+            data = query.fetchall()
+            query.close() 
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+
+    # modelo para anular la compra de vacuna
+    def Compra_vacuna_anular(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT 
+                            detalle_compra_vacuna.vacuna_id,
+                            detalle_compra_vacuna.cantidad 
+                            FROM
+                            detalle_compra_vacuna
+                            WHERE
+                            detalle_compra_vacuna.compra_vacuna_id = '{0}'""".format(_id))
+            data_d = query.fetchall()
+            
+            for dato in data_d: 
+                query.execute('UPDATE vacuna SET cantidad = cantidad - {0} WHERE id = "{1}"'.format(dato[1], str(dato[0])))
+                query.connection.commit()
+
+            query.execute('UPDATE compra_vacuna SET estado = 0 WHERE id = {0}'.format(_id))
+            query.connection.commit()
+
+            query.execute('UPDATE detalle_compra_vacuna SET estado = 0 WHERE compra_vacuna_id = "{0}"'.format(_id))
+            query.connection.commit()
+            query.close() 
+            return 1
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0

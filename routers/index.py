@@ -520,4 +520,50 @@ def informa_cerdo():
     }
     return render_template('view/informe/informa_cerdo.html', data = data)
 
-    
+#vista tipo de vacunas
+@index.route('/tipo_vacuna')
+def tipo_vacuna(): 
+    return render_template('view/vacuna_despara/tipo_vacuna.html')
+
+#vista de vacunas
+@index.route('/vacunas')
+def vacunas():  
+    codigo = random.randint(0, 999999999)
+    tipo = Vacunas.Combo_tipo_vacuna()  
+    data = {
+        'codigo': codigo,
+        'tipo': tipo
+    } 
+    return render_template('view/vacuna_despara/vacunas.html', data = data)
+
+#vista compras de vacunas
+@index.route('/compra_vacunas')
+def compra_vacunas():   
+    fecha = datetime.now()
+    now = fecha.strftime("%Y-%m-%d")
+    proveedor = Compras.Select_proveedor()
+    vacuna = Vacunas.Table_vacuna()
+    listar_compras = Compras.Listar_compras_vacunas()
+    data = {
+        'fecha': now,
+        'proveedor': proveedor,
+        'vacuna': vacuna,
+        'lista': listar_compras
+    }
+    return render_template('view/compras/compra_vacunas.html', data = data)
+
+#vista de registro vacunas de cerdos
+@index.route('/registro_vacunacion')
+def registro_vacunacion():  
+    fecha = datetime.now()
+    now = fecha.strftime("%Y-%m-%d")
+    cerdo = Galpon.Select_cerdos() 
+    vacuna = Vacunas.Table_vacuna()
+    calendario = Vacunas.Tabla_calendario_vacunas()
+    data = {
+        'fecha': now,
+        'cerdo': cerdo,
+        'vacuna': vacuna,
+        'calendario': calendario
+    }
+    return render_template('view/vacuna_despara/registro_vacunacion.html', data = data)

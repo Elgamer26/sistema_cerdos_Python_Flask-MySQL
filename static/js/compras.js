@@ -3226,3 +3226,251 @@ function compra_medicamento_anular(id) {
     }
   });
 }
+
+////////////// compras vacunas
+function registra_compra_vacunas(){
+  Swal.fire({
+    title: 'Guardar compra de vacuna?',
+    text: "La compra se guardará en el sistema!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, guardar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      guardar_compra_vacuna();
+    }
+  })
+}
+
+function guardar_compra_vacuna(){
+  var proveedor = $("#proveedor").val(); 
+  var fecha_c = $("#fecha_c").val(); 
+  var numero_compra = $("#numero_compra").val(); 
+  var tipo_comprobante = $("#tipo_comprobante").val(); 
+  var iva = $("#iva").val(); 
+
+  var subtotal = $("#subtotal").val(); 
+  var impuesto_sub = $("#impuesto_sub").val(); 
+  var total_pagar = $("#total_pagar").val(); 
+  var count = 0;
+
+  if(proveedor == "0" || 
+  numero_compra.length == 0 || 
+  numero_compra.trim() == "" ||
+  iva.length == 0 || 
+  iva.trim() == ""){
+
+    validar_registro_compra_vacuna(proveedor,numero_compra,iva);
+    return swal.fire(
+      "Campo vacios",
+      "Los campos no deben quedar vacios, complete los datos",
+      "warning"
+    );
+  }else{ 
+      $("#proveedor_obligg").html(""); 
+      $("#numero_c_obligg").html(""); 
+      $("#ivaa_obligg").html("");
+  }
+
+  $("#tabla_compra_vacunas tbody#tbody_tabla_compra_vacunas tr").each(function () {
+      count++;
+    }
+  );
+
+  if(count == 0){ 
+    $("#unir_no_hay").html('<span class="badge badge-danger"><b>.:No hay vacuna en el detalle de compra:.</b></span>');
+    return swal.fire(
+      "Detalle vacío",
+      "No hay vacuna en el detalle de compra",
+      "warning"
+    );
+  }else{
+    $("#unir_no_hay").html("");
+  }
+
+  var formdata = new FormData();
+  formdata.append("proveedor", proveedor);
+  formdata.append("fecha_c", fecha_c);
+  formdata.append("numero_compra", numero_compra);
+  formdata.append("tipo_comprobante", tipo_comprobante);
+  formdata.append("iva", iva);
+  formdata.append("subtotal", subtotal);
+  formdata.append("impuesto_sub", impuesto_sub);
+  formdata.append("total_pagar", total_pagar); 
+
+  $.ajax({
+    url: "/compras/registrar_compra_vacuna",
+    type: "POST",
+    //aqui envio toda la formdata
+    data: formdata,
+    contentType: false,
+    processData: false,
+    success: function (resp) {
+
+      if (resp > 0) {
+        if (resp != 2) {
+          guardar_detalle_compra_vacunas(parseInt(resp));
+        } else {
+          $(".card-success").LoadingOverlay("hide");
+          return Swal.fire(
+            "Número de compra ya existe",
+            "El número de compra: '" + numero_compra + "', ya existe en el sistema",
+            "warning"
+          );
+        } 
+
+      } else {
+
+        $(".card-success").LoadingOverlay("hide");
+        return Swal.fire(
+          "Error",
+          "No se pudo crear la compra, falla en la matrix",
+          "error"
+        );
+      }
+    },
+
+    beforeSend: function () {
+      $(".card-success").LoadingOverlay("show", {
+        text: "Cargando...",
+      });
+    },
+  });
+  return false;
+}
+
+function validar_registro_compra_vacuna(proveedor,numero_compra,iva) {
+  if (proveedor == "0") {
+    $("#proveedor_obligg").html("Seleccione el proveedor");
+  } else {
+    $("#proveedor_obligg").html("");
+  }
+
+  if (numero_compra.length == 0 || numero_compra.trim() == "") {
+    $("#numero_c_obligg").html("Ingrese número compra");
+  } else {
+    $("#numero_c_obligg").html("");
+  }
+
+  if (iva.length == 0 || iva.trim() == "") {
+    $("#ivaa_obligg").html("Ingrese el iva");
+  } else {
+    $("#ivaa_obligg").html("");
+  }
+}
+
+function guardar_detalle_compra_vacunas(id){
+  var count = 0;
+  var arrego_alimento = new Array();
+  var arreglo_precio = new Array();
+  var arreglo_cantidad = new Array();
+  var arreglo_descuento = new Array();
+  var arreglo_subtotal = new Array();
+
+  $("#tabla_compra_vacunas tbody#tbody_tabla_compra_vacunas tr").each(
+    function () {
+      arrego_alimento.push($(this).find("td").eq(0).text());
+      arreglo_precio.push($(this).find("td").eq(3).text());
+      arreglo_cantidad.push($(this).find("#cantida_a").val());
+      arreglo_descuento.push($(this).find("#descuento_a").val());
+      arreglo_subtotal.push($(this).find("td").eq(6).text());
+      count++;
+    }
+  );
+
+  //aqui combierto el arreglo a un string
+  var ida = arrego_alimento.toString();
+  var precio = arreglo_precio.toString();
+  var cantidad = arreglo_cantidad.toString();
+  var descuento = arreglo_descuento.toString();
+  var total = arreglo_subtotal.toString();
+
+  if (count == 0) {
+    return false;
+  }
+
+  $.ajax({
+    url: "/compras/registrar_detalle_compra_vacuna",
+    type: "POST",
+    data: { 
+      id: id,
+      ida: ida,
+      precio: precio,
+      cantidad: cantidad,
+      descuento: descuento,
+      total: total,
+    },
+  }).done(function (resp) {
+    if (resp > 0) {
+      if (resp == 1) {
+        Swal.fire({
+          title: "Campra realizada con exito",
+          text: "Desea imprimir la compra??",
+          icon: "warning",
+          showCancelButton: true,
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Si, Imprimir!!",
+        }).then((result) => {
+          if (result.value) {
+            window.open("/reporte/compra_vacuna/" + parseInt(id) + "#zoom=100%", "Reporte de compra","scrollbards=No");
+          }
+        });
+        cargar_contenido('contenido_principal','/compra_vacunas');
+      }
+    } else {
+
+      return Swal.fire(
+        "Error",
+        "No se pudo crear el detalle de compra, falla en la matrix",
+        "error"
+      );
+
+    }
+  });
+}
+
+function anular_compa_vacunas(id){
+  Swal.fire({
+    title: "Anular la compra de vacuna?",
+    text: "La compra se anulará!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, anular!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      compra_vacuna_anular(id);
+    }
+  });
+}
+
+function compra_vacuna_anular(id) {
+  $.ajax({
+    url: "/compras/compra_vacuna_anular",
+    type: "POST",
+    data: { id: id },
+  }).done(function (response) {
+    if (response > 0) {
+      if (response == 1) {
+        cargar_contenido('contenido_principal','/compra_vacunas');
+        return Swal.fire(
+          "Compar de vacuna anulada",
+          "La compra se anulo con extio",
+          "success"
+        );
+      }
+    } else {
+      return Swal.fire(
+        "Error",
+        "No se pudo anular la compra, error en la matrix",
+        "error"
+      );
+    }
+  });
+}

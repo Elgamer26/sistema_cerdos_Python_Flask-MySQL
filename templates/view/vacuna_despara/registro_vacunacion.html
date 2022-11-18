@@ -1,0 +1,358 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-syringe"></i> Registro vacunación de cerdos</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Registro vacunación de cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Cerdos disponibles</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-lg-9 col-6">
+                        <label for="cerdo_id">Cerdo</label>
+                        <select class="form-control cerdo_id text-center" style="width: 100%" id="cerdo_id">
+                          <option value="0">--- Seleccione el cerdo ---</option>      
+                          {% for datas in data.cerdo %}
+                          <option value="{{datas[0]}}">Código: {{datas[1]}} - Sexo: {{datas[3]}} - Raza: {{datas[4]}} - peso: {{datas[6]}}Kg</option>
+                          {% endfor %}
+                        </select>
+                        <span style="color: red" id="cerdo_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-3 col-6">
+                        <label for="fecha_r">Fecha</label>
+                        <input type="date" value="{{data.fecha}}" class="form-control" id="fecha_r" />
+                        <span style="color: red" id="fecha_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-11 col-6">
+                        <label for="observacion">Observación</label>
+                        <input type="text" placeholder="Ingrese una observación" class="form-control" id="observacion" />
+                        <span style="color: red" id="observacion_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-1 col-6">
+                        <label>Calendario</label>
+                        <button type="button" onclick="modaal_calendario();" class="btn btn-danger"><i class="fa fa-calendar"></i></button> 
+                    </div> 
+
+
+                    <div class="col-lg-12 col-12">
+                        <div class="card card-info">
+                          <div class="card-header">
+                            <h3 class="card-title">Vacunas del cerdo</h3>
+                          </div>
+              
+                          <div class="card-body">
+                            <div class="row">
+
+                                <div class="form-group col-lg-8 col-6">
+                                    <label for="vacuna_id">Medicamento o vacuna</label>
+                                    <select class="form-control vacuna_id text-center" style="width: 100%" id="vacuna_id">
+                                        <option value="0">--- Seleccione el medicamento o vacuna  ---</option>      
+                                        {% for datas in data.vacuna %}
+                                        <option value="{{datas[0]}}">{{datas[1]}} - {{datas[2]}} - {{datas[4]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span style="color: red" id="vacunass_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-2 col-6">
+                                    <label for="disponible">Disponible</label>
+                                    <input type="text" readonly class="form-control disponible" id="disponible" />
+                                    <span style="color: red" id="disponible_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-2 col-6">
+                                    <label for="cantidad">Cantidad</label>
+                                    <input type="text" value="1" class="form-control cantidad" id="cantidad" />
+                                    <span style="color: red" id="cantidad_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-11 col-6">
+                                    <label for="motivo">Motivo de la vacuna</label>
+                                    <input type="text" placeholder="Ingrese una observación" class="form-control" id="motivo" />
+                                    <span style="color: red" id="motivo_obligg"></span>
+                                </div>
+
+                                <div class="form-group col-lg-1 col-6">
+                                    <label>Ingresar</label>
+                                    <button type="button" onclick="ingresar_tabla_vacunas();" class="btn btn-success"><i class="fa fa-download"></i></button> 
+                                </div>
+            
+                              <div class="form-group col-lg-12 col-6">
+                                  <table id="tabla_vacunacion" class="table table-display table-hover responsive nowrap text-center" style="width: 100%">
+                                      <thead style="background: orange;">
+                                          <tr>
+                                              <th hidden>Id cerdo</th> 
+                                              <th>Fecha</th>
+                                              <th>Vacunas</th>
+                                              <th>Cantidad</th>
+                                              <th>Motivo</th>
+                                              <th>Remover</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody id="tbody_tabla_vacunacion">
+                                          
+                                      </tbody>
+                                  </table>
+                              </div> 
+            
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+  
+              <div class="card-footer">
+                <button onclick="registra_vacunacion();" class="btn btn-success">
+                  <i class="fa fa-save"></i> Guadar
+                </button>
+                -
+                <button onclick="cargar_contenido('contenido_principal','/registro_vacunacion');" class="btn btn-danger">
+                  <i class="fa fa-svae"></i> Limpiar
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+
+<div class="modal fade" id="mooda_calendario_vacunas">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Calendario de vacunas</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+  
+                <div class="row">
+  
+                    <div class="form-group col-lg-12 col-6">
+                        
+                        <table id="tabla_vacuna_compra" class="table table-display table-hover responsive nowrap text-center" style="width: 100%" >
+                        <thead>
+                          <tr>
+                            <th hidden>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Cerdo</th>
+                            <th>Titulo</th>
+                            <th>Descripción</th> 
+                            <th>Fecha</th>
+                            <th>Tipo</th> 
+                          </tr>
+                        </thead>
+
+                        <tbody id="tbody_tabla_pasar">
+                            {% for a in data.calendario %}  
+                            <tr>
+                                <td hidden>{{a[0]}}</td>
+                                <td><buttin class="evniar_detalle btn btn-success"><i class="fa fa-check"></i> </button></td>
+                                <td>{{a[1]}}</td>
+                                <td>{{a[2]}}</td>
+                                <td>{{a[3]}}</td>                            
+                                <td>{{a[4]}}</td> 
+                                <td> <span style="font-size: 15px;" class="badge badge-warning">{{a[5]}}</span></td>
+                              </tr>                          
+                            {% endfor %}  
+                          </tbody>
+    
+                        <tfoot>
+                          <tr>
+                            <th hidden>#</th>
+                            <th>Acci&oacute;n</th>
+                            <th>Cerdo</th>
+                            <th>Titulo</th>
+                            <th>Descripción</th> 
+                            <th>Fecha</th>
+                            <th>Tipo</th> 
+                          </tr>
+                        </tfoot>
+                      </table>
+
+                    </div>  
+      
+                </div> 
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button> 
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+  
+  <script src="static/js/enfermedades.js"></script>
+  
+  <script>
+
+    $(".cerdo_id").select2();
+    $("#vacuna_id").select2(); 
+
+    $(document).on("change", "#vacuna_id", function(){
+        var id = $(this).val();
+        
+        $.ajax({
+            type: "POST",
+            url: "/vacunas/traer_cantidad_vacunas",
+            data: { id: id },
+            success: function (response) {
+                
+              if (response == 0) {
+                $(".cantidad").LoadingOverlay("hide");
+                $(".disponible").LoadingOverlay("hide");
+                $("#disponible").val("0");
+                $("#cantidad").val("1");
+              } else {
+                $(".cantidad").LoadingOverlay("hide");
+                $(".disponible").LoadingOverlay("hide");
+                $("#disponible").val(response[0]);
+              } 
+            },
+        
+            beforeSend: function () {
+              $("#cantidad").val("1");
+              $(".cantidad").LoadingOverlay("show");
+              $(".disponible").LoadingOverlay("show");
+            },
+          });
+    });
+    
+    function ingresar_tabla_vacunas()
+    {
+      var id = $("#vacuna_id").val();  
+      var txt = $("#vacuna_id option:selected").text(); 
+      var disponible = $("#disponible").val();  
+      var cantidad = $("#cantidad").val(); 
+      var motivo = $("#motivo").val();
+      var fecha_r = $("#fecha_r").val();  
+       
+      if(id == "0"){
+        $("#vacunass_obligg").html("Seleccione el medicamento o vacuna"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Seleccione el medicamento o vacuna",
+          "warning"
+        );
+      }else{
+        $("#vacunass_obligg").html("");
+      }
+
+      if(cantidad <= "0" || cantidad.trim() == "" || cantidad.length == 0){
+        $("#cantidad_obligg").html("Ingrese cantidad de vacunas"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Ingrese cantidad de vacunas",
+          "warning"
+        );
+      }else{
+        $("#cantidad_obligg").html("");
+      }
+
+      if(motivo.trim() == "" || motivo.length == 0){
+        $("#motivo_obligg").html("Ingrese motivo de la vacuna"); 
+        return Swal.fire(
+          "Campo vacío",
+          "Ingrese motivo de la vacuna",
+          "warning"
+        );
+      }else{
+        $("#motivo_obligg").html("");
+      }
+
+      if (validar_vaunas_id(id)) {
+        return Swal.fire(
+          "Mensaje de advertencia",
+          "La vacuna: '" +
+          txt +
+            "' , ya fue agregado al detalle",
+          "warning"
+        );
+      }
+
+      if(parseInt(cantidad) > parseInt(disponible)){
+        $("#cantidad_obligg").html("XXX"); 
+        $("#disponible_obligg").html("XXX"); 
+        return Swal.fire(
+          "Cantidad insuficiente",
+          "La cantidad ingresada: "+ cantidad +", supera la vacunas disponible: "+ disponible +"",
+          "warning"
+        );
+      }else{
+        $("#cantidad_obligg").html("");
+        $("#disponible_obligg").html(""); 
+      }
+
+      var datos_agg = "<tr>";
+        datos_agg += "<td hidden for='id'>" + id + "</td>";
+        datos_agg += "<td>" + fecha_r + "</td>";
+        datos_agg += "<td>" + txt + "</td>";
+        datos_agg += "<td>" + cantidad + "</td>";
+        datos_agg += "<td>" + motivo + "</td>";
+        datos_agg += "<td> <button class='remover btn btn-danger'><i class='fa fa-trash'></i></button></td>";
+        datos_agg += "</tr>";
+      
+        //esto me ayuda a enviar los datos a la tabla
+        $("#tbody_tabla_vacunacion").append(datos_agg); 
+        $("#cantidad").val("1");
+        $("#motivo").val("");
+    }
+
+    function validar_vaunas_id(id) {
+      let idverificar = document.querySelectorAll(
+        "#tbody_tabla_vacunacion td[for='id']"
+      );
+      return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
+    }
+
+    $("#tbody_tabla_vacunacion").on("click", ".remover", function () {
+      var td = this.parentNode;
+      var tr = td.parentNode;
+      var table = tr.parentNode;
+      table.removeChild(tr);
+    });
+
+    function modaal_calendario(){
+        $("#mooda_calendario_vacunas").modal({ backdrop: "static", keyboard: false });
+        $("#mooda_calendario_vacunas").modal("show");
+    }
+
+    $(".evniar_detalle").on("click", function(){
+        var id = $(this).parents("tr").find("td")[0].innerHTML; 
+        $("#cerdo_id").val(id).trigger("change");
+        $("#mooda_calendario_vacunas").modal("hide");
+    });
+    
+  </script>

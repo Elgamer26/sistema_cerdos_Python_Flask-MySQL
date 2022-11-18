@@ -436,3 +436,50 @@ def cambiar_foto_medicamento():
         except Exception as e:
             error = "Error " + str(e)
             return error
+
+# controlador para registrar la compra de la vacuna
+@compras.route('/registrar_compra_vacuna', methods=['POST'])
+def registrar_compra_vacuna():
+    if request.method == 'POST':
+        _id = session['id_usu']
+        _id_pro = request.form['proveedor']
+        _fecha_c = request.form['fecha_c']
+        _numero_compra = request.form['numero_compra']
+        _tipo_comprobante = request.form['tipo_comprobante']
+        _iva = request.form['iva']
+        _subtotal = request.form['subtotal']
+        _impuesto_sub = request.form['impuesto_sub']
+        _total_pagar = request.form['total_pagar'] 
+
+        dato = Compras.Registrar_compra_vacuna(_id_pro, _fecha_c, _numero_compra, _tipo_comprobante, _iva, _subtotal, _impuesto_sub, _total_pagar, _id)
+        return str(dato)
+
+# controlador para registra el detalle de compra de vacunas
+@compras.route('/registrar_detalle_compra_vacuna', methods=['POST'])
+def registrar_detalle_compra_vacuna():
+    if request.method == 'POST':
+
+        _id = request.form['id']
+        _ida = request.form['ida']
+        _precio = request.form['precio']
+        _cantidad = request.form['cantidad'] 
+        _descuento = request.form['descuento'] 
+        _total = request.form['total'] 
+
+        ida = _ida.split(",")
+        precio = _precio.split(",")
+        cantidad = _cantidad.split(",") 
+        descuento = _descuento.split(",")
+        total = _total.split(",") 
+
+        for valor in zip(ida, precio, cantidad, descuento, total):
+            dato = Compras.Registrar_detalle_compra_vacuna(_id, valor[0], valor[1], valor[2], valor[3], valor[4])  
+        return jsonify(dato)
+
+# controlador para anular la compra de vacuna
+@compras.route('/compra_vacuna_anular', methods=['POST'])
+def compra_vacuna_anular():    
+    if request.method == 'POST':
+        _id = request.form['id']   
+        dato = Compras.Compra_vacuna_anular(_id)   
+        return str(dato)
