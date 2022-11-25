@@ -77,7 +77,7 @@ class Usuario():
                         WHERE
                             cerdo.estado = 1 
                         ORDER BY
-                        cerdo.peso DESC""")
+                        cerdo.peso DESC LIMIT 10""")
             data = query.fetchall()
             query.close()
             if not data:
@@ -94,7 +94,7 @@ class Usuario():
     def crear_rol(_rol):
         try:
             query = mysql.connection.cursor()
-            query.execute('SELECT * FROM rol WHERE binary rol = "{0}"'. format(_rol))
+            query.execute('SELECT * FROM rol WHERE rol = "{0}"'. format(_rol))
             data = query.fetchone()
             if not data:
                 query.execute('INSERT INTO rol (rol) VALUES ("{0}")'.format(_rol))
@@ -143,7 +143,7 @@ class Usuario():
     def Listar_rol():
         try:
             query = mysql.connection.cursor()
-            query.execute('SELECT * FROM rol')
+            query.execute('SELECT * FROM rol ORDER BY rol_id ASC')
             data = query.fetchall()
             query.close()
             new_lista = []
@@ -192,7 +192,7 @@ class Usuario():
     def Editar_rol(_rol, _id):
         try:
             query = mysql.connection.cursor()
-            query.execute('SELECT * FROM rol WHERE binary rol = "{0}" AND rol_id != "{1}"'. format(_rol, _id))
+            query.execute('SELECT * FROM rol WHERE rol = "{0}" AND rol_id != "{1}"'. format(_rol, _id))
             data = query.fetchone()
             if not data:
                 query.execute('UPDATE rol SET rol = "{0}" WHERE rol_id = "{1}"'.format(_rol, _id))
@@ -222,29 +222,53 @@ class Usuario():
             return error
         return 0
 
-    # modelo para crear un nuevo usuario
-    def Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo):
+   # modelo para validara los datos existetes de un usuario
+    def Validar_datos_usuario_register(usuario, correo, cedula):
         try:
             query = mysql.connection.cursor()
+            query.execute('SELECT * FROM usuario WHERE usuario = "{0}"'. format(usuario))
+            data = query.fetchone()
+            if not data:
+                query.execute('SELECT * FROM usuario WHERE correo = "{0}"'. format(correo))
+                datac = query.fetchone()
+                if not datac:                    
+                    query.execute('SELECT * FROM usuario WHERE cedula = "{0}"'. format(cedula))
+                    datacc = query.fetchone()
+                    if not datacc:                        
+                        query.close()
+                        return 1  # todo bien                    
+                    else:                        
+                        query.close()
+                        return 4 # cedula ya existe                      
+                else:
+                    query.close()
+                    return 3 # correo ya existe
+            else:
+                query.close()
+                return 2 # usuario ya existe
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
 
+    # modelo para crear un nuevo usuario
+    def Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo, _cedula):
+        try:
+            query = mysql.connection.cursor()
             query.execute('SELECT * FROM usuario WHERE usuario = "{0}"'. format(_usuario))
             data = query.fetchone()
             if not data:
-
                 query.execute('SELECT * FROM usuario WHERE correo = "{0}"'. format(_correo))
                 datac = query.fetchone()
                 if not datac:
-
-                    query.execute('INSERT INTO usuario (nombres, apellidos, usuario, passwordd, rol_id, domicilio, telefono, foto, correo) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}")'.format(_nombres, _apellidos, _usuario, _password, _tipo_rol, _domicilio, _telefono, archivo, _correo))
+                    query.execute('INSERT INTO usuario (nombres, apellidos, usuario, passwordd, rol_id, domicilio, telefono, foto, correo, cedula) VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}","{7}","{8}","{9}")'.format(_nombres, _apellidos, _usuario, _password, _tipo_rol, _domicilio, _telefono, archivo, _correo, _cedula))
                     query.connection.commit()
                     query.close()
                     return 1  # se inserto correcto
-
                 else:
-
                     query.close()
                     return 3 # correo ya existe
-
             else:
                 query.close()
                 return 2 # usuario ya existe
@@ -270,10 +294,11 @@ class Usuario():
                         usuario.foto,
                         usuario.estado,
                         rol.rol,
-                        usuario.correo
+                        usuario.correo,
+                        usuario.cedula
                         FROM
                         usuario
-                        INNER JOIN rol ON usuario.rol_id = rol.rol_id""")
+                        INNER JOIN rol ON usuario.rol_id = rol.rol_id ORDER BY usuario_id DESC""")
             data = query.fetchall()
             query.close()
             new_lista = []
@@ -291,6 +316,7 @@ class Usuario():
                 dic["estado"] = datos[9]
                 dic["rol"] = datos[10]
                 dic["correo"] = datos[11]
+                dic["cedula"] = datos[12]
                 new_lista.append(dic)
             return {"data": new_lista}
         except Exception as e:
@@ -314,27 +340,29 @@ class Usuario():
         return 0
 
     # modelo para editar el usuario
-    def Editar_usuario(_id, _nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _correo):
+    def Editar_usuario(_id, _nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _correo, _cedula):
         try:
             query = mysql.connection.cursor()
 
             query.execute('SELECT * FROM usuario WHERE usuario = "{0}" AND usuario_id != "{1}"'. format(_usuario, _id))
             data = query.fetchone()
             if not data:
-
                 query.execute('SELECT * FROM usuario WHERE correo = "{0}" AND usuario_id != "{1}"'. format(_correo, _id))
                 datac = query.fetchone()
                 if not datac:
-
-                    query.execute('UPDATE usuario SET nombres = "{0}", apellidos = "{1}", usuario = "{2}", rol_id = "{3}", domicilio = "{4}", telefono = "{5}", correo = "{6}" WHERE usuario_id = "{7}"'.format(_nombres, _apellidos, _usuario, _tipo_rol, _domicilio, _telefono, _correo, _id))
-                    query.connection.commit()
-                    query.close()
-                    return 1  # se inserto correcto
-                
+                    query.execute('SELECT * FROM usuario WHERE cedula = "{0}" AND usuario_id != "{1}"'. format(_cedula, _id))
+                    datacc = query.fetchone()
+                    if not datacc:                        
+                        query.execute('UPDATE usuario SET nombres = "{0}", apellidos = "{1}", usuario = "{2}", rol_id = "{3}", domicilio = "{4}", telefono = "{5}", correo = "{6}", cedula = "{7}" WHERE usuario_id = "{8}"'.format(_nombres, _apellidos, _usuario, _tipo_rol, _domicilio, _telefono, _correo, _cedula, _id))
+                        query.connection.commit()
+                        query.close()
+                        return 1  # se inserto correcto                    
+                    else:                        
+                        query.close()
+                        return 4 # cedula ya existe 
                 else:
                     query.close()
                     return 3 # correo ya existe
-
             else:
                 query.close()
                 return 2 # usuario ya existe
@@ -415,7 +443,9 @@ class Usuario():
             usuario.telefono,
             usuario.foto,
             usuario.estado,
-            rol.rol 
+            rol.rol,
+            usuario.correo,
+            usuario.cedula
             FROM
             usuario
             INNER JOIN rol ON usuario.rol_id = rol.rol_id WHERE usuario.usuario_id = '{0}' AND usuario.rol_id = '{1}'""".format(_id, _id_rol))
@@ -429,16 +459,28 @@ class Usuario():
         return 0
 
     # modelo para editar el usuario loegado
-    def Editar_usuario_loegado(_id, _nombres, _apellidos, _domicilio, _telefono, _usuario):
+    def Editar_usuario_loegado(_id, _nombres, _apellidos, _domicilio, _telefono, _usuario, _correp, _cedula):
         try:
             query = mysql.connection.cursor()
             query.execute('SELECT * FROM usuario WHERE usuario = "{0}" AND usuario_id != "{1}"'. format(_usuario, _id))
             data = query.fetchone()
             if not data:
-                query.execute('UPDATE usuario SET nombres = "{0}", apellidos = "{1}", usuario = "{2}", domicilio = "{3}", telefono = "{4}" WHERE usuario_id = "{5}"'.format(_nombres, _apellidos, _usuario, _domicilio, _telefono, _id))
-                query.connection.commit()
-                query.close()
-                return 1  # se inserto correcto
+                query.execute('SELECT * FROM usuario WHERE correo = "{0}" AND usuario_id != "{1}"'. format(_correp, _id))
+                datac = query.fetchone()
+                if not datac:                    
+                    query.execute('SELECT * FROM usuario WHERE cedula = "{0}" AND usuario_id != "{1}"'. format(_cedula, _id))
+                    datacc = query.fetchone()
+                    if not datacc:                        
+                        query.execute('UPDATE usuario SET nombres = "{0}", apellidos = "{1}", usuario = "{2}", domicilio = "{3}", telefono = "{4}", correo = "{5}", cedula = "{6}" WHERE usuario_id = "{7}"'.format(_nombres, _apellidos, _usuario, _domicilio, _telefono, _correp, _cedula, _id))
+                        query.connection.commit()
+                        query.close()
+                        return 1  # se inserto correcto                    
+                    else:                        
+                        query.close()
+                        return 4 # cedula ya existe                      
+                else:
+                    query.close()
+                    return 3 # correo ya existe
             else:
                 query.close()
                 return 2 # usuario ya existe

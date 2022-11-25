@@ -656,3 +656,103 @@ class Reportes():
             return error
         return 0
  
+    ######################### VACUNACION DEL CERDO
+
+    #modelo para listar la vacunacion del cerdo
+    def vacunacion_cerdos(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        vacunacion.id,
+                        concat_ws(' ',  cerdo.codigo, ' - ',
+                        cerdo.sexo, ' - ',
+                        raza.raza) as cerdo,
+                        vacunacion.fecha,
+                        vacunacion.observacion,
+                        vacunacion.estado 
+                        FROM
+                        vacunacion
+                        INNER JOIN cerdo ON vacunacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza WHERE vacunacion.id='{0}'""". format(id))
+            data = query.fetchone()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+      
+    #modelo para traer el detalle de la vacunacion
+    def Detalle_vacunacion_cerdos(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        CONCAT_WS( ' ', vacuna.nombre, ' - ', tipo_vacuna.tipo_vacuna ) AS vacuna,
+                        detalle_vacunacion.cantidad,
+                        detalle_vacunacion.motivo 
+                    FROM
+                        detalle_vacunacion
+                        INNER JOIN vacuna ON detalle_vacunacion.vacuna_id = vacuna.id
+                        INNER JOIN tipo_vacuna ON vacuna.tipo_id = tipo_vacuna.id 
+                    WHERE
+                        detalle_vacunacion.vacunacion_id='{0}'""".format(id))
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+ 
+    ######################### DESPARASITACION DEL CERDO
+
+    #modelo para listar la desparasitacion del cerdo
+    def desparasitacion_cerdos(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        desparasitacion.id,
+                        concat_ws(' ',  cerdo.codigo, ' - ',
+                        cerdo.sexo, ' - ',
+                        raza.raza) as cerdo,
+                        desparasitacion.fecha,
+                        desparasitacion.observacion,
+                        desparasitacion.estado 
+                        FROM
+                        desparasitacion
+                        INNER JOIN cerdo ON desparasitacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza WHERE desparasitacion.id='{0}'""". format(id))
+            data = query.fetchone()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+      
+    #modelo para traer el detalle de la desparasitacion
+    def Detalle_desparasitacion_cerdos(id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        CONCAT_WS( ' ', medicamento.nombre, ' - ', tipo_medicamento.tipo ) AS medicina,
+                        detalle_desparasitacion.cantidad,
+                        detalle_desparasitacion.motivo 
+                        FROM
+                            detalle_desparasitacion
+                            INNER JOIN medicamento ON detalle_desparasitacion.medicina_id = medicamento.id
+                            INNER JOIN tipo_medicamento ON medicamento.tipo_id = tipo_medicamento.id 
+                        WHERE
+                        detalle_desparasitacion.desparasitacion_id='{0}'""".format(id))
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+ 

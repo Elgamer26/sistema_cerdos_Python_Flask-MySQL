@@ -470,6 +470,37 @@
              
                   </ul>
                 </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-circle"></i>
+                    <p>
+                      Ventas y pedidos
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_alimento');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Nueva venta</p>
+                      </a>
+                    </li>       
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_insumos');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Listado de ventas</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/compra_medicamento');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Pedidos</p>
+                      </a>
+                    </li>
+             
+                  </ul>
+                </li>
               </ul>
             </li>
 
@@ -645,22 +676,28 @@
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle"></i>
                     <p>
-                      Tratamientos para cerdos enfermos
+                      Desparasitación 
                       <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
                   <ul class="nav nav-treeview">
 
                     <li class="nav-item">
-                      <a onclick="cargar_contenido('contenido_principal','/tratar_cerdos');" class="nav-link">
+                      <a onclick="cargar_contenido('contenido_principal','/registro_desparasitacion');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Tratar cerdos</p>
+                        <p>Registro de desparasitación</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a onclick="cargar_contenido('contenido_principal','/listado_tratamientos');" class="nav-link">
+                      <a onclick="cargar_contenido('contenido_principal','/listado_desparasitacion');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Listado de tratamientos</p>
+                        <p>Listado de desparasitación</p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a onclick="cargar_contenido('contenido_principal','/historia_desparasitacion');" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Historial de desparasitación</p>
                       </a>
                     </li>
  
@@ -705,7 +742,7 @@
                     <li class="nav-item">
                       <a onclick="cargar_contenido('contenido_principal','/informa_compra_medicamentos');" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Medicamentos</p>
+                        <p>Medicamentos o desparasitantes</p>
                       </a>
                     </li>
              
@@ -872,6 +909,7 @@
         </div>
         <!-- /.container-fluid -->
       </section>
+
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
@@ -917,6 +955,7 @@
   
   <!-- script del js -->
   <script src="{{url_for('static', filename='js/system.js')}}"></script>
+  <script src="{{url_for('static', filename='js/numero.min.js')}}"></script>
 </body>
 
 </html>
@@ -936,34 +975,46 @@
           <div class="form-group col-lg-6 col-6">
             <label for="nombres_l">Nombres</label>
             <input type="text" maxlength="60" class="form-control" id="nombres_l" placeholder="Ingrese nombres"
-              onkeypress="return soloLetras(event)" />
+              onkeypress="return soloLetras(event)" autocomplete="off" />
             <span style="color: red" id="nombre_oblig_l"></span>
           </div>
 
           <div class="form-group col-lg-6 col-6">
             <label for="apellidos_l">Apellidos</label>
             <input type="text" maxlength="60" class="form-control" id="apellidos_l" placeholder="Ingrese apellidos"
-              onkeypress="return soloLetras(event)" />
+              onkeypress="return soloLetras(event)" autocomplete="off" />
             <span style="color: red" id="apellidos_obligg_l"></span>
           </div>
 
           <div class="form-group col-lg-6 col-6">
             <label for="domicilio_l">Domicilio</label>
-            <input type="text" maxlength="60" class="form-control" id="domicilio_l" placeholder="Ingrese domicilio" />
+            <input type="text" maxlength="60" class="form-control" id="domicilio_l" placeholder="Ingrese domicilio" autocomplete="off" />
             <span style="color: red" id="domicilio_obligg_l"></span>
           </div>
 
           <div class="form-group col-lg-6 col-6">
             <label for="telefono_l">Telefono</label>
             <input type="text" maxlength="10" class="form-control" id="telefono_l" placeholder="Ingrese telefono"
-              onkeypress="return soloNumeros(event)" />
+              onkeypress="return soloNumeros(event)" autocomplete="off" />
             <span style="color: red" id="telefono_obligg_l"></span>
           </div>
 
           <div class="form-group col-lg-6 col-6">
             <label for="usuario_l">Usuario</label>
-            <input type="text" maxlength="35" class="form-control" id="usuario_l" placeholder="Ingrese usuario" />
+            <input type="text" maxlength="35" class="form-control" id="usuario_l" placeholder="Ingrese usuario" autocomplete="off" onpaste="return false" />
             <span style="color: red" id="usuario_obligg_l"></span>
+          </div>
+
+          <div class="form-group col-lg-6 col-6">
+            <label for="correo_l">Correo</label>
+            <input type="text" maxlength="60" class="form-control" id="correo_l" placeholder="Ingrese correo" autocomplete="off" onpaste="return false" />
+            <span style="color: red" id="correo_obligg_l"></span>
+          </div>
+
+          <div class="form-group col-lg-6 col-6">
+            <label for="cedula_l">Cédula</label>
+            <input type="text" maxlength="11" class="form-control" id="cedula_l" placeholder="Ingrese cédula" onkeypress="return soloNumeros(event)" autocomplete="off" onpaste="return false" />
+            <span style="color: red" id="cedula_obligg_l"></span>
           </div>
         </div>
       </div>
@@ -1083,6 +1134,8 @@
 
 <script>
   var pass_usus_l = false;
+  var G_cedula = true;
+  var G_correo = true;
   Diez_cerdos_gordos();
   datos_usuarios_logeo();
 
@@ -1272,4 +1325,76 @@
   function generar_numero(numero) {
     return (Math.random() * numero).toFixed(0);
   }
+
+  /////////////////  
+  $("#correo_l").keyup(function() {
+    if (this.value != "") {
+      document.getElementById('correo_l').addEventListener('input', function() {
+          campo = event.target;
+          //este codigo me da formato email
+          email = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+          //esto es para validar si es un email valida
+          if (email.test(campo.value)) {
+              //estilos para cambiar de color y ocultar el boton
+              $(this).css("border", "1px solid green");
+              $("#correo_obligg_l").html(""); 
+              G_correo = true;
+          } else {
+              $(this).css("border", "1px solid red");
+              $("#correo_obligg_l").html("Email incorrecto"); 
+              G_correo = false;
+          }
+      });
+    } else {
+        $(this).css("border", "1px solid green");
+        $("#correo_obligg_l").html("");
+        G_correo = false;
+    }
+  });
+
+  $("#cedula_l").keyup(function() {
+    if (this.value != "") {
+        var cad = document.getElementById("cedula_l").value.trim();
+        var total = 0;
+        var longitud = cad.length;
+        var longcheck = longitud - 1;
+
+        if (cad != "") {
+            if (cad !== "" && longitud === 10) {
+                for (i = 0; i < longcheck; i++) {
+                    if (i % 2 === 0) {
+                        var aux = cad.charAt(i) * 2;
+                        if (aux > 9) aux -= 9;
+                        total += aux;
+                    } else {
+                        total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar           
+                    }
+                }
+                total = total % 10 ? 10 - total % 10 : 0;
+                if (cad.charAt(longitud - 1) == total) {
+                    $(this).css("border", "1px solid green");
+                    $("#cedula_obligg_l").html("");
+                    G_cedula = true;
+                } else {
+                    document.getElementById("cedula_obligg_l").innerHTML = ("cédula Inválida");
+                    $(this).css("border", "1px solid red");
+                    G_cedula = false;
+                }
+            } else {
+                document.getElementById("cedula_obligg_l").innerHTML = ("La cédula no tiene 10 digitos");
+                $(this).css("border", "1px solid red");
+                G_cedula = false;
+            }
+        } else {
+            document.getElementById("cedula_obligg_l").innerHTML = ("Debe ingresar una cédula");
+            $(this).css("border", "1px solid red");
+            G_cedula = false;
+        }
+    } else {
+        $(this).css("border", "1px solid green");
+        $("#cedula_obligg_l").html("");
+        G_cedula = false;
+    }
+  });
 </script>

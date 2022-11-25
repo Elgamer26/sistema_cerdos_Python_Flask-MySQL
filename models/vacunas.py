@@ -1,4 +1,3 @@
-from turtle import title
 from utils.db import mysql
 from datetime import datetime
 
@@ -333,7 +332,7 @@ class Vacunas():
             return error
         return 0
    
-    # modelo para listra en la tabla el calendario de vacunas
+    # modelo para listar en la tabla el calendario de vacunas
     def Tabla_calendario_vacunas():
         try:
             query = mysql.connection.cursor()
@@ -360,5 +359,451 @@ class Vacunas():
             return error
         return 0
     
-     
+    # modelo para listar en la tabla el calendario de desparasitados
+    def Tabla_calendario_desparacitacion():
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        calendario.id_cerdo,
+                        CONCAT_WS( ' ', 'Codigo: ', cerdo.codigo, '- Raza: ', raza.raza, '- Sexo: ', cerdo.sexo ) AS cerdo,
+                        calendario.title,
+                        calendario.descripcion,
+                        calendario.`start`,
+                        calendario.tipo 
+                        FROM
+                        calendario
+                        INNER JOIN cerdo ON calendario.id_cerdo = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza 
+                        WHERE
+                        calendario.estado = 1 
+                        AND calendario.tipo = 'Desparasitación'""")
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para registrar la vacunacion del cerdo
+    def Registro_vacunacion_cerdo(cerdo_id, fecha, observacion):
+        try:
+            query = mysql.connection.cursor()
+            query.execute('INSERT INTO vacunacion (cerdo_id,fecha,observacion) VALUES ("{0}","{1}","{2}")'.format(cerdo_id,fecha,observacion))
+            query.connection.commit()
+            
+            # me devuelve el ultimo id insertado
+            id = query.lastrowid
+            
+            query.execute("DELETE FROM calendario WHERE id_cerdo='{0}' AND tipo='Vacuna' AND estado=1".format(cerdo_id))
+            query.connection.commit()
+            
+            query.close()
+            return id
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para registra el detalle de la vacunacion
+    def Registro_detalle_vacunacion_cerdo(_id, idv, fecha, cantidad, motivo):
+        try:
+            query = mysql.connection.cursor()         
+            query.execute('INSERT INTO detalle_vacunacion (vacunacion_id,vacuna_id,fecha,cantidad,motivo) VALUES ("{0}","{1}","{2}","{3}","{4}")'.format(_id,idv,fecha,cantidad,motivo))
+            query.connection.commit()
+
+            query.execute('UPDATE vacuna SET cantidad = cantidad - "{0}" WHERE id = "{1}" '.format(cantidad,idv))
+            query.connection.commit()
+
+            query.close()
+            return 1  # se inserto correcto
+
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra las vacunaciones de los cerdos
+    def Listar_vacunaciones_cerdos():
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        vacunacion.id,
+                        cerdo.codigo,
+                        cerdo.sexo,
+                        raza.raza,
+                        vacunacion.fecha,
+                        vacunacion.observacion,
+                        vacunacion.estado 
+                    FROM
+                        vacunacion
+                        INNER JOIN cerdo ON vacunacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza""")
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra las vacunaciones de los cerdos por fechas
+    def Listar_vacunaciones_cerdos_fecha(f_i, f_f):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        vacunacion.id,
+                        cerdo.codigo,
+                        cerdo.sexo,
+                        raza.raza,
+                        vacunacion.fecha,
+                        vacunacion.observacion,
+                        vacunacion.estado 
+                        FROM
+                        vacunacion
+                        INNER JOIN cerdo ON vacunacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza 
+                        WHERE vacunacion.fecha BETWEEN '{0}' AND '{1}' """.format(f_i, f_f))
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para anular la vacunación del cerdo
+    def Anular_vacunacion_cerdo(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        detalle_vacunacion.vacuna_id,
+                        detalle_vacunacion.cantidad 
+                        FROM
+                            detalle_vacunacion 
+                        WHERE
+                        detalle_vacunacion.vacunacion_id='{0}'""".format(_id))
+            data_d = query.fetchall()
+            
+            for dato in data_d: 
+                query.execute('UPDATE vacuna SET cantidad = cantidad + {0} WHERE id = "{1}"'.format(dato[1], str(dato[0])))
+                query.connection.commit()
+
+            query.execute('UPDATE vacunacion SET estado = 0 WHERE id = {0}'.format(_id))
+            query.connection.commit()
+
+            query.execute('UPDATE detalle_vacunacion SET estado = 0 WHERE vacunacion_id = "{0}"'.format(_id))
+            query.connection.commit()
+            query.close() 
+            return 1
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+
+    # modelo para listra las vacunaciones de los cerdos por fechas
+    def Buscar_historia_vacunacion_cerdo(_id, _f_i, _f_f):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        vacunacion.id,
+                        CONCAT_WS(' ', cerdo.codigo, cerdo.sexo, raza.raza) AS cerdo,
+                        vacunacion.fecha,
+                        vacunacion.observacion,
+                        vacunacion.estado 
+                        FROM
+                        vacunacion
+                        INNER JOIN cerdo ON vacunacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza 
+                        WHERE vacunacion.fecha BETWEEN '{0}' AND '{1}' 
+                        AND vacunacion.cerdo_id='{2}' 
+                        AND vacunacion.estado=1 
+                        ORDER BY vacunacion.id DESC""".format(_f_i, _f_f, _id))
+            data = query.fetchall()
+            if not data:
+                query.close()
+                return 0
+            else:
+                new_lista = []
+                for datos in data:
+                    dic = {}
+                    dic["id"] = datos[0]
+                    dic["cerdo"] = datos[1]
+                    Convert = datetime.strptime(str(datos[2]), '%Y-%m-%d')
+                    dic["fecha"] = Convert.strftime('%Y-%m-%d')
+                    dic["observacion"] = datos[3]
+                    dic["estado"] = datos[4] 
+                    new_lista.append(dic)
+                query.close()
+                return {"data": new_lista}
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra el detalle de vacunas del cerdo
+    def Ver_detalle_vacunas_cerdo(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        detalle_vacunacion.fecha,
+                        CONCAT_WS( ' ', vacuna.nombre, ' - ', tipo_vacuna.tipo_vacuna ) AS vacuna,
+                        detalle_vacunacion.cantidad,
+                        detalle_vacunacion.motivo
+                        FROM
+                        detalle_vacunacion
+                        INNER JOIN vacuna ON detalle_vacunacion.vacuna_id = vacuna.id
+                        INNER JOIN tipo_vacuna ON vacuna.tipo_id = tipo_vacuna.id 
+                        WHERE
+                        detalle_vacunacion.vacunacion_id='{0}'""".format(_id))
+            data = query.fetchall()
+            if not data:
+                query.close()
+                return 0
+            else:
+                new_lista = []
+                for datos in data:
+                    dic = {}
+                    Convert = datetime.strptime(str(datos[0]), '%Y-%m-%d')
+                    dic["fecha"] = Convert.strftime('%Y-%m-%d')
+                    dic["vacuna"] = datos[1]
+                    dic["cantidad"] = datos[2]
+                    dic["motivo"] = datos[3] 
+                    new_lista.append(dic)
+                query.close()
+                return {"data": new_lista}
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para traer la cantidad de medicamento 
+    def Traer_cantidad_medicamento(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT 
+                        medicamento.cantidad
+                        FROM
+                        medicamento WHERE medicamento.estado = 1 AND medicamento.id = '{0}'""".format(_id))
+            data = query.fetchone()
+            query.close()
+            if not data: 
+                return 0
+            else:
+                return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+   
+    # modelo para registrar la desparasitacion del cerdo
+    def Registro_desparasitacion_cerdo(cerdo_id, fecha, observacion):
+        try:
+            query = mysql.connection.cursor()
+            query.execute('INSERT INTO desparasitacion (cerdo_id,fecha,observacion) VALUES ("{0}","{1}","{2}")'.format(cerdo_id,fecha,observacion))
+            query.connection.commit()
+            
+            # me devuelve el ultimo id insertado
+            id = query.lastrowid
+            
+            query.execute("DELETE FROM calendario WHERE id_cerdo='{0}' AND tipo='Desparasitación' AND estado=1".format(cerdo_id))
+            query.connection.commit()
+            
+            query.close()
+            return id
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para registra el detalle de la desparasitacion
+    def Registro_detalle_desparasitacion_cerdo(_id, idv, fecha, cantidad, motivo):
+        try:
+            query = mysql.connection.cursor()         
+            query.execute('INSERT INTO detalle_desparasitacion (desparasitacion_id,medicina_id,fecha,cantidad,motivo) VALUES ("{0}","{1}","{2}","{3}","{4}")'.format(_id,idv,fecha,cantidad,motivo))
+            query.connection.commit()
+
+            query.execute('UPDATE medicamento SET cantidad = cantidad - "{0}" WHERE id = "{1}" '.format(cantidad,idv))
+            query.connection.commit()
+
+            query.close()
+            return 1  # se inserto correcto
+
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra las desparasitacion de los cerdos
+    def Listar_desparasitacion_cerdos():
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        desparasitacion.id,
+                        cerdo.codigo,
+                        cerdo.sexo,
+                        raza.raza,
+                        desparasitacion.fecha,
+                        desparasitacion.observacion,
+                        desparasitacion.estado 
+                    FROM
+                        desparasitacion
+                        INNER JOIN cerdo ON desparasitacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza""")
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra las desparasitacion de los cerdos por fechas
+    def Listar_desparasitacion_cerdos_fecha(f_i, f_f):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        desparasitacion.id,
+                        cerdo.codigo,
+                        cerdo.sexo,
+                        raza.raza,
+                        desparasitacion.fecha,
+                        desparasitacion.observacion,
+                        desparasitacion.estado 
+                        FROM
+                        desparasitacion
+                        INNER JOIN cerdo ON desparasitacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza 
+                        WHERE desparasitacion.fecha BETWEEN '{0}' AND '{1}' """.format(f_i, f_f))
+            data = query.fetchall()
+            query.close()
+            return data
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para anular la desparasitacion del cerdo
+    def Anular_desparasitacion_cerdo(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        detalle_desparasitacion.medicina_id,
+                        detalle_desparasitacion.cantidad 
+                        FROM
+                            detalle_desparasitacion 
+                        WHERE
+                        detalle_desparasitacion.desparasitacion_id='{0}'""".format(_id))
+            data_d = query.fetchall()
+            
+            for dato in data_d: 
+                query.execute('UPDATE medicamento SET cantidad = cantidad + {0} WHERE id = "{1}"'.format(dato[1], str(dato[0])))
+                query.connection.commit()
+
+            query.execute('UPDATE desparasitacion SET estado = 0 WHERE id = {0}'.format(_id))
+            query.connection.commit()
+
+            query.execute('UPDATE detalle_desparasitacion SET estado = 0 WHERE desparasitacion_id = "{0}"'.format(_id))
+            query.connection.commit()
+            query.close() 
+            return 1
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+
+    # modelo para listra las desparasitacion de los cerdos por fechas
+    def buscar_historia_desparasitacion_cerdo(_id, _f_i, _f_f):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        desparasitacion.id,
+                        CONCAT_WS( ' ', cerdo.codigo, cerdo.sexo, raza.raza ) AS cerdo,
+                        desparasitacion.fecha,
+                        desparasitacion.observacion,
+                        desparasitacion.estado 
+                    FROM
+                        desparasitacion
+                        INNER JOIN cerdo ON desparasitacion.cerdo_id = cerdo.id_cerdo
+                        INNER JOIN raza ON cerdo.raza = raza.id_raza 
+                    WHERE
+                        desparasitacion.fecha BETWEEN '{0}' 
+                        AND '{1}' 
+                        AND desparasitacion.cerdo_id = '{2}' 
+                        AND desparasitacion.estado = 1 
+                    ORDER BY
+                        desparasitacion.id DESC""".format(_f_i, _f_f, _id))
+            data = query.fetchall()
+            if not data:
+                query.close()
+                return 0
+            else:
+                new_lista = []
+                for datos in data:
+                    dic = {}
+                    dic["id"] = datos[0]
+                    dic["cerdo"] = datos[1]
+                    Convert = datetime.strptime(str(datos[2]), '%Y-%m-%d')
+                    dic["fecha"] = Convert.strftime('%Y-%m-%d')
+                    dic["observacion"] = datos[3]
+                    dic["estado"] = datos[4] 
+                    new_lista.append(dic)
+                query.close()
+                return {"data": new_lista}
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
+    
+    # modelo para listra el detalle de desparasitantes del cerdo
+    def Ver_detalle_desparsitantes_cerdo(_id):
+        try:
+            query = mysql.connection.cursor()
+            query.execute("""SELECT
+                        detalle_desparasitacion.fecha,
+                        CONCAT_WS( ' ', medicamento.nombre, ' - ', tipo_medicamento.tipo ) AS medicina,
+                        detalle_desparasitacion.cantidad,
+                        detalle_desparasitacion.motivo 
+                    FROM
+                        detalle_desparasitacion
+                        INNER JOIN medicamento ON detalle_desparasitacion.medicina_id = medicamento.id
+                        INNER JOIN tipo_medicamento ON medicamento.tipo_id = tipo_medicamento.id 
+                    WHERE
+                        detalle_desparasitacion.desparasitacion_id='{0}'""".format(_id))
+            data = query.fetchall()
+            if not data:
+                query.close()
+                return 0
+            else:
+                new_lista = []
+                for datos in data:
+                    dic = {}
+                    Convert = datetime.strptime(str(datos[0]), '%Y-%m-%d')
+                    dic["fecha"] = Convert.strftime('%Y-%m-%d')
+                    dic["desparasitante"] = datos[1]
+                    dic["cantidad"] = datos[2]
+                    dic["motivo"] = datos[3] 
+                    new_lista.append(dic)
+                query.close()
+                return {"data": new_lista}
+        except Exception as e:
+            query.close()
+            error = "Ocurrio un problema: " + str(e)
+            return error
+        return 0
     

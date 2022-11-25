@@ -2,13 +2,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0"><i class="fa fa-syringe"></i> Registro vacunación de cerdos</h1>
+          <h1 class="m-0"> <i class="fa fa-capsules"></i> Registro desparasitación de cerdos</h1>
         </div>
   
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
-            <li class="breadcrumb-item active">Registro vacunación de cerdos</li>
+            <li class="breadcrumb-item active">Registro desparasitación de cerdos</li>
           </ol>
         </div>
       </div>
@@ -65,14 +65,14 @@
                             <div class="row">
 
                                 <div class="form-group col-lg-8 col-6">
-                                    <label for="vacuna_id">Vacuna</label>
-                                    <select class="form-control vacuna_id text-center" style="width: 100%" id="vacuna_id">
-                                        <option value="0">--- Seleccione la vacuna  ---</option>      
-                                        {% for datas in data.vacuna %}
+                                    <label for="despasitante_id">Medicamento o desparasitante</label>
+                                    <select class="form-control despasitante_id text-center" style="width: 100%" id="despasitante_id">
+                                        <option value="0">--- Seleccione el medicamento o desparasitante  ---</option>      
+                                        {% for datas in data.medicamento %}
                                         <option value="{{datas[0]}}">{{datas[1]}} - {{datas[2]}} - {{datas[4]}}</option>
                                         {% endfor %}
                                     </select>
-                                    <span style="color: red" id="vacunass_obligg"></span>
+                                    <span style="color: red" id="desparaci_obligg"></span>
                                 </div>
 
                                 <div class="form-group col-lg-2 col-6">
@@ -88,14 +88,14 @@
                                 </div>
 
                                 <div class="form-group col-lg-11 col-6">
-                                    <label for="motivo">Motivo de la vacuna</label>
+                                    <label for="motivo">Motivo de la desparasitación</label>
                                     <input type="text" placeholder="Ingrese una observación" class="form-control" id="motivo" />
                                     <span style="color: red" id="motivo_obligg"></span>
                                 </div>
 
                                 <div class="form-group col-lg-1 col-6">
                                     <label>Ingresar</label>
-                                    <button type="button" onclick="ingresar_tabla_vacunas();" class="btn btn-success"><i class="fa fa-download"></i></button> 
+                                    <button type="button" onclick="ingresar_tabla_desparasitacion();" class="btn btn-success"><i class="fa fa-download"></i></button> 
                                 </div>
 
                                 <div class="form-group col-lg-12 col-6 text-center">
@@ -103,18 +103,18 @@
                                 </div>
             
                               <div class="form-group col-lg-12 col-6">
-                                  <table id="tabla_vacunacion" class="table table-display table-hover responsive nowrap text-center" style="width: 100%">
+                                  <table id="tabla_desparasitacion" class="table table-display table-hover responsive nowrap text-center" style="width: 100%">
                                       <thead style="background: orange;">
                                           <tr>
                                               <th hidden>Id cerdo</th> 
                                               <th>Fecha</th>
-                                              <th>Vacunas</th>
+                                              <th>Desparasitantes</th>
                                               <th>Cantidad</th>
                                               <th>Motivo</th>
                                               <th>Remover</th>
                                           </tr>
                                       </thead>
-                                      <tbody id="tbody_tabla_vacunacion">
+                                      <tbody id="tbody_tabla_desparasitacion">
                                           
                                       </tbody>
                                   </table>
@@ -130,11 +130,11 @@
               <!-- /.card-body -->
   
               <div class="card-footer">
-                <button onclick="registra_vacunacion();" class="btn btn-success">
+                <button onclick="registra_desparasitacion();" class="btn btn-success">
                   <i class="fa fa-save"></i> Guadar
                 </button>
                 -
-                <button onclick="cargar_contenido('contenido_principal','/registro_vacunacion');" class="btn btn-danger">
+                <button onclick="cargar_contenido('contenido_principal','/registro_desparasitacion');" class="btn btn-danger">
                   <i class="fa fa-svae"></i> Limpiar
                 </button>
               </div>
@@ -148,11 +148,11 @@
     </section>
   </div>
 
-  <div class="modal fade" id="mooda_calendario_vacunas">
+  <div class="modal fade" id="mooda_calendario_desparacitacion">
       <div class="modal-dialog modal-xl">
           <div class="modal-content bg-success">
               <div class="modal-header">
-                  <h4 class="modal-title">Calendario de vacunas</h4>
+                  <h4 class="modal-title">Calendario de desparasitación</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
@@ -163,7 +163,7 @@
     
                       <div class="form-group col-lg-12 col-6">
                           
-                          <table id="tabla_vacuna_compra" class="table table-display table-hover responsive nowrap text-center" style="width: 100%" >
+                          <table class="table table-display table-hover responsive nowrap text-center" style="width: 100%" >
                           <thead>
                             <tr>
                               <th hidden>#</th>
@@ -223,14 +223,14 @@
   <script>
 
     $(".cerdo_id").select2();
-    $("#vacuna_id").select2(); 
+    $("#despasitante_id").select2(); 
 
-    $(document).on("change", "#vacuna_id", function(){
+    $(document).on("change", "#despasitante_id", function(){
         var id = $(this).val();
         
         $.ajax({
             type: "POST",
-            url: "/vacunas/traer_cantidad_vacunas",
+            url: "/vacunas/traer_cantidad_medicamento",
             data: { id: id },
             success: function (response) {
                 
@@ -254,31 +254,31 @@
           });
     });
     
-    function ingresar_tabla_vacunas()
+    function ingresar_tabla_desparasitacion()
     {
-      var id = $("#vacuna_id").val();  
-      var txt = $("#vacuna_id option:selected").text(); 
+      var id = $("#despasitante_id").val();  
+      var txt = $("#despasitante_id option:selected").text(); 
       var disponible = $("#disponible").val();  
       var cantidad = $("#cantidad").val(); 
       var motivo = $("#motivo").val();
       var fecha_r = $("#fecha_r").val();  
        
       if(id == "0"){
-        $("#vacunass_obligg").html("Seleccione el medicamento o vacuna"); 
+        $("#desparaci_obligg").html("Seleccione el medicamento o desparasitantes"); 
         return Swal.fire(
           "Campo vacío",
-          "Seleccione el medicamento o vacuna",
+          "Seleccione el medicamento o desparasitantes",
           "warning"
         );
       }else{
-        $("#vacunass_obligg").html("");
+        $("#desparaci_obligg").html("");
       }
 
       if(cantidad <= "0" || cantidad.trim() == "" || cantidad.length == 0){
-        $("#cantidad_obligg").html("Ingrese cantidad de vacunas"); 
+        $("#cantidad_obligg").html("Ingrese cantidad de desparasitantes"); 
         return Swal.fire(
           "Campo vacío",
-          "Ingrese cantidad de vacunas",
+          "Ingrese cantidad de desparasitantes",
           "warning"
         );
       }else{
@@ -286,17 +286,17 @@
       }
 
       if(motivo.trim() == "" || motivo.length == 0){
-        $("#motivo_obligg").html("Ingrese motivo de la vacuna"); 
+        $("#motivo_obligg").html("Ingrese motivo de la desparasitación"); 
         return Swal.fire(
           "Campo vacío",
-          "Ingrese motivo de la vacuna",
+          "Ingrese motivo de la desparasitación",
           "warning"
         );
       }else{
         $("#motivo_obligg").html("");
       }
 
-      if (validar_vaunas_id(id)) {
+      if (validar_desparasitante_id(id)) {
         return Swal.fire(
           "Mensaje de advertencia",
           "La vacuna: '" +
@@ -311,7 +311,7 @@
         $("#disponible_obligg").html("XXX"); 
         return Swal.fire(
           "Cantidad insuficiente",
-          "La cantidad ingresada: "+ cantidad +", supera la vacunas disponible: "+ disponible +"",
+          "La cantidad ingresada: "+ cantidad +", supera lo disponible: "+ disponible +"",
           "warning"
         );
       }else{
@@ -329,19 +329,19 @@
         datos_agg += "</tr>";
       
         //esto me ayuda a enviar los datos a la tabla
-        $("#tbody_tabla_vacunacion").append(datos_agg); 
+        $("#tbody_tabla_desparasitacion").append(datos_agg); 
         $("#cantidad").val("1");
         $("#motivo").val("");
     }
 
-    function validar_vaunas_id(id) {
+    function validar_desparasitante_id(id) {
       let idverificar = document.querySelectorAll(
-        "#tbody_tabla_vacunacion td[for='id']"
+        "#tbody_tabla_desparasitacion td[for='id']"
       );
       return [].filter.call(idverificar, (td) => td.textContent == id).length == 1;
     }
 
-    $("#tbody_tabla_vacunacion").on("click", ".remover", function () {
+    $("#tbody_tabla_desparasitacion").on("click", ".remover", function () {
       var td = this.parentNode;
       var tr = td.parentNode;
       var table = tr.parentNode;
@@ -349,14 +349,14 @@
     });
 
     function modaal_calendario(){
-        $("#mooda_calendario_vacunas").modal({ backdrop: "static", keyboard: false });
-        $("#mooda_calendario_vacunas").modal("show");
+        $("#mooda_calendario_desparacitacion").modal({ backdrop: "static", keyboard: false });
+        $("#mooda_calendario_desparacitacion").modal("show");
     }
 
     $(".evniar_detalle").on("click", function(){
         var id = $(this).parents("tr").find("td")[0].innerHTML; 
         $("#cerdo_id").val(id).trigger("change");
-        $("#mooda_calendario_vacunas").modal("hide");
+        $("#mooda_calendario_desparacitacion").modal("hide");
     });
     
   </script>

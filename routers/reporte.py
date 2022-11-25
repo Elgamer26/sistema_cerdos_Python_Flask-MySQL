@@ -2191,3 +2191,267 @@ def compra_vacuna(id):
     return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition': 'inline;filename=Galpones_cerdos.pdf'})
 
 #######################
+    
+#ver reporte de vacunacion de cerdos
+@reporte.route('/vacunacion_cerdo_reporte/<int:id>')
+def vacunacion_cerdo_reporte(id):
+    fecha = time.strftime('%Y-%m-%d', time.localtime())
+    empresa = Empresa()
+    class PDF(FPDF):
+
+        def header(self):
+
+            self.image(PATH_FILE+str(empresa[4]),  x=10, y=10, w=30, h=30)
+            self.set_font('Arial', '', 15)
+
+            tcol_set(self, 'blue')
+            tfont_size(self, 35)
+            tfont(self, 'B')
+            self.cell(w=0, h=20, txt='     Vacunación del cerdo', border=0, ln=1, align='C', fill=0)
+
+            tfont_size(self, 10)
+            tcol_set(self, 'black')
+            tfont(self, 'I')
+            self.cell(w=0, h=10, txt=fecha, border=0, ln=2, align='C', fill=0)
+
+            tfont_size(pdf, 10)
+            bcol_set(pdf, 'white')
+
+            pdf.cell(w=100, h=5, txt='Empresa: ' + str(empresa[0]) , border=0,  fill=1)
+            pdf.cell(w=100, h=5, txt='Telefono: ' + str(empresa[1]) , border=0,  fill=1) 
+            pdf.multi_cell(w=0, h=5, txt='Dirección: ' + str(empresa[3]) , border=0, fill=1)
+            
+            self.ln(5)
+
+        # Page footer
+        def footer(self):
+            # Position at 1.5 cm from bottom
+            self.set_y(-20)
+
+            # Arial italic 8
+            self.set_font('Arial', 'I', 12)
+
+            # Page number
+            self.cell(w=0, h=10, txt='Pagina ' + str(self.page_no()) + '/{nb}', border=0, align='C', fill=0)
+    
+    data = Reportes.vacunacion_cerdos(id)
+    detalle = Reportes.Detalle_vacunacion_cerdos(id) 
+
+    pdf = PDF(orientation='L', unit='mm', format='A4')
+    pdf.alias_nb_pages()
+
+    pdf.add_page()
+
+    # TEXTO
+    pdf.set_font('Arial', '', 15)
+    
+    if data[4] != True :              
+        tcol_set(pdf, 'black')
+        bcol_set(pdf, 'red')
+        tfont_size(pdf, 15)
+        tfont(pdf, 'B')
+        pdf.multi_cell(w=0, h=10, txt='LA VACUNACIÓN FUE ANULADA', border=0, align='C', fill=1)
+        tfont(pdf, '')
+
+    # 1er encabezado ----
+
+    bcol_set(pdf, 'green')
+    tfont_size(pdf, 15)
+    tfont(pdf, 'B')
+    pdf.multi_cell(w=0, h=10, txt='Datos de la vacunación del cerdo', border=0, align='C', fill=1)
+    tfont(pdf, '')
+
+    h_sep = 10
+    pdf.ln(2)
+    tfont_size(pdf, 12)
+
+    # fila 1 --
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=17, h=h_sep, txt='Cerdo: ', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.cell(w=70, h=h_sep, txt=str(data[1]), border=0, align='L', fill=0)
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=110, h=h_sep, txt='Fecha vacunación: ', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.multi_cell(w=0, h=h_sep, txt=str(data[2]), border=0, align='L', fill=0)
+
+    # fila 5 --
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=28, h=h_sep, txt='Observación:', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.multi_cell(w=0, h=h_sep, txt=str(data[3]), border=0, align='L', fill=0)
+
+    pdf.ln(2)
+
+    # tabla 1 ----
+
+    bcol_set(pdf, 'green')
+    tfont_size(pdf, 15)
+    tfont(pdf, 'B')
+    pdf.cell(w=0, h=10, txt='Vacunas', border=0, ln=1, align='C', fill=1)
+    tfont(pdf, '')
+
+    tfont_size(pdf, 13)
+    bcol_set(pdf, 'blue')
+    
+    pdf.cell(w=15, h=10, txt='#', border=0, align='C', fill=1) 
+    pdf.cell(w=90, h=10, txt='Vacuna', border=0, align='C', fill=1) 
+    pdf.cell(w=35, h=10, txt='Cantidad', border=0, align='C', fill=1)  
+    pdf.multi_cell(w=0, h=10, txt='Motivo de vacunación', border=0, align='C', fill=1) 
+    
+    tfont_size(pdf, 12)
+    dcol_set(pdf, 'blue')
+    tcol_set(pdf, 'gray')
+    c = 0
+    for datos in detalle:
+        c += 1
+        if(c % 2 == 0):
+            bcol_set(pdf, 'gray2')
+        else:
+            bcol_set(pdf, 'white')
+        pdf.cell(w=15, h=10, txt=str(c), border='TBL', align='C', fill=1)  
+        pdf.cell(w=90, h=10, txt=str(datos[0]), border='TB', align='C', fill=1)      
+        pdf.cell(w=35, h=10, txt=str(datos[1]), border='TB', align='C', fill=1)              
+        pdf.multi_cell(w=0, h=10, txt= str(datos[2]), border='TBR', align='C', fill=1)
+
+    return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition': 'inline;filename=Galpones_cerdos.pdf'})
+
+#######################
+    
+#ver reporte de desparasitacion de cerdos
+@reporte.route('/desparasitacion_cerdo_reporte/<int:id>')
+def desparasitacion_cerdo_reporte(id):
+    fecha = time.strftime('%Y-%m-%d', time.localtime())
+    empresa = Empresa()
+    class PDF(FPDF):
+
+        def header(self):
+
+            self.image(PATH_FILE+str(empresa[4]),  x=10, y=10, w=30, h=30)
+            self.set_font('Arial', '', 15)
+
+            tcol_set(self, 'blue')
+            tfont_size(self, 35)
+            tfont(self, 'B')
+            self.cell(w=0, h=20, txt='     Desparasitación del cerdo', border=0, ln=1, align='C', fill=0)
+
+            tfont_size(self, 10)
+            tcol_set(self, 'black')
+            tfont(self, 'I')
+            self.cell(w=0, h=10, txt=fecha, border=0, ln=2, align='C', fill=0)
+
+            tfont_size(pdf, 10)
+            bcol_set(pdf, 'white')
+
+            pdf.cell(w=100, h=5, txt='Empresa: ' + str(empresa[0]) , border=0,  fill=1)
+            pdf.cell(w=100, h=5, txt='Telefono: ' + str(empresa[1]) , border=0,  fill=1) 
+            pdf.multi_cell(w=0, h=5, txt='Dirección: ' + str(empresa[3]) , border=0, fill=1)
+            
+            self.ln(5)
+
+        # Page footer
+        def footer(self):
+            # Position at 1.5 cm from bottom
+            self.set_y(-20)
+
+            # Arial italic 8
+            self.set_font('Arial', 'I', 12)
+
+            # Page number
+            self.cell(w=0, h=10, txt='Pagina ' + str(self.page_no()) + '/{nb}', border=0, align='C', fill=0)
+    
+    data = Reportes.desparasitacion_cerdos(id)
+    detalle = Reportes.Detalle_desparasitacion_cerdos(id) 
+
+    pdf = PDF(orientation='L', unit='mm', format='A4')
+    pdf.alias_nb_pages()
+
+    pdf.add_page()
+
+    # TEXTO
+    pdf.set_font('Arial', '', 15)
+    
+    if data[4] != True :              
+        tcol_set(pdf, 'black')
+        bcol_set(pdf, 'red')
+        tfont_size(pdf, 15)
+        tfont(pdf, 'B')
+        pdf.multi_cell(w=0, h=10, txt='LA DESPARASITACIÓN FUE ANULADA', border=0, align='C', fill=1)
+        tfont(pdf, '')
+
+    # 1er encabezado ----
+
+    bcol_set(pdf, 'green')
+    tfont_size(pdf, 15)
+    tfont(pdf, 'B')
+    pdf.multi_cell(w=0, h=10, txt='Datos de la desparasitación del cerdo', border=0, align='C', fill=1)
+    tfont(pdf, '')
+
+    h_sep = 10
+    pdf.ln(2)
+    tfont_size(pdf, 12)
+
+    # fila 1 --
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=17, h=h_sep, txt='Cerdo: ', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.cell(w=70, h=h_sep, txt=str(data[1]), border=0, align='L', fill=0)
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=110, h=h_sep, txt='Fecha desparasitación: ', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.multi_cell(w=0, h=h_sep, txt=str(data[2]), border=0, align='L', fill=0)
+
+    # fila 5 --
+
+    tcol_set(pdf, 'gray')
+    pdf.cell(w=28, h=h_sep, txt='Observación:', border=0, align='R', fill=0)
+
+    tcol_set(pdf, 'black')
+    pdf.multi_cell(w=0, h=h_sep, txt=str(data[3]), border=0, align='L', fill=0)
+
+    pdf.ln(2)
+
+    # tabla 1 ----
+
+    bcol_set(pdf, 'green')
+    tfont_size(pdf, 15)
+    tfont(pdf, 'B')
+    pdf.cell(w=0, h=10, txt='Medicamentos o desparasitantes', border=0, ln=1, align='C', fill=1)
+    tfont(pdf, '')
+
+    tfont_size(pdf, 13)
+    bcol_set(pdf, 'blue')
+    
+    pdf.cell(w=15, h=10, txt='#', border=0, align='C', fill=1) 
+    pdf.cell(w=90, h=10, txt='Desparasitantes', border=0, align='C', fill=1) 
+    pdf.cell(w=35, h=10, txt='Cantidad', border=0, align='C', fill=1)  
+    pdf.multi_cell(w=0, h=10, txt='Motivo desparasitación', border=0, align='C', fill=1) 
+    
+    tfont_size(pdf, 12)
+    dcol_set(pdf, 'blue')
+    tcol_set(pdf, 'gray')
+    c = 0
+    for datos in detalle:
+        c += 1
+        if(c % 2 == 0):
+            bcol_set(pdf, 'gray2')
+        else:
+            bcol_set(pdf, 'white')
+        pdf.cell(w=15, h=10, txt=str(c), border='TBL', align='C', fill=1)  
+        pdf.cell(w=90, h=10, txt=str(datos[0]), border='TB', align='C', fill=1)      
+        pdf.cell(w=35, h=10, txt=str(datos[1]), border='TB', align='C', fill=1)              
+        pdf.multi_cell(w=0, h=10, txt= str(datos[2]), border='TBR', align='C', fill=1)
+
+    return Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf', headers={'Content-Disposition': 'inline;filename=Galpones_cerdos.pdf'})
+
+

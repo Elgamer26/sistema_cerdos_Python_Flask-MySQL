@@ -28,28 +28,28 @@
                 <div class="form-group col-lg-6 col-6">
                   <label for="nombres">Nombres</label>
                   <input type="text" maxlength="60" class="form-control" id="nombres" placeholder="Ingrese nombres"
-                    onkeypress="return soloLetras(event)" />
+                    onkeypress="return soloLetras(event)" autocomplete="off" />
                   <span style="color: red" id="nombre_oblig"></span>
                 </div>
 
                 <div class="form-group col-lg-6 col-6">
                   <label for="apellidos">Apellidos</label>
                   <input type="text" maxlength="60" class="form-control" id="apellidos" placeholder="Ingrese apellidos"
-                    onkeypress="return soloLetras(event)" />
+                    onkeypress="return soloLetras(event)" autocomplete="off" />
                   <span style="color: red" id="apellidos_obligg"></span>
                 </div>
 
                 <div class="form-group col-lg-6 col-6">
                   <label for="domicilio">Domicilio</label>
                   <input type="text" maxlength="60" class="form-control" id="domicilio"
-                    placeholder="Ingrese domicilio" />
+                    placeholder="Ingrese domicilio" autocomplete="off" />
                   <span style="color: red" id="domicilio_obligg"></span>
                 </div>
 
                 <div class="form-group col-lg-6 col-6">
                   <label for="telefono">Telefono</label>
-                  <input type="text" maxlength="10" class="form-control" id="telefono" placeholder="Ingrese telefono"
-                    onkeypress="return soloNumeros(event)" />
+                  <input type="text" maxlength="15" class="form-control" id="telefono" placeholder="Ingrese telefono"
+                    onkeypress="return soloNumeros(event)" autocomplete="off" />
                   <span style="color: red" id="telefono_obligg"></span>
                 </div>
 
@@ -67,18 +67,25 @@
 
                 <div class="form-group col-lg-4 col-6">
                   <label for="usuario">Usuario</label>
-                  <input type="text" maxlength="35" class="form-control" id="usuario" placeholder="Ingrese usuario" />
+                  <input type="text" maxlength="35" class="form-control" id="usuario" placeholder="Ingrese usuario" autocomplete="off" onpaste="return false" />
                   <span style="color: red" id="usuario_obligg"></span>
                 </div>
 
                 <div class="form-group col-lg-5 col-6">
                   <label for="correo">Correo</label>
                   <input type="text" maxlength="60" class="form-control" id="correo"
-                    placeholder="Ingrese correo" />
+                    placeholder="Ingrese correo" autocomplete="off" onpaste="return false" />
                   <span style="color: red" id="correo_obligg"></span>
                 </div>
 
                 <div class="form-group col-lg-6 col-6">
+                  <label for="cedula">Cédula</label>
+                  <input type="text" maxlength="10" class="form-control" id="cedula"
+                    placeholder="Ingrese cédula" onkeypress="return soloNumeros(event)" autocomplete="off" onpaste="return false" />
+                  <span style="color: red" id="cedula_obligg"></span>
+                </div>
+
+                <!--<div class="form-group col-lg-6 col-6">
                   <label for="password">Password</label>
                   <b><span id="passstrength"></span></b>
                   <input type="password" maxlength="35" class="form-control" id="password"
@@ -86,21 +93,21 @@
                   <span style="color: red" id="password_obligg"></span>
                 </div>
 
-                <div class="form-group col-lg-5 col-5">
+                 <div class="form-group col-lg-5 col-5">
                   <label for="password_c">Confirmar password</label>
                   <input type="password" maxlength="35" class="form-control" id="password_c"
                     placeholder="Confirme password" />
                   <span style="color: red" id="password_c_obligg"></span>
-                </div>
+                </div> 
 
                 <div class="form-group col-lg-1 col-1">
                   <label>...</label>
                   <button class="btn btn-primary" onclick="ver_password();">
                     <i class="fa fa-eye"></i> Ver
                   </button>
-                </div>
+                </div>-->
 
-                <div class="col-md-6 mb-3 mx-auto text-center">
+                <div class="col-md-12 mb-3 mx-auto text-center">
                   <label for="password_c">Foto del usuario</label>
 
                   <img id="img_producto" height="187" width="200" class="border rounded mx-auto d-block img-fluid"
@@ -133,22 +140,9 @@
 <script src="static/js/usuario.js"></script>
 
 <script>
+  var G_cedula_create = true;
+  var G_correo_create = true;
   $(".rol_id").select2();
-
-  var pass_usus = false;
-
-  function ver_password() {
-    var ver = document.getElementById("password");
-    var con = document.getElementById("password_c");
-
-    if (ver.type == "password") {
-      ver.type = "text";
-      con.type = "text";
-    } else {
-      ver.type = "password";
-      con.type = "password";
-    }
-  }
 
   $("#password").keyup(function (e) {
     var strongRegex = new RegExp(
@@ -229,16 +223,62 @@
                 //estilos para cambiar de color y ocultar el boton
                 $(this).css("border", "1px solid green");
                 $("#correo_obligg").html("");
-                // $("#ocutar_p").show();
+                G_correo_create = true;
             } else {
                 $(this).css("border", "1px solid red");
                 $("#correo_obligg").html("Email incorrecto");
-                // $("#ocutar_p").hide();
+                G_correo_create = false;
             }
         });
     } else {
         $(this).css("border", "1px solid green");
         $("#correo_obligg").html("");
+        G_correo_create = false;
+    }
+  });
+
+  $("#cedula").keyup(function() {
+    if (this.value != "") {
+        var cad = document.getElementById("cedula").value.trim();
+        var total = 0;
+        var longitud = cad.length;
+        var longcheck = longitud - 1;
+
+        if (cad != "") {
+            if (cad !== "" && longitud === 10) {
+                for (i = 0; i < longcheck; i++) {
+                    if (i % 2 === 0) {
+                        var aux = cad.charAt(i) * 2;
+                        if (aux > 9) aux -= 9;
+                        total += aux;
+                    } else {
+                        total += parseInt(cad.charAt(i)); // parseInt o concatenará en lugar de sumar           
+                    }
+                }
+                total = total % 10 ? 10 - total % 10 : 0;
+                if (cad.charAt(longitud - 1) == total) {
+                    $(this).css("border", "1px solid green");
+                    $("#cedula_obligg").html("");
+                    G_cedula_create = true;
+                } else {
+                    document.getElementById("cedula_obligg").innerHTML = ("cédula Inválida");
+                    $(this).css("border", "1px solid red");
+                    G_cedula_create = false;
+                }
+            } else {
+                document.getElementById("cedula_obligg").innerHTML = ("La cédula no tiene 10 digitos");
+                $(this).css("border", "1px solid red");
+                G_cedula_create = false;
+            }
+        } else {
+            document.getElementById("cedula_obligg").innerHTML = ("Debe ingresar una cédula");
+            $(this).css("border", "1px solid red");
+            G_cedula_create = false;
+        }
+    } else {
+        $(this).css("border", "1px solid green");
+        $("#cedula_obligg").html("");
+        G_cedula_create = false;
     }
   });
 </script>

@@ -567,3 +567,85 @@ def registro_vacunacion():
         'calendario': calendario
     }
     return render_template('view/vacuna_despara/registro_vacunacion.html', data = data)
+
+#vista del listado de vacunaciones de cerdos
+@index.route('/listado_vacunacion')
+def listado_vacunacion():   
+    vacunacion = Vacunas.Listar_vacunaciones_cerdos() 
+    data = {
+        'vacunacion': vacunacion
+    }
+    return render_template('view/vacuna_despara/listado_vacunacion.html', data = data)
+
+#vista del listado de vacunaciones de cerdos por fechas
+@index.route('/listado_vacunacion_fecha/<string:f_i>/<string:f_f>')
+def listado_vacunacion_fecha(f_i, f_f):   
+    vacunacion_f = Vacunas.Listar_vacunaciones_cerdos_fecha(f_i, f_f) 
+    data = {
+        'vacunacion': vacunacion_f,
+        'f_i': f_i,
+        'f_f': f_f
+    }
+    return render_template('view/vacuna_despara/listado_vacunacion_fecha.html', data = data)
+
+#vista de historial de vacunacion de los cerdos
+@index.route('/historial_de_vacunacion')
+def historial_de_vacunacion():  
+    fecha = datetime.now()
+    now = fecha.strftime("%Y-%m-%d")
+    cerdo = Galpon.Select_cerdos() 
+    data = {
+        'fecha': now,
+        'cerdo': cerdo
+    }
+    return render_template('view/vacuna_despara/historial_de_vacunacion.html', data = data)
+
+#vista de registro desparasitacion de cerdos
+@index.route('/registro_desparasitacion')
+def registro_desparasitacion():  
+    fecha = datetime.now()
+    now = fecha.strftime("%Y-%m-%d")
+    cerdo = Galpon.Select_cerdos() 
+    medicamento = Compras.Table_medicamento()
+    calendario = Vacunas.Tabla_calendario_desparacitacion()
+    data = {
+        'fecha': now,
+        'cerdo': cerdo,
+        'medicamento': medicamento,
+        'calendario': calendario
+    }
+    return render_template('view/vacuna_despara/registro_desparasitacion.html', data = data)
+
+#vista del listado de desparasitacion de cerdos
+@index.route('/listado_desparasitacion')
+def listado_desparasitacion():   
+    desparasitacion = Vacunas.Listar_desparasitacion_cerdos() 
+    data = {
+        'desparasitacion': desparasitacion
+    }
+    return render_template('view/vacuna_despara/listado_desparasitacion.html', data = data)
+
+#vista del listado de desparasitacion de cerdos por fechas
+@index.route('/listado_desparasitacion_fecha/<string:f_i>/<string:f_f>')
+def listado_desparasitacion_fecha(f_i, f_f):   
+    desparasitacion_f = Vacunas.Listar_desparasitacion_cerdos_fecha(f_i, f_f) 
+    data = {
+        'desparasitacion': desparasitacion_f,
+        'f_i': f_i,
+        'f_f': f_f
+    }
+    return render_template('view/vacuna_despara/listado_desparasitacion_fecha.html', data = data)
+
+#vista de historial de desparasitacion de los cerdos
+@index.route('/historia_desparasitacion')
+def historia_desparasitacion():  
+    fecha = datetime.now()
+    now = fecha.strftime("%Y-%m-%d")
+    cerdo = Galpon.Select_cerdos() 
+    data = {
+        'fecha': now,
+        'cerdo': cerdo
+    }
+    return render_template('view/vacuna_despara/historia_desparasitacion.html', data = data)
+
+

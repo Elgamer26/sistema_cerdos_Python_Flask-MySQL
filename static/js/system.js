@@ -21,6 +21,9 @@ function datos_usuarios_logeo() {
         $("#telefono_l").val(response[7]);
         $("#usuario_l").val(response[3]);
 
+        $("#correo_l").val(response[11]);
+        $("#cedula_l").val(response[12]);
+
         $("#pass_oculto").val(response[4]);
       }
     },
@@ -58,6 +61,8 @@ function editar_usuario_loegado() {
   var domicilio = $("#domicilio_l").val();
   var telefono = $("#telefono_l").val();
   var usuario = $("#usuario_l").val();
+  var correo_l = $("#correo_l").val();
+  var cedula_l = $("#cedula_l").val();
 
   if (
     nombres.length == 0 ||
@@ -69,14 +74,20 @@ function editar_usuario_loegado() {
     telefono.length == 0 ||
     telefono.trim() == "" ||
     usuario.length == 0 ||
-    usuario.trim() == ""
+    usuario.trim() == "" ||
+    correo_l.length == 0 ||
+    correo_l.trim() == "" ||
+    cedula_l.length == 0 ||
+    cedula_l.trim() == ""
   ) {
     validar_registros_usuario_editar_l(
       nombres,
       apellidos,
       domicilio,
       telefono,
-      usuario
+      usuario,
+      correo_l,
+      cedula_l
     );
     return swal.fire(
       "Campo vacios",
@@ -89,6 +100,30 @@ function editar_usuario_loegado() {
     $("#domicilio_obligg_l").html("");
     $("#telefono_obligg_l").html("");
     $("#usuario_obligg_l").html("");
+    $("#correo_obligg_l").html("");
+    $("#cedula_obligg_l").html("");
+  }
+
+  if (!G_correo) {
+    $("#correo_obligg_l").html("Ingrese un correo correcto");
+    return swal.fire(
+    "Correo incorrecto",
+    "Ingrese un correo correcto",
+    "warning"
+    );
+  }else{
+    $("#correo_obligg_l").html("");
+  }
+
+  if (!G_cedula) {
+    $("#cedula_obligg_l").html("Ingrese una cédula correcta");
+    return swal.fire(
+    "Cédula incorrecta",
+    "Ingrese una cédula correcta",
+    "warning"
+    );
+  }else{
+    $("#cedula_obligg_l").html("");
   }
 
   var formdata = new FormData();
@@ -97,6 +132,8 @@ function editar_usuario_loegado() {
   formdata.append("domicilio", domicilio);
   formdata.append("telefono", telefono);
   formdata.append("usuario", usuario);
+  formdata.append("correo_l", correo_l);
+  formdata.append("cedula_l", cedula_l);
 
   $.ajax({
     url: "/usuario/editar_usuario_logeado",
@@ -109,6 +146,7 @@ function editar_usuario_loegado() {
       if (resp > 0) {
         if (resp == 1) {
           $(".modal-body").LoadingOverlay("hide");
+          $("#modaleditar_usuario_logeado").modal("hide");
           datos_usuarios_logeo();
           return Swal.fire(
             "Datos editados con exito",
@@ -120,6 +158,20 @@ function editar_usuario_loegado() {
           return Swal.fire(
             "Usuario ya existe",
             "El usuario " + usuario + ", ya existe en el sistema",
+            "warning"
+          );
+        } else if (resp == 3) {
+          $(".modal-body").LoadingOverlay("hide");
+          return Swal.fire(
+            "Correo ya existe",
+            "El correo " + correo_l + ", ya existe en el sistema",
+            "warning"
+          );
+        } else if (resp == 4) {
+          $(".modal-body").LoadingOverlay("hide");
+          return Swal.fire(
+            "Cédula ya existe",
+            "La cédula " + cedula_l + ", ya existe en el sistema",
             "warning"
           );
         }
@@ -147,7 +199,9 @@ function validar_registros_usuario_editar_l(
   apellidos,
   domicilio,
   telefono,
-  usuario
+  usuario,
+  correo_l,
+  cedula_l
 ) {
   if (nombres.length == 0 || nombres.trim() == "") {
     $("#nombre_oblig_l").html("Ingrese los nombres");
@@ -177,6 +231,18 @@ function validar_registros_usuario_editar_l(
     $("#usuario_obligg_l").html("Ingrese el usuario");
   } else {
     $("#usuario_obligg_l").html("");
+  }
+
+  if (correo_l.length == 0 || correo_l.trim() == "") {
+    $("#correo_obligg_l").html("Ingrese correo");
+  } else {
+    $("#correo_obligg_l").html("");
+  }
+
+  if (cedula_l.length == 0 || cedula_l.trim() == "") {
+    $("#cedula_obligg_l").html("Ingrese cédula");
+  } else {
+    $("#cedula_obligg_l").html("");
   }
 }
 
@@ -373,7 +439,7 @@ function subir_foto_1() {
   //est valores son como los que van en la data del ajax
 
   formdata.append("foto", foto);
-  formdata.append("ruta_actual", foto1_ruta); 
+  formdata.append("ruta_actual", foto1_ruta);
 
   $.ajax({
     url: "/web/subir_foto_1",
@@ -385,7 +451,7 @@ function subir_foto_1() {
     success: function (resp) {
       if (resp > 0) {
         if (resp == 1) {
-          cargar_contenido('contenido_principal','/pag_web');
+          cargar_contenido('contenido_principal', '/pag_web');
           return Swal.fire(
             "Imgen subida",
             "La imagen de la web se actualizó con exito",
@@ -417,7 +483,7 @@ function subir_foto_2() {
   //est valores son como los que van en la data del ajax
 
   formdata.append("foto", foto);
-  formdata.append("ruta_actual", foto2_ruta); 
+  formdata.append("ruta_actual", foto2_ruta);
 
   $.ajax({
     url: "/web/subir_foto_2",
@@ -429,7 +495,7 @@ function subir_foto_2() {
     success: function (resp) {
       if (resp > 0) {
         if (resp == 1) {
-          cargar_contenido('contenido_principal','/pag_web');
+          cargar_contenido('contenido_principal', '/pag_web');
           return Swal.fire(
             "Imgen subida",
             "La imagen de la web se actualizó con exito",
@@ -461,7 +527,7 @@ function subir_foto_3() {
   //est valores son como los que van en la data del ajax
 
   formdata.append("foto", foto);
-  formdata.append("ruta_actual", foto3_ruta); 
+  formdata.append("ruta_actual", foto3_ruta);
 
   $.ajax({
     url: "/web/subir_foto_3",
@@ -473,7 +539,7 @@ function subir_foto_3() {
     success: function (resp) {
       if (resp > 0) {
         if (resp == 1) {
-          cargar_contenido('contenido_principal','/pag_web');
+          cargar_contenido('contenido_principal', '/pag_web');
           return Swal.fire(
             "Imgen subida",
             "La imagen de la web se actualizó con exito",
@@ -518,7 +584,7 @@ function editar_detalle_foto() {
     }
 
     return swal.fire("Campos vacios", "NO debe dejar campos de texto vacios", "warning");
-  }else{
+  } else {
     $("#lbldetalle_1").html("");
     $("#lbldetalle_2").html("");
     $("#lbldetalle_3").html("");
@@ -527,7 +593,7 @@ function editar_detalle_foto() {
   $.ajax({
     url: "/web/detalle_de_web",
     type: "POST",
-    data: { 
+    data: {
       detalle1: detalle1,
       detalle2: detalle2,
       detalle3: detalle3
@@ -535,7 +601,7 @@ function editar_detalle_foto() {
   }).done(function (resp) {
     if (resp > 0) {
       if (resp == 1) {
-        cargar_contenido('contenido_principal','/pag_web');
+        cargar_contenido('contenido_principal', '/pag_web');
         return Swal.fire(
           "Datos actualizados",
           "Los datos se actualizarón con exito",

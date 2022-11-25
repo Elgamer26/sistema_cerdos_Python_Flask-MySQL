@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_mysqldb import MySQL
 
 from routers.index import index
@@ -41,5 +41,6 @@ app.register_blueprint(reporte, url_prefix="/reporte")
 
 #esta funcion ayuda controlar los errores cuanod no hay paginas
 def pagna_error(error):
-    return "paguina no enocntrada error 404", 404
+    return render_template('view/home/404.html'), 404
+    #return "paguina no enocntrada error 404", 404
 

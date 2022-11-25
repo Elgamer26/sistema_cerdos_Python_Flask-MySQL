@@ -177,3 +177,129 @@ def traer_cantidad_vacunas():
         _id = request.form['id']     
         dato = Vacunas.Traer_cantidad_vacunas(_id)
         return jsonify(dato)
+
+# controlador para registrar la vacunacion del cerdo
+@vacunas.route('/registro_vacunacion_cerdo', methods=['POST'])
+def registro_vacunacion_cerdo():
+    if request.method == 'POST': 
+        cerdo_id = request.form['cerdo_id']
+        fecha = request.form['fecha']
+        observacion = request.form['observacion'] 
+
+        dato = Vacunas.Registro_vacunacion_cerdo(cerdo_id, fecha, observacion)
+        return jsonify(dato)
+
+# controlador para registra el detalle de la vacunacion
+@vacunas.route('/registro_detalle_vacunacion_cerdo', methods=['POST'])
+def registro_detalle_vacunacion_cerdo():
+    if request.method == 'POST':
+
+        _id = request.form['id']
+        _idv = request.form['idv']
+        _fecha = request.form['fecha']
+        _cantidad = request.form['cantidad'] 
+        _motivo = request.form['motivo']  
+
+        idv = _idv.split(",")
+        fecha = _fecha.split(",")
+        cantidad = _cantidad.split(",") 
+        motivo = _motivo.split(",") 
+
+        for valor in zip(idv, fecha, cantidad, motivo):
+            dato = Vacunas.Registro_detalle_vacunacion_cerdo(_id, valor[0], valor[1], valor[2], valor[3])  
+        return jsonify(dato)
+
+# controlador para anular la vacunación del cerdo
+@vacunas.route('/anular_vacunacion_cerdo', methods=['POST'])
+def anular_vacunacion_cerdo():    
+    if request.method == 'POST':
+        _id = request.form['id']   
+        dato = Vacunas.Anular_vacunacion_cerdo(_id)   
+        return str(dato)
+
+# controlador para traer el historial de vacunacion del cerdo
+@vacunas.route('/buscar_historia_vacunacion_cerdo', methods=['POST'])
+def buscar_historia_vacunacion_cerdo():
+    if request.method == 'POST':
+        _id = request.form['id']  
+        _f_i = request.form['f_i']  
+        _f_f = request.form['f_f']  
+ 
+        dato = Vacunas.Buscar_historia_vacunacion_cerdo(_id, _f_i, _f_f)  
+        return jsonify(dato)
+
+# controlador para traer el detalles de vacunas del cerdo
+@vacunas.route('/ver_detalle_vacunas_cerdo', methods=['POST'])
+def ver_detalle_vacunas_cerdo():
+    if request.method == 'POST':
+        _id = request.form['id']   
+ 
+        dato = Vacunas.Ver_detalle_vacunas_cerdo(_id)  
+        return jsonify(dato)
+
+# controlador para traer la cantidad de medicamento
+@vacunas.route('/traer_cantidad_medicamento', methods=['POST'])
+def traer_cantidad_medicamento():
+    if request.method == 'POST':   
+        _id = request.form['id']     
+        dato = Vacunas.Traer_cantidad_medicamento(_id)
+        return jsonify(dato)
+
+# controlador para registrar la desparasitacion del cerdo
+@vacunas.route('/registro_desparasitacion_cerdo', methods=['POST'])
+def registro_desparasitacion_cerdo():
+    if request.method == 'POST': 
+        cerdo_id = request.form['cerdo_id']
+        fecha = request.form['fecha']
+        observacion = request.form['observacion'] 
+
+        dato = Vacunas.Registro_desparasitacion_cerdo(cerdo_id, fecha, observacion)
+        return jsonify(dato)
+
+# controlador para registra el detalle de la desparasitacion
+@vacunas.route('/registro_detalle_desparasitacion_cerdo', methods=['POST'])
+def registro_detalle_desparasitacion_cerdo():
+    if request.method == 'POST':
+
+        _id = request.form['id']
+        _idv = request.form['idv']
+        _fecha = request.form['fecha']
+        _cantidad = request.form['cantidad'] 
+        _motivo = request.form['motivo']  
+
+        idv = _idv.split(",")
+        fecha = _fecha.split(",")
+        cantidad = _cantidad.split(",") 
+        motivo = _motivo.split(",") 
+
+        for valor in zip(idv, fecha, cantidad, motivo):
+            dato = Vacunas.Registro_detalle_desparasitacion_cerdo(_id, valor[0], valor[1], valor[2], valor[3])  
+        return jsonify(dato)
+
+# controlador para anular la desparasitacion del cerdo
+@vacunas.route('/anular_desparasitacion_cerdo', methods=['POST'])
+def anular_desparasitacion_cerdo():    
+    if request.method == 'POST':
+        _id = request.form['id']   
+        dato = Vacunas.Anular_desparasitacion_cerdo(_id)   
+        return str(dato)
+
+# controlador para traer el historial de desparasitacion del cerdo
+@vacunas.route('/buscar_historia_desparasitacion_cerdo', methods=['POST'])
+def buscar_historia_desparasitacion_cerdo():
+    if request.method == 'POST':
+        _id = request.form['id']  
+        _f_i = request.form['f_i']  
+        _f_f = request.form['f_f']  
+ 
+        dato = Vacunas.buscar_historia_desparasitacion_cerdo(_id, _f_i, _f_f)  
+        return jsonify(dato)
+
+# controlador para traer el detalles de desparasitantes del cerdo
+@vacunas.route('/ver_detalle_desparsitantes_cerdo', methods=['POST'])
+def ver_detalle_desparsitantes_cerdo():
+    if request.method == 'POST':
+        _id = request.form['id']   
+ 
+        dato = Vacunas.Ver_detalle_desparsitantes_cerdo(_id)  
+        return jsonify(dato)

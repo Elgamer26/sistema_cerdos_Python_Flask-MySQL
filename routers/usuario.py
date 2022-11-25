@@ -134,6 +134,28 @@ def editar_permisos_rol():
         dato = Usuario.Editar_permisos_rol(id_rol, id_permiso, usuario, config, cerdo, galpon, cergal, compraventa, alicerdo, insumo, medicamento, alimentacion, alimcerdo, pesaje, enfertrata, cerdosenfer, tratamiento)
         return str(dato)
 
+# controlador para validara los datos existetes de un usuario
+@usuario.route('/validar_datos_usuario_register', methods=['POST'])
+def validar_datos_usuario_register():
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        correo = request.form['correo']
+        cedula = request.form['cedula']
+        dato = Usuario.Validar_datos_usuario_register(usuario, correo, cedula)
+        if str(dato) == '1':
+            minus = "abcdefghijklmnopqrstuvwxyz"
+            mayus = minus.upper()
+            numeros = "0123456789"
+            simbolos = "@-&+.=/"
+            base = minus+mayus+numeros+simbolos
+            longitud = 12
+            for _ in range(10):
+                muestra = random.sample(base, longitud)
+                password = "".join(muestra)
+            return jsonify(password)
+        else:
+            return str(dato)
+
 # controlador para crear un producto
 @usuario.route('/crear_user', methods=['POST'])
 def crear_user():
@@ -146,13 +168,14 @@ def crear_user():
         _usuario = request.form['usuario']
         _password = request.form['password']
         _correo = request.form['correo']
+        _cedula = request.form['cedula']
         _foto = request.files.get("foto", False)
 
         if _foto:
             # usuario con foto
             hora_ac = time.strftime('%Y%m%d%H%M%S_', time.localtime())
             archivo = hora_ac + _foto.filename             
-            dato = Usuario.Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo)
+            dato = Usuario.Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo, _cedula)
             if dato == 1:
                 _foto.save(PATH_FILE + archivo)
                 return str(dato)
@@ -162,7 +185,7 @@ def crear_user():
         else:
             # usuario sin foto
             archivo = "user.png"
-            dato = Usuario.Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo)
+            dato = Usuario.Craer_usuario(_nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _password, archivo, _correo, _cedula)
             return str(dato)
 
 # controlador para listar los usuarios
@@ -193,8 +216,9 @@ def editar_usurio():
         _tipo_rol = request.form['tipo_rol']
         _usuario = request.form['usuario'] 
         _correo = request.form['correo'] 
+        _cedula = request.form['cedula'] 
          
-        dato = Usuario.Editar_usuario(_id, _nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _correo)
+        dato = Usuario.Editar_usuario(_id, _nombres, _apellidos, _domicilio, _telefono, _tipo_rol, _usuario, _correo, _cedula)
         return str(dato)
    
 # para editar la foto del usuario
@@ -289,8 +313,10 @@ def editar_usuario_logeado():
             _domicilio = request.form['domicilio']
             _telefono = request.form['telefono']
             _usuario = request.form['usuario'] 
+            _correp = request.form['correo_l']
+            _cedula = request.form['cedula_l'] 
             
-            dato = Usuario.Editar_usuario_loegado(_id, _nombres, _apellidos, _domicilio, _telefono, _usuario)
+            dato = Usuario.Editar_usuario_loegado(_id, _nombres, _apellidos, _domicilio, _telefono, _usuario, _correp, _cedula)
             return str(dato)
 
 # para editar la foto del usuario loegado

@@ -1,0 +1,178 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="fa fa-list"></i> Listado de vacunación
+          </h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Listado de vacunación</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-lg-12 col-12">
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 id="unir_texto" class="card-title"> Listado de vacunación</h3>
+                </div>
+    
+                <div class="card-body">
+                    <div class="row">
+    
+                      <div class="form-group col-lg-2 col-2">
+                        <label for="fecha_i">Fecha inicio</label>
+                        <input type="date" class="form-control" value="{{data.f_i}}" id="fecha_i" /> 
+                    </div>
+
+                    <div class="form-group col-lg-2 col-2">
+                        <label for="fecha_f">Fecha fin</label>
+                        <input type="date" class="form-control" value="{{data.f_f}}" id="fecha_f" /> 
+                    </div>
+
+                    <div class="form-group col-lg-1 col-1">
+                        <label>Buscar</label>
+                        <button onclick="cargar_fechas();" class="btn btn-info"> <i class="fa fa-search"></i> </button>
+                    </div>
+
+                    <div class="form-group col-lg-1 col-1">
+                        <label>Todo</label>
+                        <button onclick="cargar_contenido('contenido_principal','/listado_vacunacion');" class="btn btn-success"> <i class="fa fa-eye"></i> </button>
+                    </div>
+
+                      <div class="form-group col-lg-12 col-12">
+
+                        <table
+                          id="tabla_vacunacion_cerdos"
+                          class="table table-display table-hover responsive nowrap text-center"
+                          style="width: 100%" >
+                          <thead>
+                            <tr> 
+                              <th style="width: 1px;">#</th>
+                              <th>Acci&oacute;n</th>
+                              <th>Cerdo</th>
+                              <th>Fecha</th>
+                              <th>Observación</th>
+                              <th>Estado</th> 
+                            </tr>
+                          </thead>
+
+                          <tbody>
+
+                            {% for dato in data.vacunacion %}
+
+                            <tr>    
+                                <td>
+                                </td>
+                                  
+                                    {% if dato[6] == 1 %}
+                                    <td> <button onclick="anular_vacunacion_cerdo({{dato[0]}});" class="btn btn-outline-danger"><i class="fa fa-times"></i></button> 
+                                    - 
+                                    <a target="_blank" href="/reporte/vacunacion_cerdo_reporte/{{dato[0]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a> </td>
+                                    {% else %}
+                                    <td> <a target="_blank" href="/reporte/vacunacion_cerdo_reporte/{{dato[0]}}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a></td>
+                                    {% endif %} 
+                                    
+                                  </td>
+                                  <td> Código: {{dato[1]}} - Raza: {{dato[3]}} - Sexo: {{dato[2]}} </td>
+                                  <td> {{dato[4]}}  </td>
+                                  <td> {{dato[5]}}  </td>
+                                  {% if dato[6] == 1 %}
+                                  <td> <span style="font-size: 13px;" class="badge badge-success">Activo</span> </td>
+                                  {% else %}
+                                  <td> <span style="font-size: 13px;" class="badge badge-danger">Anulado</span> </td>
+                                  {% endif %}  
+                              </tr>
+                            
+                            {% endfor %}
+                                                      
+                          </tbody>
+      
+                          <tfoot>
+                            <tr> 
+                                <th style="width: 1px;">#</th>
+                                <th>Acci&oacute;n</th>
+                                <th>Cerdo</th>
+                                <th>Fecha</th>
+                                <th>Observación</th>
+                                <th>Estado</th> 
+                            </tr>
+                          </tfoot>
+                          
+                        </table>
+
+                      </div>
+    
+                    </div>
+                  </div>
+              </div>
+          
+          </div>
+          
+        </div>
+       </div>
+    </section>
+  </div>
+  
+<script src="static/js/vacuna_despara.js"></script> 
+
+<script>  
+
+    $("#tabla_vacunacion_cerdos").DataTable({
+        language: {
+            rows: "%d fila seleccionada",
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar en _MENU_ items",
+            info: "Mostrando los item (_START_ al _END_) de un total _TOTAL_ items",
+            infoEmpty: "No existe datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontro resultados en tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo",
+            },
+            select: {
+              rows: "%d fila seleccionada",
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columa en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente",
+            },
+          },
+    });
+
+    function cargar_fechas(){
+      var f_i = document.getElementById("fecha_i").value;
+      var f_f = document.getElementById("fecha_f").value;
+
+      if (f_i > f_f) {
+          return Swal.fire(
+              "Mensaje de advertencia",
+              "La fecha inicio '" +
+              f_i +
+              "' es mayor a la fecha final '" +
+              f_f +
+              "'",
+              "warning"
+          );
+      }
+
+      cargar_contenido('contenido_principal','/listado_vacunacion_fecha/'+f_i+'/'+f_f+'');
+    }
+</script>
+  

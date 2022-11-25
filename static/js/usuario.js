@@ -682,9 +682,8 @@ function registra_uuario() {
   var telefono = $("#telefono").val();
   var tipo_rol = $("#rol_id").val();
   var usuario = $("#usuario").val();
-  var password = $("#password").val();
-  var password_c = $("#password_c").val();
   var correo = $("#correo").val();
+  var cedula = $("#cedula").val();
 
   if (
     nombres.length == 0 ||
@@ -699,12 +698,10 @@ function registra_uuario() {
     tipo_rol == 0 ||
     usuario.length == 0 ||
     usuario.trim() == "" ||
-    password.length == 0 ||
-    password.trim() == "" ||
-    password_c.length == 0 ||
-    password_c.trim() == "" ||
     correo.length == 0 ||
-    correo.trim() == ""
+    correo.trim() == "" ||
+    cedula.length == 0 ||
+    cedula.trim() == ""
   ) {
     validar_registros_usuario(
       nombres,
@@ -713,9 +710,8 @@ function registra_uuario() {
       telefono,
       tipo_rol,
       usuario,
-      password,
-      password_c,
-      correo
+      correo,
+      cedula
     );
 
     return swal.fire(
@@ -730,95 +726,141 @@ function registra_uuario() {
     $("#telefono_obligg").html("");
     $("#rol_obligg").html("");
     $("#usuario_obligg").html("");
-    $("#password_obligg").html("");
-    $("#password_c_obligg").html("");
     $("#correo_obligg").html("");
+    $("#cedula_obligg").html("");
   }
 
-  if (password != password_c) {
-    $("#password_obligg").html("Confime password");
-    $("#password_c_obligg").html("Confime password");
-
+  if (!G_cedula_create) {
+    $("#cedula_obligg").html("Ingrese una cédula correcta");
     return swal.fire(
-      "Password no coinciden",
-      "Los password ingresados no coinciden",
+      "Cédula incorrecta",
+      "Ingrese una cédula correcta",
       "warning"
     );
   } else {
-    $("#password_obligg").html("");
-    $("#password_c_obligg").html("");
+    $("#cedula_obligg").html("");
   }
 
-  if (!pass_usus) {
+  if (!G_correo_create) {
+    $("#correo_obligg").html("Ingrese un correo correcto");
     return swal.fire(
-      "Password débil",
-      "Ingrese un password mas fuerte",
+      "Correo incorrecto",
+      "Ingrese un correo correcto",
       "warning"
     );
+  } else {
+    $("#correo_obligg").html("");
   }
 
-  var formdata = new FormData();
-  var foto = $("#foto")[0].files[0];
-  //est valores son como los que van en la data del ajax
-
-  formdata.append("nombres", nombres);
-  formdata.append("apellidos", apellidos);
-  formdata.append("domicilio", domicilio);
-  formdata.append("telefono", telefono);
-  formdata.append("tipo_rol", tipo_rol);
-  formdata.append("usuario", usuario);
-  formdata.append("password", password);
-  formdata.append("correo", correo);
-  formdata.append("foto", foto);
-
   $.ajax({
-    url: "/usuario/crear_user",
     type: "POST",
-    //aqui envio toda la formdata
-    data: formdata,
-    contentType: false,
-    processData: false,
-    success: function (resp) {
-      if (resp > 0) {
-        if (resp == 1) {
-          $(".card-body").LoadingOverlay("hide");
-          cargar_contenido("contenido_principal", "/create_user");
-          return Swal.fire(
-            "Usuario creado con exito",
-            "El usuario se creo con exito",
-            "success"
-          );
-        } else if (resp == 2) {
-          $(".card-body").LoadingOverlay("hide");
-          return Swal.fire(
-            "Usuario ya existe",
-            "El usuario " + usuario + ", ya existe en el sistema",
-            "warning"
-          );
-        } else if (resp == 3) {
-          $(".card-body").LoadingOverlay("hide");
-          return Swal.fire(
-            "Correo ya existe",
-            "El correo " + correo + ", ya existe en el sistema",
-            "warning"
-          );
-        }
-      } else {
+    url: "/usuario/validar_datos_usuario_register",
+    data: { usuario: usuario, correo: correo, cedula: cedula },
+    success: function (response) {
+      if (response == 2) {
         $(".card-body").LoadingOverlay("hide");
         return Swal.fire(
-          "Error",
-          "No se pudo crear el usuario, falla en la matrix",
-          "error"
+          "Usuario ya existe",
+          "El usuario " + usuario + ", ya existe en el sistema",
+          "warning"
         );
+      } else if (response == 3) {
+        $(".card-body").LoadingOverlay("hide");
+        return Swal.fire(
+          "Correo ya existe",
+          "El correo " + correo + ", ya existe en el sistema",
+          "warning"
+        );
+      } else if (response == 4) {
+        return Swal.fire(
+          "Cédula ya existe",
+          "La cédula " + cedula + ", ya existe en el sistema",
+          "warning"
+        );
+      } else {
+
+        $.ajax({
+          type: "POST",
+          url: "https://amada.i-sistener.xyz/crear_usuario.php", // cambiar la url del envio de correo por la del hostinger
+          data: { password: response, correo: correo, nombres: nombres },
+          success: function (envio) {
+
+            if (envio == 1) {
+
+              var formdata = new FormData();
+              var foto = $("#foto")[0].files[0];
+              //est valores son como los que van en la data del ajax
+              formdata.append("nombres", nombres);
+              formdata.append("apellidos", apellidos);
+              formdata.append("domicilio", domicilio);
+              formdata.append("telefono", telefono);
+              formdata.append("tipo_rol", tipo_rol);
+              formdata.append("usuario", usuario);
+              formdata.append("password", response);
+              formdata.append("correo", correo);
+              formdata.append("cedula", cedula);
+              formdata.append("foto", foto);
+
+              $.ajax({
+                url: "/usuario/crear_user",
+                type: "POST",
+                //aqui envio toda la formdata
+                data: formdata,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+
+                  if (resp > 0) {
+                    if (resp == 1) {
+                      $(".card-body").LoadingOverlay("hide");
+                      cargar_contenido("contenido_principal", "/create_user");
+                      return Swal.fire(
+                        "Usuario creado con exito",
+                        "El usuario se creo con exito",
+                        "success"
+                      );
+                    } else {
+                      $(".card-body").LoadingOverlay("hide");
+                      return Swal.fire(
+                        "Error",
+                        resp,
+                        "error"
+                      );
+                    }
+                  } else {
+                    $(".card-body").LoadingOverlay("hide");
+                    return Swal.fire(
+                      "Error",
+                      "No se pudo crear el usuario, falla en la matrix",
+                      "error"
+                    );
+                  }
+
+                },
+              });
+
+              return false;
+
+            } else {
+              $(".card-body").LoadingOverlay("hide");
+              return Swal.fire(
+                "Error de envio",
+                "No se puedo enviar el correo con la password del usuario",
+                "error"
+              );
+            }
+          },
+        });
       }
     },
+
     beforeSend: function () {
       $(".card-body").LoadingOverlay("show", {
         text: "Cargando...",
       });
     },
   });
-  return false;
+
 }
 
 function validar_registros_usuario(
@@ -828,9 +870,8 @@ function validar_registros_usuario(
   telefono,
   tipo_rol,
   usuario,
-  password,
-  password_c,
-  correo
+  correo,
+  cedula
 ) {
   if (nombres.length == 0 || nombres.trim() == "") {
     $("#nombre_oblig").html("Ingrese los nombres");
@@ -868,23 +909,19 @@ function validar_registros_usuario(
     $("#usuario_obligg").html("");
   }
 
-  if (password.length == 0 || password.trim() == "") {
-    $("#password_obligg").html("Ingrese el password");
-  } else {
-    $("#password_obligg").html("");
-  }
-
-  if (password_c.length == 0 || password_c.trim() == "") {
-    $("#password_c_obligg").html("Confirme el password");
-  } else {
-    $("#password_c_obligg").html("");
-  }
-
   if (correo.length == 0 || correo.trim() == "") {
-    $("#correo_obligg").html("Confirme el correo");
+    $("#correo_obligg").html("Ingrese el correo");
   } else {
     $("#correo_obligg").html("");
   }
+
+  if (cedula.length == 0 || cedula.trim() == "") {
+    $("#cedula_obligg").html("Ingrese la cédula");
+  } else {
+    $("#cedula_obligg").html("");
+  }
+
+
 }
 
 ///////// lista de usuarios
@@ -938,8 +975,8 @@ function lista_usuarios() {
       },
       { data: "domicilio" },
       { data: "telefono" },
-      { data: "passwordd" },
       { data: "correo" },
+      { data: "cedula" },
       {
         data: "estado",
         render: function (data, type, row) {
@@ -1117,6 +1154,13 @@ $("#tabla_usuario_").on("click", ".editar", function () {
   $("#telefono").val(data.telefono);
   $("#usuario").val(data.usuario);
   $("#correo").val(data.correo);
+  $("#cedula").val(data.cedula);
+
+  G_cedula_edit = true;
+  G_correo_edit = true;
+
+  $("#correo").css("border", "1px solid green");
+  $("#cedula").css("border", "1px solid green");
 
   $("#nombre_oblig").html("");
   $("#apellidos_obligg").html("");
@@ -1125,6 +1169,7 @@ $("#tabla_usuario_").on("click", ".editar", function () {
   $("#rol_obligg").html("");
   $("#usuario_obligg").html("");
   $("#correo_obligg").html("");
+  $("#cedula_obligg").html("");
 
   $("#modaleditar_usuario").modal({ backdrop: "static", keyboard: false });
   $("#modaleditar_usuario").modal("show");
@@ -1140,6 +1185,7 @@ function editar_usuario() {
   var tipo_rol = $("#rol_id").val();
   var usuario = $("#usuario").val();
   var correo = $("#correo").val();
+  var cedula = $("#cedula").val();
 
   if (
     nombres.length == 0 ||
@@ -1155,7 +1201,9 @@ function editar_usuario() {
     usuario.length == 0 ||
     usuario.trim() == "" ||
     correo.length == 0 ||
-    correo.trim() == ""
+    correo.trim() == "" ||
+    cedula.length == 0 ||
+    cedula.trim() == ""
   ) {
     validar_registros_usuario_editar(
       nombres,
@@ -1164,7 +1212,8 @@ function editar_usuario() {
       telefono,
       tipo_rol,
       usuario,
-      correo
+      correo,
+      cedula
     );
 
     return swal.fire(
@@ -1180,6 +1229,29 @@ function editar_usuario() {
     $("#rol_obligg").html("");
     $("#usuario_obligg").html("");
     $("#correo_obligg").html("");
+    $("#cedula_obligg").html("");
+  }
+
+  if (!G_cedula_edit) {
+    $("#cedula_obligg").html("Ingrese una cédula correcta");
+    return swal.fire(
+      "Cédula incorrecta",
+      "Ingrese una cédula correcta",
+      "warning"
+    );
+  } else {
+    $("#cedula_obligg").html("");
+  }
+
+  if (!G_correo_edit) {
+    $("#correo_obligg").html("Ingrese un correo correcto");
+    return swal.fire(
+      "Correo incorrecto",
+      "Ingrese un correo correcto",
+      "warning"
+    );
+  } else {
+    $("#correo_obligg").html("");
   }
 
   var formdata = new FormData();
@@ -1191,6 +1263,7 @@ function editar_usuario() {
   formdata.append("tipo_rol", tipo_rol);
   formdata.append("usuario", usuario);
   formdata.append("correo", correo);
+  formdata.append("cedula", cedula);
 
   $.ajax({
     url: "/usuario/editar_usurio",
@@ -1224,6 +1297,13 @@ function editar_usuario() {
             "El correo " + correo + ", ya existe en el sistema",
             "warning"
           );
+        } else if (resp == 4) {
+          $(".modal-body").LoadingOverlay("hide");
+          return Swal.fire(
+            "Cédula ya existe",
+            "La cédula " + cedula + ", ya existe en el sistema",
+            "warning"
+          );
         }
       } else {
         $(".modal-body").LoadingOverlay("hide");
@@ -1251,7 +1331,8 @@ function validar_registros_usuario_editar(
   telefono,
   tipo_rol,
   usuario,
-  correo
+  correo,
+  cedula
 ) {
   if (nombres.length == 0 || nombres.trim() == "") {
     $("#nombre_oblig").html("Ingrese los nombres");
@@ -1293,6 +1374,12 @@ function validar_registros_usuario_editar(
     $("#correo_obligg").html("Ingrese el correo");
   } else {
     $("#correo_obligg").html("");
+  }
+
+  if (cedula.length == 0 || cedula.trim() == "") {
+    $("#cedula_obligg").html("Ingrese cédula");
+  } else {
+    $("#cedula_obligg").html("");
   }
 }
 
@@ -1429,11 +1516,14 @@ function editar_empresa() {
   }
 
   if (!correo_usus) {
+    $("#correo_obligg").html("El formato de correo no es el correcto");
     return swal.fire(
       "Correo incorrecto",
       "El formato de correo no es el correcto",
       "warning"
     );
+  }else{
+    $("#correo_obligg").html("");
   }
 
   var formdata = new FormData();

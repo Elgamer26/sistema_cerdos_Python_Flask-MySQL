@@ -3280,7 +3280,7 @@ function guardar_compra_vacuna(){
   );
 
   if(count == 0){ 
-    $("#unir_no_hay").html('<span class="badge badge-danger"><b>.:No hay vacuna en el detalle de compra:.</b></span>');
+    $("#unir_no_hay").html('<span class="badge badge-danger" style="font-size: 30px;"><b>.:No hay vacuna en el detalle de compra:.</b></span>');
     return swal.fire(
       "Detalle vacío",
       "No hay vacuna en el detalle de compra",

@@ -1,0 +1,242 @@
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0"><i class="fa fa-h-square"></i> Historial vacunación de los cerdos</h1>
+        </div>
+  
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/Admin">Inicio</a></li>
+            <li class="breadcrumb-item active">Historial vacunación de los cerdos</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-12">
+            <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">Cerdos disponibles</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row">
+
+                    <div class="form-group col-lg-7 col-6">
+                        <label for="cerdo_id">Cerdo</label>
+                        <select class="form-control cerdo_id text-center" style="width: 100%" id="cerdo_id">
+                          <option value="0">--- Seleccione el cerdo ---</option>      
+                          {% for datas in data.cerdo %}
+                          <option value="{{datas[0]}}">Código: {{datas[1]}} - Sexo: {{datas[3]}} - Raza: {{datas[4]}} - peso: {{datas[6]}}Kg</option>
+                          {% endfor %}
+                        </select>
+                        <span style="color: red" id="cerdo_obligg"></span>
+                    </div>
+
+                    <div class="form-group col-lg-2 col-6">
+                        <label for="f_i">Fecha inicio</label>
+                        <input type="date" value="{{data.fecha}}" class="form-control" id="f_i" /> 
+                    </div>
+
+                    <div class="form-group col-lg-2 col-6">
+                        <label for="f_f">Fecha fin</label>
+                        <input type="date" value="{{data.fecha}}" class="form-control" id="f_f" /> 
+                    </div>
+
+                    <div class="form-group col-lg-1 col-6">
+                        <label>Buscar...</label>
+                        <button type="button" onclick="buscar_historia_vacunas_cerdo();" class="btn btn-info"><i class="fa fa-search"></i></button> 
+                    </div> 
+
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-12">
+            <div class="card card-danger">
+              <div class="card-header">
+                <h3 class="card-title">Historias de vacunacion del cerdo</h3>
+              </div>
+  
+              <div class="card-body">
+                <div class="row text-center">
+
+                    <div class="form-group col-lg-12 col-6" id="accordion">
+                        <div id="unir_detalle_vacunacion"></div>
+                    </div>
+
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+            </div>
+          </div>
+        </div>
+  
+        <div class="row"></div>
+      </div>
+    </section>
+  </div>
+  
+  <script src="static/js/vacuna_despara.js"></script>
+
+  
+<div class="modal fade" id="modal_detalle_vacunasa">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Vacunas del cerdo</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="background: white; color: black">
+                <div class="row">
+                    <div class="form-group col-lg-12 col-12 text-center">
+                            <table id="tabla_detalle_vacunacion" class="table table-bordered table-hover nowrap" style="width:100%">
+                               <thead>
+                                    <tr> 
+                                    <th style="width: 1px;">#</th>  
+                                    <th>Fecha</th>
+                                    <th>Vacuna</th>
+                                    <th>Cantidad</th>
+                                    <th>Motivo</th> 
+                                    </tr>
+                               </thead>
+                            
+                               <tbody id="tbody_tabla_vacunas_detalle">
+                                   
+                                </tbody>
+                               
+                                <tfoot>
+                                    <tr> 
+                                        <th style="width: 1px;">#</th>  
+                                        <th>Fecha</th>
+                                        <th>Vacuna</th>
+                                        <th>Cantidad</th>
+                                        <th>Motivo</th> 
+                                    <tr> 
+                               </tfoot>
+                            </table>  
+                    </div> 
+                </div> 
+            </div>
+            <div class="modal-footer justify-content-between" style="background: #f5f4f3 !important">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    Cerrar
+                </button> 
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+  
+  <script>
+
+    $(".cerdo_id").select2();
+
+    function buscar_historia_vacunas_cerdo(){
+        var id = document.getElementById("cerdo_id").value;
+        var f_i = document.getElementById("f_i").value;
+        var f_f = document.getElementById("f_f").value;
+
+        if(id == "0"){
+            $("#cerdo_obligg").html("Seleccione el cerdo");
+            return swal.fire(
+                "No hay cerdo",
+                "Seleccione el cerdo para realizar la busqueda",
+                "warning"
+              );
+        }else{
+            $("#cerdo_obligg").html("");
+        }
+  
+        if (f_i > f_f) {
+            return Swal.fire(
+                "Mensaje de advertencia",
+                "La fecha inicio '" +
+                f_i +
+                "' es mayor a la fecha final '" +
+                f_f +
+                "'",
+                "warning"
+            );
+        }
+
+        $.ajax({
+            url: "/vacunas/buscar_historia_vacunacion_cerdo",
+            type: "POST", 
+            data: {id: id, f_i: f_i, f_f: f_f}, 
+            success: function (resp) {
+
+              $(".card-warning").LoadingOverlay("hide");              
+              $('#unir_detalle_vacunacion').empty();
+
+              if(resp != 0){
+            
+                let count = 0; 
+                var llenat = ""; 
+
+                resp['data'].forEach((row) => { 
+                    count++;   
+                    llenat += `<div class="card card-danger card-outline">
+                        <a class="d-block w-100" data-toggle="collapse" href="#collapse${count}" aria-expanded="false">
+                            <div class="card-header">
+                                <h4 class="card-title w-100">
+                                    ${count}. Fecha vacunación: '${row['fecha']}'
+                                </h4>
+                            </div>
+                        </a>
+                        <div id="collapse${count}" class="collapse" data-parent="#accordion" style="">
+                            <div class="card-body">
+                                
+                                <div class="row">
+                
+                                    <div class="form-group col-lg-6 col-6">
+                                        <label for="peso_a">Cerdo:</label>
+                                        <input type="text" readonly class="form-control" value="${row['cerdo']}" /> 
+                                    </div>
+                
+                                    <div class="form-group col-lg-3 col-6">
+                                        <label>Fecha vacunación:</label>
+                                        <input type="date" readonly class="form-control" value="${row['fecha']}" />
+                                    </div>
+                
+                                    <div class="form-group col-lg-12 col-6">
+                                        <label>Observación</label>
+                                        <input type="text" readonly class="form-control" value="${row['observacion']}" />
+                                    </div>
+
+                                    <div class="form-group col-lg-12 col-6"> 
+                                        <button onclick="ver_detalle_vacunas_cerdo(${row['id']});" class="btn btn-outline-warning"><i class="fa fa-eye"></i></button> - <a target="_blank" href="/reporte/vacunacion_cerdo_reporte/${row['id']}" class="btn btn-outline-primary"><i class="fa fa-file"></i></a> 
+                                    </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>`;           
+                     $("#unir_detalle_vacunacion").html(llenat);           
+                }); 
+        
+              }else{
+                $("#unir_detalle_vacunacion").html('<span style="font-size: 20px;" class="badge badge-danger"><b>.:No hay historia de vacunación del cerdo:.</b></span>');  
+              }
+
+            },
+         
+            beforeSend: function () {
+                $(".card-warning").LoadingOverlay("show", {
+                  text: "Cargando..."});
+            },
+        });
+    }
+    
+  </script>
